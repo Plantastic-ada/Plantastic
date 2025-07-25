@@ -36,6 +36,8 @@ public class PlantImportService {
         String listUrl = "https://perenual.com/api/v2/species-list?key=" + apiKey + "&indoor=1&page=" + page;
         PlantListApiResponse response = restTemplate.getForObject(listUrl, PlantListApiResponse.class);
 
+        log.debug(apiKey);
+
         if (response == null || response.getData() == null || response.getData().isEmpty()) {
             log.warn("❌ Il n'y a plus de plantes à récupérer");
             return;

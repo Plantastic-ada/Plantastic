@@ -4,7 +4,8 @@ import com.plantastic.backend.dto.auth.LoginRequest;
 import com.plantastic.backend.dto.auth.LoginResponse;
 import com.plantastic.backend.repository.UserRepository;
 import com.plantastic.backend.security.JwtUtil;
-import com.plantastic.backend.service.UserDetailsServiceImpl;
+import com.plantastic.backend.service.UserDetailsImplService;
+import com.plantastic.backend.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,13 +15,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthenticationControllerTest {
@@ -29,7 +30,7 @@ class AuthenticationControllerTest {
     private AuthenticationManager authenticationManager;
 
     @Mock
-    private UserDetailsServiceImpl userDetailsService;
+    private UserDetailsImplService userDetailsService;
 
     @Mock
     private JwtUtil jwtUtil;
@@ -42,6 +43,9 @@ class AuthenticationControllerTest {
 
     @InjectMocks
     private AuthenticationController authenticationController;
+
+    @Mock
+    private UserService userService;
 
     @Test
     void shouldReturnJwtWhenCredentialsAreValid() {
@@ -63,6 +67,10 @@ class AuthenticationControllerTest {
         assertNotNull(body);
         assertTrue(body.isSuccess());
         assertEquals("mocked-jwt-token", body.getJwt());
+
+        verify(userService).updateLastLogin("admin");
+
+        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
     }
 
     @Test

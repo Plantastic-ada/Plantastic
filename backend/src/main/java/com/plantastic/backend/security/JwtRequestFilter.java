@@ -1,6 +1,6 @@
 package com.plantastic.backend.security;
 
-import com.plantastic.backend.service.UserDetailsServiceImpl;
+import com.plantastic.backend.service.UserDetailsImplService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,12 +18,12 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsImplService userDetailsImplService;
 
     @Autowired
-    public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsServiceImpl) {
+    public JwtRequestFilter(JwtUtil jwtUtil, UserDetailsImplService userDetailsImplService) {
         this.jwtUtil = jwtUtil;
-        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.userDetailsImplService = userDetailsImplService;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsServiceImpl.loadUserByUsername(username);
+            UserDetails userDetails = this.userDetailsImplService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

@@ -4,10 +4,9 @@ package com.plantastic.backend.controller;
 import com.plantastic.backend.dto.auth.LoginRequest;
 import com.plantastic.backend.dto.auth.LoginResponse;
 import com.plantastic.backend.dto.auth.RegisterRequest;
-import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.repository.UserRepository;
 import com.plantastic.backend.security.JwtUtil;
-import com.plantastic.backend.service.UserDetailsServiceImpl;
+import com.plantastic.backend.service.UserDetailsImplService;
 import com.plantastic.backend.service.UserService;
 import com.plantastic.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,17 +23,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsImplService userDetailsImplService;
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
