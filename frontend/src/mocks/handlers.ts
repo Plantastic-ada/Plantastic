@@ -25,8 +25,8 @@ export const handlers = [
     const body = await request.json();
     const result = LoginSchema.safeParse(body);
 
-    console.log("🧪 Body reçu:", body);
-    console.log("✅ Zod result:", result);
+    console.debug("🧪 Body reçu:", body);
+    console.debug("✅ Zod result:", result);
 
     if (!result.success) {
       return HttpResponse.json({ message: "Invalid input" }, { status: 400 });
