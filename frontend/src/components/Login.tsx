@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent} from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -9,7 +9,7 @@ export function Login() {
   const [error, setError] = useState("");
   const nav = useNavigate();
 
-  const checkLogin = async (e: React.FormEvent) => {
+  const checkLogin = async (e: FormEvent) => {
     e.preventDefault();                    
     setLoading(true);
     try {
