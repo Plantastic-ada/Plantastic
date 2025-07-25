@@ -21,12 +21,12 @@ export function Login() {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ pseudo:'toto', password:'User1234!' }),
+        body: JSON.stringify({ pseudo, password }),
       });
       if (response.ok) {
         const { token } = await response.json();
         localStorage.setItem("authToken", token);
-        nav("/", { replace: true });
+        nav("/home", { replace: true });
       } else {
         const { message } = await response.json();
         setError(message || "Invalid pseudo or password");

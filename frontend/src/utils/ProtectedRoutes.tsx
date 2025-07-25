@@ -11,14 +11,14 @@ const ProtectedRoutes = () => {
             const token = localStorage.getItem('authToken')
 
             if (!token) {
-                navigate('/', {replace: true})
+                navigate('/login', {replace: true})
                 return
             }
             try {
-                const response = await fetch('/auth/me',{
+                const response = await fetch('/api/auth/me',{
                     method: 'GET',
                     headers:  {
-                            'Authorization':'Bearer ${token}',
+                            'Authorization':`Bearer ${token}`,
                         },
                 })
                 if (!response.ok) {
@@ -27,14 +27,14 @@ const ProtectedRoutes = () => {
             } catch (error) {
                 console.error('Token verification failed: ', error)
                 localStorage.removeItem('authToken');
-                navigate('/',{ replace: true});
+                navigate('/login',{ replace: true});
             } finally {
                 setChecking(false)
             }
         }
         verifyToken()
     }, [navigate])
-    if (checking) return null
+    if (checking) return <p>⏳ Checking authentication...</p>;
     return <Outlet/>
 } 
 

@@ -11,7 +11,7 @@ export function App() {
         {/* <Route path="/signup" element={<SignUp />} /> */}
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoutes/>}>
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
         </Route>
       </Routes>
     </>

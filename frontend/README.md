@@ -68,15 +68,11 @@ when the package is installed, need to save the SW script in the public folder :
 This SW is available at runtime. Can be checked in http://localhost:5174/mockServiceWorker.js
 It's set up for the browser, it can be set up for a server environment to mock API calls for unit tests
 
-A reprendre : 
-Vidéo MSW
-https://www.youtube.com/watch?v=pP8FQnv6o7A&ab_channel=Anson reprendre à 19.08
-
-A reprendre 11/07 :
-Comment set up react toastify dans le router? 
-https://www.youtube.com/watch?v=ZEB3VCbXQHA&list=PL82C6-O4XrHcJhPkcWkzFnjEBiAtpWGrw
-
 
 #**ZOD LIBRARY**
 Zod is a TypeScript-first validation library. Define a schema and parse some data with it. You'll get back a strongly typed, validated result.
 npm install zod
+
+#**RESSOURCES**
+React Router, Vite and JWT Authentication : https://medium.com/@asbedb/react-router-vite-and-jwt-authentication-9abf049c3f32
+
