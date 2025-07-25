@@ -8,6 +8,8 @@ import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.repository.UserRepository;
 import com.plantastic.backend.security.JwtUtil;
 import com.plantastic.backend.service.UserDetailsServiceImpl;
+import com.plantastic.backend.service.UserService;
+import com.plantastic.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @RestController
@@ -35,6 +38,7 @@ public class AuthenticationController {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     /**
      * Method to authenticate a user
@@ -52,33 +56,37 @@ public class AuthenticationController {
                             loginRequest.getPassword()
                     )
             );
+
+            userService.updateLastLogin(loginRequest.getUsernameOrEmail());
+
             String jwt = jwtUtil.generateToken(authentication.getName());
             return ResponseEntity.ok(LoginResponse.success(jwt));
 
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(LoginResponse.failure("Bad Credentials : " + e));
         }
-
     }
 
-//    @PostMapping("/register")
-//    public ResponseEntity<String> createRegisterResponse(@RequestBody RegisterRequest registerRequest) {
-//        String emailToCheck = registerRequest.getEmail();
-//        if (userRepository.findByEmail(emailToCheck).isPresent()) {
-//            log.warn("Email is already used: {}", emailToCheck);
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already used: " + emailToCheck);
-//        }
-//
-//        String usernameToCheck = registerRequest.getUsername();
-//        if (userRepository.findByUsername(usernameToCheck).isPresent()) {
-//            log.warn("Username is already used: {}", usernameToCheck);
-//            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already used: " + usernameToCheck);
-//        }
-//
-//        User userToRegister = new User();
-//        userToRegister.setEmail(emailToCheck);
-//        userToRegister.setUsername(usernameToCheck);
-//        userToRegister.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-//        userToRegister.setCreatedAt(LocalDate.now());
-//    }
+    @PostMapping("/register")
+    public ResponseEntity<String> createRegisterResponse(@RequestBody RegisterRequest registerRequest) {
+        String emailToCheck = registerRequest.getEmail();
+        if (userService.emailExists(emailToCheck)) {
+            log.warn("Email is already used: {}", emailToCheck);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already used: " + emailToCheck);
+        }
+
+        if (!UserUtil.isValidEmail(emailToCheck)) {
+            log.warn("Invalid email format : {}", emailToCheck);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format: " + emailToCheck);
+        }
+
+        String usernameToCheck = registerRequest.getUsername();
+        if (userService.usernameExists(usernameToCheck)) {
+            log.warn("Username is already used: {}", usernameToCheck);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already used: " + usernameToCheck);
+        }
+
+        userService.createUser(registerRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully: " + usernameToCheck);
+    }
 }
