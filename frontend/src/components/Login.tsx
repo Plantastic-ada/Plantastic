@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { User } from '../mocks/handlers';
-import ProtectedRoutes from '../utils/ProtectedRoutes';
 
 export function Login() {
 //   const [users, setUsers] = useState<User[]>([]);
-  const [pseudo, setPseudo] = useState("");
-//   const [email, setEmail] = useState("");
+  // const [pseudo, setPseudo] = useState("");
+  // const [email, setEmail] = useState("");
+  const [pseudoOrEmail, setPseudoOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +21,7 @@ export function Login() {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ pseudo, password }),
+        body: JSON.stringify({ pseudoOrEmail, password }),
       });
       if (response.ok) {
         const { token } = await response.json();
@@ -44,10 +44,10 @@ export function Login() {
     <div>
       <h1>Login</h1>
       <form onSubmit={checkLogin}>
-        <label>Pseudo:</label>
+        <label>Pseudo or email: </label>
         <input
           type="text"
-          onChange={(e) => setPseudo(e.target.value)}
+          onChange={(e) => setPseudoOrEmail (e.target.value)} 
           required
         />
 

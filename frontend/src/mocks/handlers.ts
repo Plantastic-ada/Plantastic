@@ -15,7 +15,7 @@ const UserSchema = z.object({
 });
 
 const LoginSchema = z.object({
-  pseudo: z.string().min(3),
+  pseudoOrEmail: z.string().min(3),
   password: z.string(),
 });
 
@@ -24,6 +24,7 @@ export const handlers = [
   http.post<never, User[]>("/api/auth/login", async ({ request }) => {
     const body = await request.json();
     const result = LoginSchema.safeParse(body);
+
     console.log("🧪 Body reçu:", body);
     console.log("✅ Zod result:", result);
 
@@ -31,9 +32,13 @@ export const handlers = [
       return HttpResponse.json({ message: "Invalid input" }, { status: 400 });
     }
 
-    const { pseudo, password } = result.data;
+    const { pseudoOrEmail, password } = result.data;
 
-    if (pseudo === "toto" && password === "User1234!") {
+    const isEmail = pseudoOrEmail.includes("@")
+
+    const isValidLogin = password === "User1234!" && (!isEmail && pseudoOrEmail === 'toto' || isEmail && pseudoOrEmail === "toto@yopmail.fr")
+
+    if (isValidLogin) {
       return HttpResponse.json({ token: "faketoken123" }, { status: 200 });
     }
 
