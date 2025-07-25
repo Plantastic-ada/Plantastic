@@ -20,7 +20,7 @@ const LoginSchema = z.object({
 });
 
 export const handlers = [
-  // Simule un login
+  // Mocks login with email or password
   http.post<never, User[]>("/api/auth/login", async ({ request }) => {
     const body = await request.json();
     const result = LoginSchema.safeParse(body);
@@ -36,7 +36,8 @@ export const handlers = [
 
     const isEmail = pseudoOrEmail.includes("@")
 
-    const isValidLogin = password === "User1234!" && (!isEmail && pseudoOrEmail === 'toto' || isEmail && pseudoOrEmail === "toto@yopmail.fr")
+    const isValidLogin = password === "User1234!" && 
+    (!isEmail && pseudoOrEmail === 'toto' || isEmail && pseudoOrEmail === "toto@yopmail.fr")
 
     if (isValidLogin) {
       return HttpResponse.json({ token: "faketoken123" }, { status: 200 });
@@ -49,7 +50,7 @@ export const handlers = [
   }
 ),
 
-  // Simule un signup
+  // Mocks sign up
   http.post<never, User[]>("/api/auth/signup", async ({ request }) => {
     const authToken = request.headers.get("Authorization");
     if (!authToken)
@@ -57,7 +58,7 @@ export const handlers = [
 
     const requestBody = await request.json();
     const result = UserSchema.safeParse(requestBody);
-    console.debug("How's the body? ", result);
+    console.debug("body: ", result);
 
     if (!result.success) {
       return HttpResponse.json({ error: "Invalid input" }, { status: 400 });
@@ -74,7 +75,7 @@ export const handlers = [
     return HttpResponse.json([newUser], { status: 201 });
   }),
 
-  // Vérifie le token JWT
+  // JWT
   http.get("/api/auth/me", ({ request }) => {
     const authHeader = request.headers.get("Authorization");
 
@@ -88,7 +89,6 @@ export const handlers = [
         { status: 200 }
       );
     }
-
     return HttpResponse.json({ message: "Invalid token" }, { status: 401 });
   }),
 ];

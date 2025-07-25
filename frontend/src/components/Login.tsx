@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { User } from '../mocks/handlers';
+
 
 export function Login() {
-//   const [users, setUsers] = useState<User[]>([]);
-  // const [pseudo, setPseudo] = useState("");
-  // const [email, setEmail] = useState("");
   const [pseudoOrEmail, setPseudoOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -47,6 +44,7 @@ export function Login() {
         <label>Pseudo or email: </label>
         <input
           type="text"
+          placeholder="Enter pseudo or email"
           onChange={(e) => setPseudoOrEmail (e.target.value)} 
           required
         />
@@ -54,6 +52,7 @@ export function Login() {
         <label>Password:</label>
         <input
           type="password"
+          placeholder="Enter password"
           onChange={(e) => setPassword(e.target.value)}
           required
         />
@@ -65,10 +64,4 @@ export function Login() {
   );
 }
 
-
-
 export default Login;
-
-// export default function Login() {
-//   return <div>LOGIN PAGE</div>;
-// }

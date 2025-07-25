@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-
+// Set up for navigation to check mocked token 
 const ProtectedRoutes = () => {
     const navigate = useNavigate();
     const [ checking, setChecking ] = useState(true);

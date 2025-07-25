@@ -1,15 +1,15 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
-//import SignUp from "./components/Signup";
 import Home from "./components/Home";
+// import SignUp from "./components/SignUp";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 export function App() {
   return (
     <>
       <Routes>
-        {/* <Route path="/signup" element={<SignUp />} /> */}
         <Route path="/login" element={<Login />} />
+        {/* <Route path="/signup" element={<SignUp/>}/> */}
         <Route element={<ProtectedRoutes/>}>
           <Route path="/home" element={<Home />} />
         </Route>
@@ -19,13 +19,3 @@ export function App() {
 }
 
 export default App;
-
-//   return (
-//     <>
-//       <h1>Routing Test</h1>
-//       <Routes>
-//         <Route path="/login" element={<Login />} />
-//         <Route path="/" element={<Home />} />
-//       </Routes>
-//     </>
-//   );
