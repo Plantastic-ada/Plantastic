@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -34,10 +34,13 @@ public class User {
     private UserRole role;
 
     @Column (name = "created_at",nullable = false)
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column (name = "updated_at",nullable = false)
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
+
+    @Column(name = "last_login_at")
+    private LocalDateTime lastLoginAt;
 
     @Enumerated(EnumType.STRING)
     @Column (name = "notifications_preferences",nullable = false)
@@ -52,4 +55,14 @@ public class User {
     @Column(name = "camera_consent")
     private boolean cameraConsent;
 
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
