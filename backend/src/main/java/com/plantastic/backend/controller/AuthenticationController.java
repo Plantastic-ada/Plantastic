@@ -3,6 +3,8 @@ package com.plantastic.backend.controller;
 
 import com.plantastic.backend.dto.auth.LoginRequest;
 import com.plantastic.backend.dto.auth.LoginResponse;
+import com.plantastic.backend.dto.auth.RegisterRequest;
+import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.repository.UserRepository;
 import com.plantastic.backend.security.JwtUtil;
 import com.plantastic.backend.service.UserDetailsServiceImpl;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/auth")
@@ -70,8 +75,10 @@ public class AuthenticationController {
 //            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already used: " + usernameToCheck);
 //        }
 //
-//
-//
-//        return;
+//        User userToRegister = new User();
+//        userToRegister.setEmail(emailToCheck);
+//        userToRegister.setUsername(usernameToCheck);
+//        userToRegister.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+//        userToRegister.setCreatedAt(LocalDate.now());
 //    }
 }

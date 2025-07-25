@@ -45,7 +45,7 @@ class AuthenticationControllerTest {
 
     @Test
     void shouldReturnJwtWhenCredentialsAreValid() {
-        // Set up the test
+        //Arrange
         LoginRequest loginRequest = new LoginRequest("admin", "admin");
 
         Authentication authentication = mock(Authentication.class);
@@ -53,7 +53,7 @@ class AuthenticationControllerTest {
         when(authenticationManager.authenticate(any())).thenReturn(authentication);
         when(jwtUtil.generateToken("admin")).thenReturn("mocked-jwt-token");
 
-        // Call the method we want to test
+        // Act
         ResponseEntity<LoginResponse> response = authenticationController.createLoginResponse(loginRequest);
 
         // Assert
@@ -67,13 +67,13 @@ class AuthenticationControllerTest {
 
     @Test
     void shouldReturnUnauthorizedWhenCredentialsAreInvalid() {
-        // Set up the test
+        // Arrange
         LoginRequest loginRequest = new LoginRequest("admin", "wrongpassword");
 
         when(authenticationManager.authenticate(any()))
                 .thenThrow(new BadCredentialsException("Invalid credentials"));
 
-        // Call the method we want to test
+        //Act
         ResponseEntity<LoginResponse> response = authenticationController.createLoginResponse(loginRequest);
 
         // Assert
