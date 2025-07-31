@@ -1,25 +1,38 @@
-import { useState, type FormEvent} from "react";
+import React, { useState, type FormEvent} from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
 
 
 export function Login() {
-  const [pseudoOrEmail, setPseudoOrEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const nav = useNavigate();
 
-  const checkLogin = async (e: FormEvent) => {
-    e.preventDefault();                    
+
+  const {
+    register, 
+    handleSubmit,
+    formState: {errors},
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema)
+  })
+
+  const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
+    setError("");
+
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ pseudoOrEmail, password }),
+        body: JSON.stringify(data),
       });
+
       if (response.ok) {
         const { token } = await response.json();
         localStorage.setItem("authToken", token);
@@ -40,24 +53,30 @@ export function Login() {
   return (
     <div>
       <h1>Login</h1>
-      <form onSubmit={checkLogin}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label>Pseudo or email: </label>
         <input
           type="text"
           placeholder="Enter pseudo or email"
-          onChange={(e) => setPseudoOrEmail (e.target.value)} 
+          {...register("pseudoOrEmail")} 
           required
         />
+        {errors.pseudoOrEmail && (<p className="error">{errors.pseudoOrEmail.message} </p>)}
 
         <label>Password:</label>
         <input
           type="password"
           placeholder="Enter password"
-          onChange={(e) => setPassword(e.target.value)}
+          {...register("password")}
           required
         />
+        {errors.password && (<p className="error">{errors.password.message} </p>)}
 
-        <button type="submit">{loading ? "Signing in..." : "Sign in"}</button>
+
+        <button type="submit" disabled={loading}>
+        {loading ? "Logging in..." : "Login"}
+        </button>
+        <p>Don't have an account? Please register <Link to="/signup">here</Link></p>
       </form>
       {error && <span className="text-red-500">{error}</span>}
     </div>

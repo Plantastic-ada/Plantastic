@@ -1,29 +1,15 @@
 import { http, HttpResponse } from "msw";
-import { z } from "zod";
-
-export interface User {
-  id: number;
-  pseudo: string;
-  email: string;
-  password: string;
-}
-
-const UserSchema = z.object({
-  pseudo: z.string().min(3),
-  email: z.string().min(6),
-  password: z.string(),
-});
-
-const LoginSchema = z.object({
-  pseudoOrEmail: z.string().min(3),
-  password: z.string(),
-});
+import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
+import { signUpSchema, type SignUpFormData } from "../schemas/signUpSchema";
+import { sanitizeUser } from "../utils/sanitize";
+import { type User } from "../types/User";
+import { mockUser } from "./mockUser";
 
 export const handlers = [
   // Mocks login with email or password
-  http.post<never, User[]>("/api/auth/login", async ({ request }) => {
+  http.post<never, LoginFormData>("/api/auth/login", async ({ request }) => {
     const body = await request.json();
-    const result = LoginSchema.safeParse(body);
+    const result = loginSchema.safeParse(body);
 
     console.debug("🧪 Body reçu:", body);
     console.debug("✅ Zod result:", result);
@@ -34,30 +20,36 @@ export const handlers = [
 
     const { pseudoOrEmail, password } = result.data;
 
-    const isEmail = pseudoOrEmail.includes("@")
+    const isEmail = pseudoOrEmail.includes("@");
 
-    const isValidLogin = password === "User1234!" && 
-    (!isEmail && pseudoOrEmail === 'toto' || isEmail && pseudoOrEmail === "toto@yopmail.fr")
+    const isValidLogin =
+      password === mockUser.password &&
+      ((!isEmail && pseudoOrEmail === mockUser.pseudo) ||
+        (isEmail && pseudoOrEmail === mockUser.email));
 
     if (isValidLogin) {
-      return HttpResponse.json({ token: "faketoken123" }, { status: 200 });
+      return HttpResponse.json(
+        {
+          user: sanitizeUser(mockUser), 
+          token:"faketoken123"},
+          { status: 200 });
     }
-
+    console.debug("isValidLogin:", isValidLogin);
+    console.debug("➡️ sending user:", sanitizeUser(mockUser));
     return HttpResponse.json(
       { message: "Invalid pseudo or password" },
       { status: 401 }
     );
-  }
-),
+  }),
 
   // Mocks sign up
-  http.post<never, User[]>("/api/auth/signup", async ({ request }) => {
+  http.post<never, SignUpFormData>("/api/auth/signup", async ({ request }) => {
     const authToken = request.headers.get("Authorization");
     if (!authToken)
       return HttpResponse.json({ msg: "Not Authorized" }, { status: 401 });
 
     const requestBody = await request.json();
-    const result = UserSchema.safeParse(requestBody);
+    const result = signUpSchema.safeParse(requestBody);
     console.debug("body: ", result);
 
     if (!result.success) {
@@ -75,7 +67,7 @@ export const handlers = [
     return HttpResponse.json([newUser], { status: 201 });
   }),
 
-  // JWT
+  // Mock JWT
   http.get("/api/auth/me", ({ request }) => {
     const authHeader = request.headers.get("Authorization");
 
@@ -84,7 +76,6 @@ export const handlers = [
         {
           pseudo: "toto",
           email: "toto@yopmail.fr",
-          password: "User1234!",
         },
         { status: 200 }
       );

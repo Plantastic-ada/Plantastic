@@ -9,7 +9,7 @@ function Home() {
   return (
     <div>
       <div>
-        <h1> Bienvenue ! Vous êtes connecté.e</h1>
+        <h1>Welcome plant lover 🌱💚</h1>
       </div>
       <div>
         <button onClick={handleLogout}>
