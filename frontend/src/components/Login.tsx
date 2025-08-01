@@ -30,12 +30,11 @@ export function Login() {
         headers: {
           "Content-type": "application/json",
         },
+        credentials:"include", // stores cookie
         body: JSON.stringify(data),
       });
 
       if (response.ok) {
-        const { token } = await response.json();
-        localStorage.setItem("authToken", token);
         nav("/home", { replace: true });
       } else {
         const { message } = await response.json();

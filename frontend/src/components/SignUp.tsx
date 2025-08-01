@@ -20,6 +20,7 @@ const SignUp: React.FC = () => {
     try {
       const response = await fetch("api/auth/signup", {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-type": "application/json",
           Authorization: "Bearer-fake-token-123",

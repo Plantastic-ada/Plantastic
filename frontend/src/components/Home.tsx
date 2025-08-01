@@ -2,9 +2,18 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
   const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    navigate("/login", { replace: true });
+  const handleLogout = async () => {
+    try {
+      await fetch ("/api/auth/logout", {
+        method:"POST", 
+        credentials:"include",
+      })
+      localStorage.removeItem("authToken");
+      console.debug("Log out successfull!")
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Log out failed", error)
+    }
   };
   return (
     <div>

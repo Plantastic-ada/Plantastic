@@ -5,6 +5,8 @@ import { sanitizeUser } from "../utils/sanitize";
 import { type User } from "../types/User";
 import { mockUser } from "./mockUser";
 
+let sessionToken: string | null = null;
+
 export const handlers = [
   // Mocks login with email or password
   http.post<never, LoginFormData>("/api/auth/login", async ({ request }) => {
@@ -28,11 +30,22 @@ export const handlers = [
         (isEmail && pseudoOrEmail === mockUser.email));
 
     if (isValidLogin) {
+      sessionToken = "faketoken123";
       return HttpResponse.json(
+        sanitizeUser({
+          id: 1,
+          pseudo: "toto",
+          email: "toto@yopmail.fr",
+          password: "User1234!",
+        }),
         {
-          user: sanitizeUser(mockUser), 
-          token:"faketoken123"},
-          { status: 200 });
+          status: 200,
+          headers: {
+            "Set-Cookie":
+              "token=faketoken123; HttpOnly; Secure; SameSite=Strict",
+          },
+        }
+      );
     }
     console.debug("isValidLogin:", isValidLogin);
     console.debug("➡️ sending user:", sanitizeUser(mockUser));
@@ -67,19 +80,39 @@ export const handlers = [
     return HttpResponse.json([newUser], { status: 201 });
   }),
 
-  // Mock JWT
-  http.get("/api/auth/me", ({ request }) => {
-    const authHeader = request.headers.get("Authorization");
+  // Mock JWT session with Http Only
+  http.get("/api/auth/me", () => {
+    // const authHeader = request.headers.get("Authorization");
 
-    if (authHeader === "Bearer faketoken123") {
+    if (sessionToken === "faketoken123") {
       return HttpResponse.json(
         {
           pseudo: "toto",
           email: "toto@yopmail.fr",
         },
-        { status: 200 }
+        {
+          status: 200,
+          headers: {
+            "Set-Cookie":
+              "token=faketoken123 ; HttpOnly; Secure; SameSite=Strict",
+          },
+        }
       );
     }
     return HttpResponse.json({ message: "Invalid token" }, { status: 401 });
+  }),
+
+  // Mocks logout
+  http.post("/api/auth/logout", () => {
+    return HttpResponse.json(
+      { message: "Logged out" },
+      {
+        status: 200,
+        headers: {
+          "Set-Cookie":
+            "token=; HttpOnly; Secure; SameSite=Strict; Expires=Thu, 01 Jan 1970 00:00:00 GMT",
+        },
+      }
+    );
   }),
 ];
