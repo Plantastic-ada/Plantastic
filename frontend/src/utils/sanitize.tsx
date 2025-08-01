@@ -9,6 +9,6 @@ export const sanitize = (value: string): string =>
 type safeUser = Omit<User, "password">
 
 export function sanitizeUser (user: User): safeUser {
-  const { password, ...safeUser } = user;
+  const { password: _, ...safeUser } = user;
   return safeUser;
 };

@@ -45,7 +45,8 @@ const SignUp: React.FC = () => {
         </>
       );
       reset();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      console.error(error);
       setApiMessage("An error occured.");
     }
   };
