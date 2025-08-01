@@ -50,10 +50,12 @@ const SignUp: React.FC = () => {
     }
   };
 
+  // SIGN UP FORM
   return (
     <>
       <h1>Sign up</h1>
-      <form className="App" onSubmit={handleSubmit(onSubmit)} noValidate>
+      
+      <form className="App" onSubmit={handleSubmit(onSubmit)} noValidate > {/*disables the HTML validation, done with zod*/}
         <input type="text" placeholder="Username" {...register("pseudo")} />
         {errors.pseudo && <p className="error">{errors.pseudo.message} </p>}
 

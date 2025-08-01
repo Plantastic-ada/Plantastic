@@ -73,6 +73,11 @@ It's set up for the browser, it can be set up for a server environment to mock A
 Zod is a TypeScript-first validation library. Define a schema and parse some data with it. You'll get back a strongly typed, validated result.
 npm install zod
 
+#**DOM PURIFY**
+DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG.
+
+
 #**RESSOURCES**
 React Router, Vite and JWT Authentication : https://medium.com/@asbedb/react-router-vite-and-jwt-authentication-9abf049c3f32
 
+Starting with logger in React: https://www.meticulous.ai/blog/getting-started-with-react-logging

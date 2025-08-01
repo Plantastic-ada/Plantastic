@@ -8,13 +8,14 @@ import { mockUser } from "./mockUser";
 let sessionToken: string | null = null;
 
 export const handlers = [
+  
   // Mocks login with email or password
   http.post<never, LoginFormData>("/api/auth/login", async ({ request }) => {
     const body = await request.json();
     const result = loginSchema.safeParse(body);
 
-    console.debug("🧪 Body reçu:", body);
-    console.debug("✅ Zod result:", result);
+    // console.debug("🧪 Body reçu:", body);
+    // console.debug("✅ Zod result:", result);
 
     if (!result.success) {
       return HttpResponse.json({ message: "Invalid input" }, { status: 400 });
@@ -55,6 +56,7 @@ export const handlers = [
     );
   }),
 
+
   // Mocks sign up
   http.post<never, SignUpFormData>("/api/auth/signup", async ({ request }) => {
     const authToken = request.headers.get("Authorization");
@@ -80,10 +82,9 @@ export const handlers = [
     return HttpResponse.json([newUser], { status: 201 });
   }),
 
-  // Mock JWT session with Http Only
-  http.get("/api/auth/me", () => {
-    // const authHeader = request.headers.get("Authorization");
 
+  // Mocks JWT session with Http Only
+  http.get("/api/auth/me", () => {
     if (sessionToken === "faketoken123") {
       return HttpResponse.json(
         {
@@ -101,6 +102,7 @@ export const handlers = [
     }
     return HttpResponse.json({ message: "Invalid token" }, { status: 401 });
   }),
+
 
   // Mocks logout
   http.post("/api/auth/logout", () => {

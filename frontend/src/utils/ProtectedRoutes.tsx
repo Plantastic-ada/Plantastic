@@ -8,22 +8,22 @@ const ProtectedRoutes = () => {
 
   useEffect(() => {
     const verifyToken = async () => {
-        // CHECKS IF TOKEN IN LOCAL STORAGE, TO REMOVE LATER
+// CHECKS IF TOKEN IN LOCAL STORAGE, FUNCTION TO REMOVE LATER
       if (localStorage.getItem("authToken")) {
         console.warn(
           "⚠️ TOKEN STILL PRESENT IN LOCAL STORAGE !"
         );
         localStorage.removeItem("authToken");
       }
+
       try {
         const response = await fetch("/api/auth/me", {
           method: "GET",
-          credentials: "include",
+          credentials: "include", //check for token is in HttpOnly cookie
         });
         if (!response.ok) {
           navigate("/login", { replace: true });
           return;
-          //   throw new Error("Invalid token");
         }
       } catch (error) {
         console.error("Token verification failed: ", error);

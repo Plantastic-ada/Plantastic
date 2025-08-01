@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { worker } from './mocks/browser'; // Ton fichier MSW
+import { worker } from './mocks/browser'; 
 import { BrowserRouter } from 'react-router-dom';
 
 async function prepare() {
   if (import.meta.env.DEV) {
-    // Démarre MSW en mode dev
+    // Starts MSW in dev mode
     await worker.start();
   }
 

@@ -1,4 +1,4 @@
-import React, { useState, type FormEvent} from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -7,6 +7,7 @@ import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
 
 
 export function Login() {
+  // Set up states and routing for connection
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const nav = useNavigate();
@@ -34,8 +35,11 @@ export function Login() {
         body: JSON.stringify(data),
       });
 
+      // Home Navigation
       if (response.ok) {
         nav("/home", { replace: true });
+
+      // Error handling
       } else {
         const { message } = await response.json();
         setError(message || "Invalid pseudo or password");
@@ -49,6 +53,7 @@ export function Login() {
     }
   };
 
+  // LOGIN FORM
   return (
     <div>
       <h1>Login</h1>
@@ -57,6 +62,7 @@ export function Login() {
         <input
           type="text"
           placeholder="Enter pseudo or email"
+          // ... is used for collecting arguments or copy/fuse objects or arrays => here: pseudoOrEmail
           {...register("pseudoOrEmail")} 
           required
         />
