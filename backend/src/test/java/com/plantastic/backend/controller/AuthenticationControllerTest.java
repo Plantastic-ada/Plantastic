@@ -1,95 +1,77 @@
 package com.plantastic.backend.controller;
 
-import com.plantastic.backend.dto.auth.LoginRequest;
-import com.plantastic.backend.dto.auth.LoginResponse;
+import com.plantastic.backend.models.entity.User;
+import com.plantastic.backend.models.types.NotificationsPreferences;
+import com.plantastic.backend.models.types.UserRole;
 import com.plantastic.backend.repository.UserRepository;
-import com.plantastic.backend.security.JwtUtil;
-import com.plantastic.backend.service.UserDetailsImplService;
-import com.plantastic.backend.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
 class AuthenticationControllerTest {
 
-    @Mock
-    private AuthenticationManager authenticationManager;
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Mock
-    private UserDetailsImplService userDetailsService;
-
-    @Mock
-    private JwtUtil jwtUtil;
-
-    @Mock
+    @Autowired
     private UserRepository userRepository;
 
-    @Mock
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @InjectMocks
-    private AuthenticationController authenticationController;
+    @BeforeEach
+    void setup() {
+        userRepository.deleteAll();
+        userRepository.flush();
 
-    @Mock
-    private UserService userService;
-
-    @Test
-    void shouldReturnJwtWhenCredentialsAreValid() {
-        //Arrange
-        LoginRequest loginRequest = new LoginRequest("admin", "admin");
-
-        Authentication authentication = mock(Authentication.class);
-        when(authentication.getName()).thenReturn("admin");
-        when(authenticationManager.authenticate(any())).thenReturn(authentication);
-        when(jwtUtil.generateToken("admin")).thenReturn("mocked-jwt-token");
-
-        // Act
-        ResponseEntity<LoginResponse> response = authenticationController.createLoginResponse(loginRequest);
-
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        LoginResponse body = response.getBody();
-        assertNotNull(body);
-        assertTrue(body.isSuccess());
-        assertEquals("mocked-jwt-token", body.getJwt());
-
-        verify(userService).updateLastLogin("admin");
-
-        verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));
+        // Crée un utilisateur test avec password encodé
+        User user = new User();
+        user.setUsername("toto");
+        user.setEmail("toto@example.com");
+        user.setPassword(passwordEncoder.encode("secret"));
+        user.setRole(UserRole.USER);
+        user.setNotificationsPreferences(NotificationsPreferences.STANDARD);
+        userRepository.save(user);
     }
 
     @Test
-    void shouldReturnUnauthorizedWhenCredentialsAreInvalid() {
-        // Arrange
-        LoginRequest loginRequest = new LoginRequest("admin", "wrongpassword");
+    void testLoginWithUsername() throws Exception {
+        mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("username", "toto")
+                        .param("password", "secret"))
+                .andExpect(status().isOk());
+//                .andExpect(cookie().exists("JSESSIONID"));
+    }
 
-        when(authenticationManager.authenticate(any()))
-                .thenThrow(new BadCredentialsException("Invalid credentials"));
+    @Test
+    void testLoginWithEmail() throws Exception {
+        mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("username", "toto@example.com")  // ici on passe l'email dans le champ username
+                        .param("password", "secret"))
+                .andExpect(status().isOk());
+//                .andExpect(cookie().exists("JSESSIONID"));
+    }
 
-        //Act
-        ResponseEntity<LoginResponse> response = authenticationController.createLoginResponse(loginRequest);
-
-        // Assert
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-
-        LoginResponse body = response.getBody();
-        assertNotNull(body);
-        assertFalse(body.isSuccess());
-        assertTrue(body.getMessage().contains("Bad Credentials"));
+    @Test
+    void testLoginFail() throws Exception {
+        mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("username", "toto")
+                        .param("password", "wrongpassword"))
+                .andExpect(status().isUnauthorized());
     }
 }

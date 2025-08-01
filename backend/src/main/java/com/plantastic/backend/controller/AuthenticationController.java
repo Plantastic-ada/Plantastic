@@ -35,33 +35,6 @@ public class AuthenticationController {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
-    /**
-     * Method to authenticate a user
-     *
-     * @param loginRequest : contains the information of the user who wants to connect
-     * @return authResponse
-     * @throws BadCredentialsException : inform us that those credentials are wrong or not saved in db
-     */
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> createLoginResponse(@RequestBody LoginRequest loginRequest) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsernameOrEmail(),
-                            loginRequest.getPassword()
-                    )
-            );
-
-            userService.updateLastLogin(loginRequest.getUsernameOrEmail());
-
-            String jwt = jwtUtil.generateToken(authentication.getName());
-            return ResponseEntity.ok(LoginResponse.success(jwt));
-
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(LoginResponse.failure("Bad Credentials : " + e));
-        }
-    }
-
     @PostMapping("/register")
     public ResponseEntity<String> createRegisterResponse(@RequestBody RegisterRequest registerRequest) {
         String emailToCheck = registerRequest.getEmail();

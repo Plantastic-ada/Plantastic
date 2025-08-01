@@ -47,7 +47,7 @@ class UserServiceTest {
     @Test
     void testFindUserByUsernameOrEmailWithUsername() {
         //Arrange
-        String username = "toto";
+        String username = "known user";
         User expectedUser = new User();
         expectedUser.setUsername(username);
         Mockito.when(userRepository.findByUsername(username))
@@ -65,7 +65,8 @@ class UserServiceTest {
 
     @Test
     void testFindUserByUsernameOrEmailWithAWrongUser() {
-        String username = "unknown toto";
+        //Arrange
+        String username = "unknown user";
         User expectedUser = new User();
         expectedUser.setUsername(username);
         Mockito.when(userRepository.findByUsername(username))

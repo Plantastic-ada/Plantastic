@@ -6,7 +6,9 @@ import com.plantastic.backend.models.types.NotificationsPreferences;
 import com.plantastic.backend.models.types.UserRole;
 import com.plantastic.backend.repository.UserRepository;
 import com.plantastic.backend.util.UserUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -42,7 +45,6 @@ public class UserService {
     }
 
     public void createUser(RegisterRequest registerRequest) {
-
         if (UserUtil.isValidEmail(registerRequest.getEmail())) {
             User user = new User();
             user.setEmail(registerRequest.getEmail());
@@ -64,6 +66,12 @@ public class UserService {
 
     public boolean usernameExists(String username) {
         return userRepository.findByUsername(username).isPresent();
+    }
+
+    public void deleteUserById(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User " + userId + " not found"));
+        userRepository.delete(user);
     }
 
 }
