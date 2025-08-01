@@ -9,6 +9,7 @@ export const sanitize = (value: string): string =>
 type safeUser = Omit<User, "password">
 
 export function sanitizeUser (user: User): safeUser {
-  const { password: _, ...safeUser } = user;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password: _password, ...safeUser } = user;
   return safeUser;
 };
