@@ -83,7 +83,7 @@ export const handlers = [
   }),
 
 
-  // Mocks JWT session with Http Only
+  // Mocks token session with Http Only
   http.get("/api/auth/me", () => {
     if (sessionToken === "faketoken123") {
       return HttpResponse.json(

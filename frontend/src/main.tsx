@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { worker } from './mocks/browser'; 
 import { BrowserRouter } from 'react-router-dom';
+import './index.css';
 
 async function prepare() {
   if (import.meta.env.DEV) {
