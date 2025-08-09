@@ -20,7 +20,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @DeleteMapping("/me")
+    @DeleteMapping("/delete-me")
     public ResponseEntity<String> deleteCurrentUser(@AuthenticationPrincipal CustomUserDetails user) {
         log.debug("Here is the user : {}", user);
         Long userId = user.getId();

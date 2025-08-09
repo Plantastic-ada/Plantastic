@@ -26,10 +26,10 @@ public class JwtUtil {
 
     public JwtUtil(@Value("${jwt.secret}") String secretKeyString,@Value("${jwt.expirationMs}") long expirationMs) {
         if (secretKeyString == null || secretKeyString.isEmpty()) {
-            throw new IllegalArgumentException("La clé JWT ne peut pas être vide");
+            throw new IllegalArgumentException("JWT key can't be empty");
         }
         if (expirationMs <= 0) {
-            throw new IllegalArgumentException("La clé JWT ne peut pas être vide");
+            throw new IllegalArgumentException("JWT key can't be empty");
         }
         this.secretKeyString = secretKeyString;
         this.expirationMs = expirationMs;

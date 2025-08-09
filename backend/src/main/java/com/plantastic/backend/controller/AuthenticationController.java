@@ -37,6 +37,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<String> createRegisterResponse(@RequestBody RegisterRequest registerRequest) {
+        //Verify that the email doesn't exist in db and is valid
         String emailToCheck = registerRequest.getEmail();
         if (userService.emailExists(emailToCheck)) {
             log.warn("Email is already used: {}", emailToCheck);
@@ -48,6 +49,7 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format: " + emailToCheck);
         }
 
+        //Verify that username doesn't exist in db
         String usernameToCheck = registerRequest.getUsername();
         if (userService.usernameExists(usernameToCheck)) {
             log.warn("Username is already used: {}", usernameToCheck);

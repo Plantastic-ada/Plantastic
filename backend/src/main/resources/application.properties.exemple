@@ -17,5 +17,5 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
 api.key=your_api_key
 jwt.secret=${JWT_SECRET_BACK}
-jwt.expirationMs=3600
+jwt.expirationMs=30000
 

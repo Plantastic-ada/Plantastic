@@ -23,28 +23,30 @@ public class SecurityConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, Environment env) throws Exception {
 
-        http
-                .csrf(AbstractHttpConfigurer::disable) // ou configure un token CSRF plus tard
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/auth/login", "/auth/register").permitAll()
-                        .anyRequest().authenticated()
+        http.csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/", "/auth/login", "/auth/register").permitAll()
+                    .anyRequest().authenticated()
                 );
-            http.formLogin(form -> form
-                    .loginProcessingUrl("/auth/login")
-                    .successHandler((request, response, authentication) -> {
-                        request.getSession();
-                        response.setStatus(200);
-                        response.flushBuffer();
-                    })
-                    .failureHandler((request, response, exception) -> response.setStatus(401))
-            );
+
+        //Login with cookie session
+        http.formLogin(form -> form
+                .loginProcessingUrl("/auth/login")
+                .successHandler((request, response, authentication) -> {
+                    request.getSession();
+                    response.setStatus(200);
+                    response.flushBuffer();
+                })
+                .failureHandler((request, response, exception) -> response.setStatus(401))
+        );
+        //Logout with cookie session : delete cookie on logout
         http.logout(logout -> logout
                 .logoutUrl("/auth/logout")
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessHandler((request, response, authentication) -> response.setStatus(200))
         );
         http.sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // par défaut
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
         );
 
         return http.build();
