@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
-import { clsx } from "clsx";
-import AuthCard from "./AuthCard";
-import SubmitButton from "./SubmitButton";
-import InputField from "./InputField";
-import FooterLink from "./FooterCard";
+// import { clsx } from "clsx";
+// import AuthCard from "./AuthCard";
+// import SubmitButton from "./SubmitButton";
+// import InputField from "./InputField";
+// import FooterLink from "./FooterCard";
 
 export function Login() {
   // Set up states and routing for connection
