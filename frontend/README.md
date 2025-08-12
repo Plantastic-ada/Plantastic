@@ -81,3 +81,6 @@ DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathM
 React Router, Vite and JWT Authentication : https://medium.com/@asbedb/react-router-vite-and-jwt-authentication-9abf049c3f32
 
 Starting with logger in React: https://www.meticulous.ai/blog/getting-started-with-react-logging
+
+#**TBD**
+8/07: Implement style components (defined but not used)
