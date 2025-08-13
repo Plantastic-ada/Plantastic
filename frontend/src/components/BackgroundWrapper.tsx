@@ -1,21 +1,21 @@
-import clsx from "clsx";
+import bgimg from "../assets/img/bg-img2.jpg"
 
-type BackgroundWrapperProps = {
-  children: React.ReactNode;
-  className?: string;
-};
-
-export default function BackgroundWrapper({ children, className }: BackgroundWrapperProps) {
+export default function BackgroundWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className={clsx(
-        "w-full h-screen flex",
-        "bg-[url('./assets/img/bg-img2.jpg')] bg-cover bg-center",
-        "bg-[#4F674F] bg-opacity-90",
-        className
-      )}
-    >
-      {children}
+    <div className="relative w-full h-screen flex">
+      {/* Image de fond */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${ bgimg })` }}
+      />
+
+      {/* Overlay couleur avec transparence */}
+      <div className="absolute inset-0 bg-[#253025] opacity-90" />
+
+      {/* Contenu au-dessus */}
+      <div className="relative z-10 flex w-full">
+        {children}
+      </div>
     </div>
   );
 }

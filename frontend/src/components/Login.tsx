@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
 import logo from "../assets/img/plantastic_logo2.png";
-import { clsx } from "clsx";
 import AuthCard from "./AuthCard";
 import SubmitButton from "./SubmitButton";
 import InputField from "./InputField";
@@ -60,15 +59,6 @@ export function Login() {
 
   return (
     <BackgroundWrapper>
-    <div
-      className={clsx(
-        "w-full h-screen flex flex-col lg:flex-row",
-        "bg-[url('./assets/img/bg-img2.jpg')] bg-cover bg-center relative"
-      )}
-    >
-      {/* Global overlay */}
-      <div className="absolute inset-0 bg-[#253025]/90"></div>
-
       {/* Content */}
       <div className="relative z-10 flex flex-col lg:flex-row flex-1">
         {/*  Logo & description  */}
@@ -133,7 +123,7 @@ export function Login() {
           </AuthCard>
         </div>
       </div>
-    </div>
+    {/* </div> */}
     </BackgroundWrapper>
   );
 
