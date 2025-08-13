@@ -3,9 +3,17 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
 import { signUpSchema, type SignUpFormData } from "../schemas/signUpSchema";
+//STYLES COMPONENTS
+import AuthCard from "./AuthCard";
+import SubmitButton from "./SubmitButton";
+import InputField from "./InputField";
+import FooterLink from "./FooterCard";
+import Description from "./Description";
+import BackgroundWrapper from "./BackgroundWrapper";
 
 const SignUp: React.FC = () => {
   const [apiMessage, setApiMessage] = useState<React.ReactNode>(null);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -45,38 +53,117 @@ const SignUp: React.FC = () => {
         </>
       );
       reset();
-    } catch (error: unknown) {
+    } catch (error) {
       console.error(error);
       setApiMessage("An error occured.");
+    } finally {
+      setLoading(false);
     }
   };
 
   // SIGN UP FORM
   return (
-    <>
-      <h1>Sign up</h1>
-      
-      <form className="App" onSubmit={handleSubmit(onSubmit)} noValidate > {/*disables the HTML validation, done with zod*/}
-        <input type="text" placeholder="Username" {...register("pseudo")} />
-        {errors.pseudo && <p className="error">{errors.pseudo.message} </p>}
+    <BackgroundWrapper>
+      {/* Content */}
+      <div className="relative z-10 flex flex-col lg:flex-row flex-1">
+        {/*  Logo & description  */}
+        <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-6">
+          <Description
+            descriptionTextJSX={
+              <>
+                🌿 <b>Plantastic</b> – The app that pampers your plants! 🌱
+                <br />
+                No more forgetting or overdoing it!
+                <br />
+                Receive <b>smart reminders</b>, tailored <b>advice</b>, and{" "}
+                <b>fun facts</b>.
+                <br />
+                🍀 With <b>Plantastic</b>, grow your <b>indoor garden</b> 🍀
+              </>
+            }
+          />
+        </div>
 
-        <input type="email" placeholder="Email" {...register("email")} />
-        {errors.email && <p className="error">{errors.email.message} </p>}
+        {/* Form */}
+        <div className="w-full lg:w-1/2 flex flex-col items-center justify-center px-4 py-6">
+          <AuthCard title="Sign up">
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+              <InputField
+                label="Username"
+                placeholder="Enter your username"
+                register={register("pseudo", {
+                  required: "username is required",
+                })}
+                error={errors.pseudo}
+              />
+              <InputField
+                label="Email"
+                placeholder="Enter your email"
+                register={register("email", {
+                  required: "email is required",
+                })}
+                error={errors.email}
+              />
+              <InputField
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                register={register("password", {
+                  required: "password is required",
+                })}
+                error={errors.password}
+              />
+              <InputField
+                label="Confirm password"
+                type="password"
+                placeholder="Please confirm your password"
+                register={register("confirmPassword", {
+                  required: "Please confirm your password",
+                })}
+                error={errors.confirmPassword}
+              />
+              <SubmitButton loading={loading} text="Create an account" />
 
-        <input
-          type="password"
-          placeholder="password"
-          {...register("password")}
-        />
-        {errors.password && <p className="error">{errors.password.message} </p>}
+              <FooterLink
+                text={
+                  <>
+                    Already have an account?
+                    <br />
+                  </>
+                }
+                linkText="Log in here"
+                to="/login"
+              />
+            </form>
+            {apiMessage && <p className="text-green-500 mt-2">{apiMessage}</p>}
+          </AuthCard>
+        </div>
+      </div>
+    </BackgroundWrapper>
+    // <>
+    //   <h1>Sign up</h1>
 
-        <input type="submit" value="Create an account" />
-        <p>
-          Already have an account? You can <Link to="/login">log in here</Link>
-        </p>
-      </form>
-      {apiMessage && <p className="message">{apiMessage}</p>}
-    </>
+    //   <form className="App" onSubmit={handleSubmit(onSubmit)} noValidate > {/*disables the HTML validation, done with zod*/}
+    //     <input type="text" placeholder="Username" {...register("pseudo")} />
+    //     {errors.pseudo && <p className="error">{errors.pseudo.message} </p>}
+
+    //     <input type="email" placeholder="Email" {...register("email")} />
+    //     {errors.email && <p className="error">{errors.email.message} </p>}
+
+    //     <input
+    //       type="password"
+    //       placeholder="password"
+    //       {...register("password")}
+    //     />
+    //     {errors.password && <p className="error">{errors.password.message} </p>}
+
+    //     <input type="submit" value="Create an account" />
+    //     <p>
+    //       Already have an account? You can <Link to="/login">log in here</Link>
+    //     </p>
+    //   </form>
+    //   {apiMessage && <p className="message">{apiMessage}</p>}
+    // </>
   );
 };
 

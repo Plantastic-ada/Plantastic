@@ -1,22 +1,24 @@
 import type { ReactNode } from "react";
-import bgimg from "@/assets/img/bg-img2.jpg"
+import bgimg from "@/assets/img/bg-img2.jpg";
 
-export default function BackgroundWrapper({ children }: { children: ReactNode }) {
+export default function BackgroundWrapper({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <div className="relative w-full h-screen flex">
-      {/* Image de fond */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${ bgimg })` }}
+        className="absolute inset-0 w-full h-full"
+        style={{
+          backgroundImage: `linear-gradient(rgba(37, 48, 37, 0.9), rgba(37, 48, 37, 0.9)), url(${bgimg})`,
+          backgroundColor: "#253025",
+          backgroundRepeat: "repeat, repeat",
+          backgroundPosition: "center, center ",
+          backgroundSize: "auto, auto",
+        }}
       />
-
-      {/* Overlay couleur avec transparence */}
-      <div className="absolute inset-0 bg-[#253025] opacity-90" />
-
-      {/* Contenu au-dessus */}
-      <div className="relative z-10 flex w-full">
-        {children}
-      </div>
+      <div className="relative z-10 flex w-full">{children}</div>
     </div>
   );
 }
