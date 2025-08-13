@@ -3,7 +3,9 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
+//IMAGES
 import logo from "../assets/img/plantastic_logo2.png";
+//STYLES COMPONENTS
 import AuthCard from "./AuthCard";
 import SubmitButton from "./SubmitButton";
 import InputField from "./InputField";
