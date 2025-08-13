@@ -140,30 +140,6 @@ const SignUp: React.FC = () => {
         </div>
       </div>
     </BackgroundWrapper>
-    // <>
-    //   <h1>Sign up</h1>
-
-    //   <form className="App" onSubmit={handleSubmit(onSubmit)} noValidate > {/*disables the HTML validation, done with zod*/}
-    //     <input type="text" placeholder="Username" {...register("pseudo")} />
-    //     {errors.pseudo && <p className="error">{errors.pseudo.message} </p>}
-
-    //     <input type="email" placeholder="Email" {...register("email")} />
-    //     {errors.email && <p className="error">{errors.email.message} </p>}
-
-    //     <input
-    //       type="password"
-    //       placeholder="password"
-    //       {...register("password")}
-    //     />
-    //     {errors.password && <p className="error">{errors.password.message} </p>}
-
-    //     <input type="submit" value="Create an account" />
-    //     <p>
-    //       Already have an account? You can <Link to="/login">log in here</Link>
-    //     </p>
-    //   </form>
-    //   {apiMessage && <p className="message">{apiMessage}</p>}
-    // </>
   );
 };
 

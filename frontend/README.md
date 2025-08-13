@@ -83,4 +83,10 @@ React Router, Vite and JWT Authentication : https://medium.com/@asbedb/react-rou
 Starting with logger in React: https://www.meticulous.ai/blog/getting-started-with-react-logging
 
 #**TBD**
-8/07: Implement style components (defined but not used)
+~~8/07: Implement style components (defined but not used)~~
+
+include ChakraUI= component system for building products with speed
+https://chakra-ui.com/
+
+include react-aria= Over 50 components with built-in behavior, adaptive interactions, top-tier accessibility, and internationalization out of the box, ready for your styles.
+https://react-spectrum.adobe.com/react-aria/index.html

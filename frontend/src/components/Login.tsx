@@ -122,7 +122,6 @@ export function Login() {
           </AuthCard>
         </div>
       </div>
-    {/* </div> */}
     </BackgroundWrapper>
   );
 }
