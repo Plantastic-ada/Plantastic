@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import logo from "@/assets/img/plantastic_logo2.png";
+import logo from "@/assets/img/plantastic_logo.png";
 
 type DescriptionProps = {
   descriptionTextJSX: ReactNode;
