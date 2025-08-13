@@ -1,6 +1,7 @@
+import type { ReactNode } from "react";
 import bgimg from "../assets/img/bg-img2.jpg"
 
-export default function BackgroundWrapper({ children }: { children: React.ReactNode }) {
+export default function BackgroundWrapper({ children }: { children: ReactNode }) {
   return (
     <div className="relative w-full h-screen flex">
       {/* Image de fond */}

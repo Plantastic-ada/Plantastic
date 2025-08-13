@@ -1,6 +1,9 @@
+import type { ReactNode } from "react";
+
+
 type DescriptionProps = {
   logo: string;
-  descriptionTextJSX: React.ReactNode;
+  descriptionTextJSX: ReactNode;
 };
 
 export default function Description({

@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 type FooterLinkProps = {
-    text: React.ReactNode;
+    text: ReactNode;
     linkText: string;
     to: string;
 }
