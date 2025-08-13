@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import bgimg from "../assets/img/bg-img2.jpg"
+import bgimg from "@/assets/img/bg-img2.jpg"
 
 export default function BackgroundWrapper({ children }: { children: ReactNode }) {
   return (
