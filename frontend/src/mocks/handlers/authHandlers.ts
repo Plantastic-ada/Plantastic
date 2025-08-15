@@ -7,7 +7,7 @@ import { sanitizeUser } from "../../utils/sanitize";
 import { z } from "zod";
 
 
-let sessionToken: string | null = null;
+// let sessionToken: string | null = null;
 
 export const loginHandlers = [http.post("/api/auth/login", async ({ request }) => {
     const body = await request.json();
@@ -27,7 +27,7 @@ export const loginHandlers = [http.post("/api/auth/login", async ({ request }) =
         (isEmail && pseudoOrEmail === mockUser.email));
 
     if (isValidLogin) {
-      // sessionToken = "faketoken123"
+      const sessionToken = "faketoken123"
       return HttpResponse.json(
         sanitizeUser({
           id: 1,
