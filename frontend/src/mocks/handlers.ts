@@ -1,9 +1,13 @@
-import { loginHandlers, logoutHandlers, signupHandlers } from "./handlers/authHandlers";
-import { tokenHandlers } from "./handlers/tokenHandlers";
+import {
+  loginHandlers,
+  logoutHandlers,
+  signupHandlers,
+  authStatusHandlers,
+} from "./handlers/authHandlers";
 
 export const handlers = [
   ...loginHandlers,
-  ...logoutHandlers, 
+  ...logoutHandlers,
   ...signupHandlers,
-  ...tokenHandlers,
-]
+  ...authStatusHandlers,
+];
