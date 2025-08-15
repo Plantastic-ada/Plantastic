@@ -51,7 +51,7 @@ export const loginHandlers = [http.post("/api/auth/login", async ({ request }) =
     );
   })];
 
-  export const signupHandlers = [http.post("/api/auth/signup", async ({ request }) => {
+export const signupHandlers = [http.post("/api/auth/signup", async ({ request }) => {
     const authToken = request.headers.get("Authorization");
     if (!authToken)
       return HttpResponse.json({ msg: "Not Authorized" }, { status: 401 });
@@ -75,7 +75,7 @@ export const loginHandlers = [http.post("/api/auth/login", async ({ request }) =
     return HttpResponse.json([newUser], { status: 201 });
   })];
 
-  export const logoutHandlers = [http.post("/api/auth/logout", () => {
+export const logoutHandlers = [http.post("/api/auth/logout", () => {
     return HttpResponse.json(
       { message: "Logged out" },
       {
@@ -87,6 +87,3 @@ export const loginHandlers = [http.post("/api/auth/login", async ({ request }) =
       }
     );
   })];
-
-
-
