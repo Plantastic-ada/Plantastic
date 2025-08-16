@@ -36,7 +36,7 @@ public class PlantImportService {
         String listUrl = "https://perenual.com/api/v2/species-list?key=" + apiKey + "&indoor=1&page=" + page;
         PlantListApiResponse response = restTemplate.getForObject(listUrl, PlantListApiResponse.class);
 
-        log.debug(apiKey);
+        log.info(apiKey);
 
         if (response == null || response.getData() == null || response.getData().isEmpty()) {
             log.warn("❌ There is no more plant to get");
@@ -48,13 +48,13 @@ public class PlantImportService {
 
         for (PlantApiSummary summary : plantSummaries) {
 
-            importOnePlantFromApi(summary.getApiId());
-
             try {
                 Thread.sleep(5000);
-            } catch (InterruptedException e) {
+                importOnePlantFromApi(summary.getApiId());
+            } catch (Exception e) {
                 Thread.currentThread().interrupt();
-                log.error("Pause interrupted", e);
+                log.error("Pause interrupted. Error : {}",e.getMessage(), e);
+                break;
             }
         }
         log.info("✅ Import done for{} plants.", plantSummaries.size());
@@ -84,6 +84,13 @@ public class PlantImportService {
                 return Optional.empty();
             }
 
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                log.error("Pause interrupted", e);
+            }
+
             // Care guide for a specific plant
             CareGuideApiResponse careGuide = restTemplate.getForObject(
                     "https://perenual.com/api/species-care-guide-list?species_id=" + apiId + "&key=" + apiKey,
@@ -102,7 +109,7 @@ public class PlantImportService {
             return Optional.of(plant);
         } catch (Exception e) {
             log.error("❌ Error importing plant with apiId {} : {}", apiId, e.getMessage(), e);
-            return Optional.empty();
+            throw e;
         }
     }
 
