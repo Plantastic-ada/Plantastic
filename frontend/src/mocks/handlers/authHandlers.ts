@@ -101,12 +101,8 @@ export const signupHandlers = [
       ...parsed,
     };
 
-    // CRÉER ET CONNECTER automatiquement après signup
     const newToken = generateToken();
     tokenStorage.setToken(newToken);
-    console.log("Signup réussi - Token créé:", newToken);
-
-    console.debug("User créé et connecté :", newUser);
 
     return HttpResponse.json([newUser], { status: 201 });
   })
