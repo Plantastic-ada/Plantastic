@@ -4,12 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
 import { signUpSchema, type SignUpFormData } from "../schemas/signUpSchema";
 //STYLES COMPONENTS
-import AuthCard from "./AuthCard";
-import SubmitButton from "./SubmitButton";
-import InputField from "./InputField";
-import FooterLink from "./FooterCard";
-import Description from "./Description";
-import BackgroundWrapper from "./BackgroundWrapper";
+import AuthCard from "../components/AuthCard";
+import SubmitButton from "../components/SubmitButton";
+import InputField from "../components/InputField";
+import FooterLink from "../components/FooterCard";
+import Description from "../components/Description";
+import BackgroundWrapper from "../components/BackgroundWrapper";
 
 const SignUp: React.FC = () => {
   const [apiMessage, setApiMessage] = useState<React.ReactNode>(null);

@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
 //STYLES COMPONENTS
-import AuthCard from "./AuthCard";
-import SubmitButton from "./SubmitButton";
-import InputField from "./InputField";
-import FooterLink from "./FooterCard";
-import Description from "./Description";
-import BackgroundWrapper from "./BackgroundWrapper";
+import AuthCard from "../components/AuthCard";
+import SubmitButton from "../components/SubmitButton";
+import InputField from "../components/InputField";
+import FooterLink from "../components/FooterCard";
+import Description from "../components/Description";
+import BackgroundWrapper from "../components/BackgroundWrapper";
 
 export function Login() {
   // Set up states and routing for connection
