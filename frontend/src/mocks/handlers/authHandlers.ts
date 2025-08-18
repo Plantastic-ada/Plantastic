@@ -9,7 +9,10 @@ import { sanitizeUser } from "../../utils/sanitize";
 import { z } from "zod";
 
 const generateToken = () => {
-  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
 };
 
 // Shared storage to allow MSW to work with a generated token
@@ -35,14 +38,14 @@ const tokenStorage = {
       return this.token;
     }
     return null;
-  }
+  },
 };
 
 export const loginHandlers = [
   http.post("/api/auth/login", async ({ request }) => {
     const body = await request.json();
     const result = loginSchema.safeParse(body);
-    
+
     if (!result.success) {
       return HttpResponse.json({ message: "Invalid input" }, { status: 400 });
     }
@@ -58,7 +61,7 @@ export const loginHandlers = [
     if (isValidLogin) {
       const newToken = generateToken();
       tokenStorage.setToken(newToken);
-      
+
       return HttpResponse.json(
         sanitizeUser({
           id: 1,
@@ -79,19 +82,14 @@ export const loginHandlers = [
       { message: "Invalid pseudo or password" },
       { status: 401 }
     );
-  })
+  }),
 ];
 
 export const signupHandlers = [
   http.post("/api/auth/signup", async ({ request }) => {
-    const currentToken = tokenStorage.getToken();
-    
-    if (!currentToken) {
-      return HttpResponse.json({ msg: "Not Authorized" }, { status: 401 });
-    }
-
     const requestBody = await request.json();
     const result = signUpSchema.safeParse(requestBody);
+    console.debug("body: ", result);
 
     if (!result.success) {
       return HttpResponse.json({ error: "Invalid input" }, { status: 400 });
@@ -103,6 +101,12 @@ export const signupHandlers = [
       ...parsed,
     };
 
+    // CRÉER ET CONNECTER automatiquement après signup
+    const newToken = generateToken();
+    tokenStorage.setToken(newToken);
+    console.log("Signup réussi - Token créé:", newToken);
+
+    console.debug("User créé et connecté :", newUser);
 
     return HttpResponse.json([newUser], { status: 201 });
   })
@@ -111,7 +115,7 @@ export const signupHandlers = [
 export const logoutHandlers = [
   http.post("/api/auth/logout", () => {
     tokenStorage.setToken(null);
-    
+
     return HttpResponse.json(
       { message: "Logged out" },
       {
@@ -121,15 +125,18 @@ export const logoutHandlers = [
         },
       }
     );
-  })
+  }),
 ];
 
 export const authStatusHandlers = [
   http.get("/api/auth/me", () => {
     const currentToken = tokenStorage.getToken();
-    
+
     if (!currentToken) {
-      return HttpResponse.json({ message: "Not authenticated" }, { status: 401 });
+      return HttpResponse.json(
+        { message: "Not authenticated" },
+        { status: 401 }
+      );
     }
 
     return HttpResponse.json(
@@ -141,5 +148,5 @@ export const authStatusHandlers = [
       }),
       { status: 200 }
     );
-  })
+  }),
 ];
