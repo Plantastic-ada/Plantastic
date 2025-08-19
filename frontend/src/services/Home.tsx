@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import BackgroundWrapper from "../components/BackgroundWrapper";
 
 function Home() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function Home() {
     }
   };
   return (
+    <BackgroundWrapper>
     <div>
       <div>
         <h1>Welcome plant lover 🌱💚</h1>
@@ -27,6 +29,7 @@ function Home() {
         </button>
       </div>
     </div>
+    </BackgroundWrapper>
   );
 }
 

@@ -20,6 +20,8 @@
     "clsx": "^2.1.1",
     "dompurify": "^3.2.6",
     "dotenv": "^17.2.0",
+    "flowbite": "^3.1.2",
+    "flowbite-react": "^0.12.7",
     "jose": "^6.0.12",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
