@@ -95,3 +95,10 @@ https://chakra-ui.com/
 
 include react-aria= Over 50 components with built-in behavior, adaptive interactions, top-tier accessibility, and internationalization out of the box, ready for your styles.
 https://react-spectrum.adobe.com/react-aria/index.html
+
+
+29/08:
+- HOME PAGE
+- TESTS AUTH
+- REDIRECTION WHEN REGISTER TO LOGIN PAGE
+- IMPLEMENT PWA
