@@ -1,8 +1,11 @@
 package com.plantastic.backend.controller;
 
-import com.plantastic.backend.security.CustomUserDetails;
+import com.plantastic.backend.security.user.CustomUserDetails;
 import com.plantastic.backend.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,12 +24,23 @@ public class UserController {
     private final UserService userService;
 
     @DeleteMapping("/delete-me")
-    public ResponseEntity<String> deleteCurrentUser(@AuthenticationPrincipal CustomUserDetails user) {
+    public ResponseEntity<String> deleteCurrentUser(@AuthenticationPrincipal CustomUserDetails user, HttpServletRequest request, HttpServletResponse response) {
         log.debug("Here is the user : {}", user);
         Long userId = user.getId();
         try {
             userService.deleteUserById(userId);
-            log.info("User deleted successfully {}: ", userId);
+            log.info("User deleted successfully (name: {}, id: {})", user.getUsername(), userId);
+
+            if(request.getSession(false) != null) {
+                request.getSession().invalidate();
+            }
+
+            Cookie cookie = new Cookie("JSESSIONID", null);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+
             return ResponseEntity.ok("User deleted successfully");
         } catch (EntityNotFoundException e) {
             log.warn("User with id {} deletion failed: {}", userId, e.getMessage());

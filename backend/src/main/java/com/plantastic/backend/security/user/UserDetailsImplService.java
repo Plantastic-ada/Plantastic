@@ -1,9 +1,8 @@
-package com.plantastic.backend.service;
+package com.plantastic.backend.security.user;
 
 
 import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.repository.UserRepository;
-import com.plantastic.backend.security.CustomUserDetails;
 import com.plantastic.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;

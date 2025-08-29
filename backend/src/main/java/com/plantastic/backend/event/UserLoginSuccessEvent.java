@@ -1,4 +1,4 @@
-package com.plantastic.backend.security;
+package com.plantastic.backend.event;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

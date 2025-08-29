@@ -10,6 +10,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -55,6 +57,12 @@ public class User {
 
     @Column(name = "camera_consent")
     private boolean cameraConsent;
+
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserHome> userHomes = new HashSet<>();
+
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserPlant> userPlants = new HashSet<>();
 
     @PrePersist
     protected void onCreate(){
