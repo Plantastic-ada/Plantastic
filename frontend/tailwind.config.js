@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        montserrat:['"Montserrat"', 'sans-serif'],
+        montserrat:['"Montserrat Alternates"', 'sans-serif'],
         bellota: ['"Bellota"', 'cursive']
       }
     },

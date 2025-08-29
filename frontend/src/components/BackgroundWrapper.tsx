@@ -7,17 +7,20 @@ export default function BackgroundWrapper({
   children: ReactNode;
 }) {
   return (
-    <div className="relative w-full h-screen flex">
+    <div className="relative w-full min-h-screen flex">
       <div
-        className="absolute inset-0 w-full h-full"
+        className="fixed inset-0 w-full h-full"
         style={{
-          backgroundImage: `linear-gradient(rgba(37, 48, 37, 0.9), rgba(37, 48, 37, 0.9)), url(${bgimg})`,
+          backgroundImage: `url(${bgimg})`,
           backgroundColor: "#253025",
-          backgroundRepeat: "repeat, repeat",
-          backgroundPosition: "center, center ",
-          backgroundSize: "auto, auto",
+          backgroundRepeat: "repeat",
+          backgroundSize: "300px 300px",
+          backgroundPosition: "0 0",
+          height: "100vh", 
+          minHeight: "100%", 
         }}
       />
+      <div className="fixed inset-0 bg-[#253025] opacity-90" />
       <div className="relative z-10 flex w-full">{children}</div>
     </div>
   );
