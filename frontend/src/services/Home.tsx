@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import BackgroundWrapper from "../components/BackgroundWrapper";
+import BottomNavBar from "../components/BottomNavBar";
+import BottomNavigation from '@mui/material/BottomNavigation';
 
 function Home() {
   const navigate = useNavigate();
@@ -29,6 +31,7 @@ function Home() {
         </button>
       </div>
     </div>
+    <BottomNavBar></BottomNavBar>
     </BackgroundWrapper>
   );
 }

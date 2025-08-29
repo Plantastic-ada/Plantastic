@@ -77,9 +77,14 @@ npm install zod
 DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG.
 
 
-#**FLOWBITE**
-Start developing with an open-source library of over 600+ UI components, sections, and pages built with the utility classes from Tailwind CSS and designed in Figma.
-https://flowbite.com/docs/components/bottom-navigation/ FOR BOTTOM NAVBAR
+#**MATERIAL UI**
+MUI offers a comprehensive suite of free UI tools to help you ship new features faster.
+(https://mui.com/)
+
+#**REACT ICONS**
+Include popular icons in your React projects easily with react-icons, which utilizes ES6 imports that allows you to include only the icons that your project is using.
+(https://react-icons.github.io/react-icons/)
+
 
 
 #**RESSOURCES**
@@ -96,8 +101,19 @@ https://chakra-ui.com/
 include react-aria= Over 50 components with built-in behavior, adaptive interactions, top-tier accessibility, and internationalization out of the box, ready for your styles.
 https://react-spectrum.adobe.com/react-aria/index.html
 
+29/08 : 
+Implements floating action button for add a plant in the home page.
+Left to do : 
+- Weird div on the left
+- Header
+- Profile
+- Water button
+- plant card & mock ups? 
+- see how to implements shapes
+- explore the accessibility button
 
-29/08:
+
+TODO:
 - HOME PAGE
 - TESTS AUTH
 - REDIRECTION WHEN REGISTER TO LOGIN PAGE
