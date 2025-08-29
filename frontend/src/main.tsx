@@ -4,6 +4,7 @@ import App from './App';
 import { worker } from './mocks/browser'; 
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
+import 'flowbite'
 
 async function prepare() {
   if (import.meta.env.DEV) {

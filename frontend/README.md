@@ -77,6 +77,11 @@ npm install zod
 DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG.
 
 
+#**FLOWBITE**
+Start developing with an open-source library of over 600+ UI components, sections, and pages built with the utility classes from Tailwind CSS and designed in Figma.
+https://flowbite.com/docs/components/bottom-navigation/ FOR BOTTOM NAVBAR
+
+
 #**RESSOURCES**
 React Router, Vite and JWT Authentication : https://medium.com/@asbedb/react-router-vite-and-jwt-authentication-9abf049c3f32
 
