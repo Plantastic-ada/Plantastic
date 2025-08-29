@@ -3,13 +3,12 @@ package com.plantastic.backend.controller;
 
 import com.plantastic.backend.dto.auth.RegisterRequest;
 import com.plantastic.backend.repository.UserRepository;
-import com.plantastic.backend.security.JwtUtil;
-import com.plantastic.backend.service.UserDetailsImplService;
+import com.plantastic.backend.security.config.JwtUtil;
+import com.plantastic.backend.security.user.UserDetailsImplService;
 import com.plantastic.backend.service.UserService;
 import com.plantastic.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

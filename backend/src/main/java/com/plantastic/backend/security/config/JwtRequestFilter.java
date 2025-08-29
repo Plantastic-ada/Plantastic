@@ -1,6 +1,7 @@
-package com.plantastic.backend.security;
+package com.plantastic.backend.security.config;
 
-import com.plantastic.backend.service.UserDetailsImplService;
+import com.plantastic.backend.security.user.CustomUserDetails;
+import com.plantastic.backend.security.user.UserDetailsImplService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

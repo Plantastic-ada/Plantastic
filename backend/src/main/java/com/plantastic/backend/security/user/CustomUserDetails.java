@@ -1,4 +1,4 @@
-package com.plantastic.backend.security;
+package com.plantastic.backend.security.user;
 
 import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.models.types.UserRole;

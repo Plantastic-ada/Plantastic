@@ -5,9 +5,10 @@ import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.models.types.NotificationsPreferences;
 import com.plantastic.backend.models.types.UserRole;
 import com.plantastic.backend.repository.UserRepository;
-import com.plantastic.backend.security.UserLoginSuccessEvent;
+import com.plantastic.backend.event.UserLoginSuccessEvent;
 import com.plantastic.backend.util.UserUtil;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -75,6 +76,7 @@ public class UserService {
         return userRepository.findByUsername(username).isPresent();
     }
 
+    @Transactional
     public void deleteUserById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User " + userId + " not found"));
