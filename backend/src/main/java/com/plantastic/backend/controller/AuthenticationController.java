@@ -1,8 +1,6 @@
 package com.plantastic.backend.controller;
 
 
-import com.plantastic.backend.dto.auth.LoginRequest;
-import com.plantastic.backend.dto.auth.LoginResponse;
 import com.plantastic.backend.dto.auth.RegisterRequest;
 import com.plantastic.backend.repository.UserRepository;
 import com.plantastic.backend.security.JwtUtil;
@@ -11,12 +9,10 @@ import com.plantastic.backend.service.UserService;
 import com.plantastic.backend.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

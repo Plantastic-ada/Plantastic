@@ -5,13 +5,16 @@ import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.models.types.NotificationsPreferences;
 import com.plantastic.backend.models.types.UserRole;
 import com.plantastic.backend.repository.UserRepository;
+import com.plantastic.backend.security.UserLoginSuccessEvent;
 import com.plantastic.backend.util.UserUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -23,9 +26,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @EventListener
+    public void handleUserLoginSuccess(UserLoginSuccessEvent event) {
+        updateLastLogin(event.getUsername());
+    }
+
     /**
      * When a user logs in, we update the last_log_in field in db
-     *
      * @param usernameOrEmail string
      */
     public void updateLastLogin(String usernameOrEmail) {
@@ -35,7 +42,7 @@ public class UserService {
 
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            user.setLastLoginAt(LocalDateTime.now());
+            user.setLastLoginAt(LocalDate.now());
             userRepository.save(user);
         }
     }

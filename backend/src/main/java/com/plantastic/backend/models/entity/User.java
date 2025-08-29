@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -40,7 +41,7 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Column(name = "last_login_at")
-    private LocalDateTime lastLoginAt;
+    private LocalDate lastLoginAt;
 
     @Enumerated(EnumType.STRING)
     @Column (name = "notifications_preferences",nullable = false)
