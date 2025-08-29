@@ -8,7 +8,7 @@ function Home() {
         method:"POST", 
         credentials:"include",
       })
-      // Will delete the token if it'sthe local storage, even if it's not supposed to be
+      // Will delete the token if it's in the local storage, even if it's not supposed to be
       localStorage.removeItem("authToken");
       console.debug("Log out successfull!")
       navigate("/login", { replace: true });
