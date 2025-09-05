@@ -6,7 +6,6 @@ import com.plantastic.backend.initdb.service.PlantImportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -28,14 +27,14 @@ public class PlantImportRunner implements CommandLineRunner {
             log.info("📥 Début de l'import...");
 
             //Penser à incrémenter la page de + 1 à chaque appel. On doit se retrouver avec 30 plantes de plus en BDD à chaque appel
-            importService.importThirtyPlantsFromApi(7);
+//            importService.importThirtyPlantsFromApi(7);
 
 //            importService.importOnePlantFromApi(748);
 
-            //Mettre à jour le chemin du fichier JSON à chaque appel.
-//            String jsonFilePath = "data/backup/backup_bdd_20250708_plants.json";
-//            List<PlantDtoFromJson> plantListFromJson = jsonService.readBackupPlantDbJson(jsonFilePath);
-//            importService.importAllPlantsFromJson(plantListFromJson);
+//            Mettre à jour le chemin du fichier JSON à chaque appel.
+            String jsonFilePath = "data/backup/backup_bdd_20250718_155plants_.json";
+            List<PlantDtoFromJson> plantListFromJson = jsonService.readBackupPlantDbJson(jsonFilePath);
+            importService.importAllPlantsFromJson(plantListFromJson);
         }
     }
 }
