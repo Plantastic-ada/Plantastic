@@ -108,7 +108,7 @@ Left to do :
 - Header
 - Profile
 - Water button
-- plant card & mock ups? 
+- plant card & mocks? 
 - see how to implements shapes
 - explore the accessibility button
 
