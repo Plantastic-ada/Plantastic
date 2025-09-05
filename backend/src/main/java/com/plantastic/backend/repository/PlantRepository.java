@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface PlantRepository extends JpaRepository<Plant, Long> {
     Optional<Plant> findByApiId(int apiId);
 
+    //We override the default request since there is no plant summary in Plant entity
     @Query("SELECT new com.plantastic.backend.dto.plants.PlantSummaryDto(p.id, p.commonName, p.scientificName, p.imageUrl) FROM Plant p")
     List<PlantSummaryDto> findAllPlantsSummaries();
 }

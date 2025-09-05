@@ -36,7 +36,7 @@ class UserPlantTest {
         plant.setWatering("frequent");
 
         request.setPlantId(plant.getId());
-        request.setNickname("Mon abutilon");
+        request.setNickname("My abutilon");
         request.setAcquisitionDate(LocalDate.of(2025, 9, 1));
         request.setLastWatering(LocalDate.of(2025, 9, 3));
         request.setPicture("https://example.com/pic.jpg");
@@ -47,14 +47,13 @@ class UserPlantTest {
         // THEN
         assertEquals(user, userPlant.getUserId());
         assertEquals(plant, userPlant.getPlantId());
-        assertEquals("Mon abutilon", userPlant.getNickname());
+        assertEquals("My abutilon", userPlant.getNickname());
         assertEquals(LocalDate.of(2025, 9, 1), userPlant.getAcquisitionDate());
         assertEquals(LocalDate.of(2025, 9, 3), userPlant.getLastWatering());
         assertEquals("https://example.com/pic.jpg", userPlant.getPicture());
 
-        // Vérif calcul du nextWatering
+        // check next watering
         WateringFrequency frequency = WateringFrequency.fromString(plant.getWatering());
-
         assertEquals(
                 request.getLastWatering().plusDays(frequency.getDays()),
                 userPlant.getNextWatering()
@@ -63,15 +62,15 @@ class UserPlantTest {
 
     /**
      * Must set last watering to acquisition date
-     * and nickname to common name
+     * and nickname to common name if both are null
      */
     @Test
     void createOnePlantWithNullFields() {
         // GIVEN
         plant.setWatering("minimum");
 
-        request.setLastWatering(null); // volontaire
-        request.setNickname(null);     // volontaire
+        request.setLastWatering(null);
+        request.setNickname(null);
 
         // WHEN
         UserPlant userPlant = new UserPlant(user, plant, request);
@@ -79,10 +78,10 @@ class UserPlantTest {
         // THEN
         assertEquals(plant.getCommonName(), userPlant.getNickname()); // fallback
         assertEquals(request.getAcquisitionDate(), userPlant.getLastWatering()); // fallback
+        assertNotNull(userPlant.getNextWatering());
         assertEquals(
                 request.getAcquisitionDate().plusDays(WateringFrequency.fromString("minimum").getDays()),
                 userPlant.getNextWatering()
         );
-        assertNotNull(userPlant.getNextWatering());
     }
 }

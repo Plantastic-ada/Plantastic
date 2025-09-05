@@ -20,7 +20,7 @@ public class UserPlantController {
     @PostMapping("/create-one")
     public ResponseEntity<String> createOneUserPlant(
             @RequestBody CreateUserPlantRequest request,
-            @AuthenticationPrincipal CustomUserDetails currentUser
+            @AuthenticationPrincipal CustomUserDetails currentUser //Automatic injection of the current user by Spring
     ) {
         UserPlant userPlant = userPlantService.createOneUserPlant(request, currentUser);
         return ResponseEntity.status(HttpStatus.CREATED).body("UserPlant successfully created: " + userPlant.getId());
