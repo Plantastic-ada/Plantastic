@@ -58,10 +58,10 @@ public class User {
     @Column(name = "camera_consent")
     private boolean cameraConsent;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserHome> userHomes = new HashSet<>();
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserPlant> userPlants = new HashSet<>();
 
     @PrePersist
