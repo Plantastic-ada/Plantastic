@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import BackgroundWrapper from "../components/BackgroundWrapper";
 import BottomNavBar from "../components/BottomNavBar";
-import BottomNavigation from '@mui/material/BottomNavigation';
+import { Header } from "../components/Header";
 
 function Home() {
   const navigate = useNavigate();
@@ -21,14 +21,12 @@ function Home() {
   };
   return (
     <BackgroundWrapper>
+      <Header></Header>
     <div>
       <div>
-        <h1>Welcome plant lover 🌱💚</h1>
-      </div>
-      <div>
-        <button onClick={handleLogout}>
+        {/* <button onClick={handleLogout}>
             Logout
-        </button>
+        </button> */}
       </div>
     </div>
     <BottomNavBar></BottomNavBar>

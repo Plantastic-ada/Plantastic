@@ -101,20 +101,26 @@ https://chakra-ui.com/
 include react-aria= Over 50 components with built-in behavior, adaptive interactions, top-tier accessibility, and internationalization out of the box, ready for your styles.
 https://react-spectrum.adobe.com/react-aria/index.html
 
-29/08 : 
-Implements floating action button for add a plant in the home page.
+~~29/08 : 
+Implements floating action button for add a plant in the home page.~~
+
+12/09 :
+In middle in the header styling. Directions to implements 
 Left to do : 
-- Weird div on the left
+-~~Weird div on the left~~
 - Header
 - Profile
-- Water button
+- Watering button
 - plant card & mocks? 
 - see how to implements shapes
 - explore the accessibility button
+- highlight icon if on page
+
 
 
 TODO:
 - HOME PAGE
+- IMPROVE RESPONSIVENESS ON NAV BAR
 - TESTS AUTH
 - REDIRECTION WHEN REGISTER TO LOGIN PAGE
 - IMPLEMENT PWA
