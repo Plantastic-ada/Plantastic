@@ -25,14 +25,14 @@ public class UserPlantService {
         //Get user
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> {
-                    log.warn("User not found with id: {}", currentUser.getId());
+                    log.error("User not found with id: {}", currentUser.getId());
                     return new EntityNotFoundException("User not found with id: " + currentUser.getId());
                 });
 
         //Get plant
         Plant plant = plantRepository.findById(request.getPlantId())
                 .orElseThrow(() -> {
-                    log.warn("Plant not found with id: {}", request.getPlantId());
+                    log.error("Plant not found with id: {}", request.getPlantId());
                     return new EntityNotFoundException("Plant not found with id: " + request.getPlantId());
                 });
 
