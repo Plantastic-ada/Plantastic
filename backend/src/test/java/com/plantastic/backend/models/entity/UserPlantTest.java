@@ -45,12 +45,12 @@ class UserPlantTest {
         UserPlant userPlant = new UserPlant(user, plant, request);
 
         // THEN
-        assertEquals(user, userPlant.getUserId());
-        assertEquals(plant, userPlant.getPlantId());
+        assertEquals(user, userPlant.getUser());
+        assertEquals(plant, userPlant.getPlant());
         assertEquals("My abutilon", userPlant.getNickname());
         assertEquals(LocalDate.of(2025, 9, 1), userPlant.getAcquisitionDate());
         assertEquals(LocalDate.of(2025, 9, 3), userPlant.getLastWatering());
-        assertEquals("https://example.com/pic.jpg", userPlant.getPicture());
+        assertEquals("https://example.com/pic.jpg", userPlant.getImageUrl());
 
         // check next watering
         WateringFrequency frequency = WateringFrequency.fromString(plant.getWatering());

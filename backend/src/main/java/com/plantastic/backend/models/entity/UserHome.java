@@ -19,11 +19,11 @@ public class UserHome {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "home_id", nullable = false)
-    private Home homeId;
+    private Home home;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column (name = "user_home_role", nullable = false)

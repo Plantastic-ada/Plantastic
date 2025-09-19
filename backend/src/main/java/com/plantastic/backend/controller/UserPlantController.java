@@ -1,6 +1,7 @@
 package com.plantastic.backend.controller;
 
 import com.plantastic.backend.dto.plants.CreateUserPlantRequest;
+import com.plantastic.backend.dto.plants.UserPlantDto;
 import com.plantastic.backend.models.entity.UserPlant;
 import com.plantastic.backend.security.user.CustomUserDetails;
 import com.plantastic.backend.service.UserPlantService;
@@ -25,4 +26,9 @@ public class UserPlantController {
         UserPlant userPlant = userPlantService.createOneUserPlant(request, currentUser);
         return ResponseEntity.status(HttpStatus.CREATED).body("UserPlant successfully created: " + userPlant.getId());
     }
+
+//    @GetMapping("/details/{id}")
+//    public ResponseEntity<UserPlantDto> getUserPlantDetailsById(long userPlantId) {
+//        //@Todo
+//    }
 }

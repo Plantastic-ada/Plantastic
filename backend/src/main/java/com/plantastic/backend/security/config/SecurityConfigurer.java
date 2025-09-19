@@ -6,7 +6,6 @@ import com.plantastic.backend.security.handler.CustomLogoutSuccessHandler;
 import com.plantastic.backend.security.user.UserDetailsImplService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -30,18 +29,22 @@ public class SecurityConfigurer {
 
     private final UserDetailsImplService userDetailsImplService;
 
+    private static final String LOGIN_ROUTE = "/api/auth/login";
+    private static final String REGISTER_ROUTE = "/api/auth/register";
+    private static final String LOGOUT_ROUTE = "/api/auth/logout";
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, Environment env) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/", "/auth/login", "/auth/register").permitAll()
+                    .requestMatchers("/", LOGIN_ROUTE, REGISTER_ROUTE).permitAll()
                     .anyRequest().authenticated()
                 );
 
         //Login with cookie session
         http.formLogin(form -> form
-                .loginProcessingUrl("/auth/login")
+                .loginProcessingUrl(LOGIN_ROUTE)
                 //Login success handler : sends a 200 http code and a json
                 .successHandler(customLoginSuccessHandler)
                 //Login failure handler : sends a 401 http code and a json
@@ -49,7 +52,7 @@ public class SecurityConfigurer {
         );
         //Logout with cookie session : delete cookies on logout
         http.logout(logout -> logout
-                .logoutUrl("/auth/logout")
+                .logoutUrl(LOGOUT_ROUTE)
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)

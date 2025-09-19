@@ -48,7 +48,7 @@ class AuthenticationControllerTest {
 
     @Test
     void testLoginWithUsername() throws Exception {
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("username", "toto")
                         .param("password", "secret"))
@@ -58,7 +58,7 @@ class AuthenticationControllerTest {
 
     @Test
     void testLoginWithEmail() throws Exception {
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("username", "toto@example.com")  // ici on passe l'email dans le champ username
                         .param("password", "secret"))
@@ -68,7 +68,7 @@ class AuthenticationControllerTest {
 
     @Test
     void testLoginFail() throws Exception {
-        mockMvc.perform(post("/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("username", "toto")
                         .param("password", "wrongpassword"))
