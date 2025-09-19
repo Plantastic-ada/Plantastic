@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,7 +24,7 @@ public class User {
     private long id;
 
     @Column (unique = true, nullable= false)
-    private String pseudo;
+    private String username;
 
     @Column (unique = true, nullable= false)
     private String email;
@@ -34,10 +37,13 @@ public class User {
     private UserRole role;
 
     @Column (name = "created_at",nullable = false)
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column (name = "updated_at",nullable = false)
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
+
+    @Column(name = "last_login_at")
+    private LocalDate lastLoginAt;
 
     @Enumerated(EnumType.STRING)
     @Column (name = "notifications_preferences",nullable = false)
@@ -52,4 +58,20 @@ public class User {
     @Column(name = "camera_consent")
     private boolean cameraConsent;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserHome> userHomes = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserPlant> userPlants = new HashSet<>();
+
+    @PrePersist
+    protected void onCreate(){
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

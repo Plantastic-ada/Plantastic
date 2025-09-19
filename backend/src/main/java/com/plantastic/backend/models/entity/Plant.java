@@ -2,6 +2,7 @@ package com.plantastic.backend.models.entity;
 
 import com.plantastic.backend.initdb.dto.api.*;
 import com.plantastic.backend.initdb.dto.json.PlantDtoFromJson;
+import com.plantastic.backend.util.StringUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,57 +52,58 @@ public class Plant {
     @Column(name = "pruning_details", length = 2000)
     private String pruningDetails;
 
-    //Constructeur qui nous permet de créer une entité à partir du DTO Json
+    //Create a plant from JSON
     public Plant(PlantDtoFromJson dto) {
         this.apiId = dto.getApiId();
-        this.commonName = emptyStringToNull(dto.getCommonName());
-        this.otherName = emptyStringToNull(dto.getOtherName());
-        this.scientificName = emptyStringToNull(dto.getScientificName());
-        this.family = emptyStringToNull(dto.getFamily());
-        this.description = emptyStringToNull(dto.getDescription());
-        this.careLevel = emptyStringToNull(dto.getCareLevel());
-        this.imageUrl = emptyStringToNull(dto.getImageUrl());
-        this.watering = emptyStringToNull(dto.getWatering());
-        this.soil = emptyStringToNull(dto.getSoil());
-        this.lightExposure = emptyStringToNull(dto.getLightExposure());
-        this.growthRate = emptyStringToNull(dto.getGrowthRate());
+        this.commonName = StringUtil.emptyStringToNull(dto.getCommonName());
+        this.otherName = StringUtil.emptyStringToNull(dto.getOtherName());
+        this.scientificName = StringUtil.emptyStringToNull(dto.getScientificName());
+        this.family = StringUtil.emptyStringToNull(dto.getFamily());
+        this.description = StringUtil.emptyStringToNull(dto.getDescription());
+        this.careLevel = StringUtil.emptyStringToNull(dto.getCareLevel());
+        this.imageUrl = StringUtil.emptyStringToNull(dto.getImageUrl());
+        this.watering = StringUtil.emptyStringToNull(dto.getWatering());
+        this.soil = StringUtil.emptyStringToNull(dto.getSoil());
+        this.lightExposure = StringUtil.emptyStringToNull(dto.getLightExposure());
+        this.growthRate = StringUtil.emptyStringToNull(dto.getGrowthRate());
         this.poisonousToPet = dto.isPoisonousToPet();
-        this.wateringDetails = emptyStringToNull(dto.getWateringDetails());
-        this.sunlightDetails = emptyStringToNull(dto.getSunlightDetails());
-        this.pruningDetails = emptyStringToNull(dto.getPruningDetails());
+        this.wateringDetails = StringUtil.emptyStringToNull(dto.getWateringDetails());
+        this.sunlightDetails = StringUtil.emptyStringToNull(dto.getSunlightDetails());
+        this.pruningDetails = StringUtil.emptyStringToNull(dto.getPruningDetails());
     }
 
-    //Constructeur qui nous permet de créer une entité à partir des données de l'API
+    //Create a plant from API
     public Plant(PlantDetailApiResponse detailPlant, CareGuideApiResponse careGuide, int apiId) {
-        //Set des attributs de la plante récupérés via detail
+        //Set details
         this.setApiId(apiId);
-        this.commonName = emptyStringToNull(detailPlant.getCommonName());
-        this.scientificName = emptyStringToNull(String.join(",",detailPlant.getScientificName()));
-        this.otherName = emptyStringToNull(String.join(",",detailPlant.getOtherName()));
-        this.family = emptyStringToNull(detailPlant.getFamily());
-        this.watering = emptyStringToNull(detailPlant.getWatering());
-        this.lightExposure = emptyStringToNull(String.join(",",detailPlant.getSunlight()));
-        this.soil = emptyStringToNull(String.join(",",detailPlant.getSoil()));
-        this.growthRate = emptyStringToNull(detailPlant.getGrowthRate());
-        this.careLevel = emptyStringToNull(detailPlant.getCareLevel());
+        this.commonName = StringUtil.emptyStringToNull(detailPlant.getCommonName());
+        this.scientificName = StringUtil.emptyStringToNull(String.join(",",detailPlant.getScientificName()));
+        this.otherName = StringUtil.emptyStringToNull(String.join(",",detailPlant.getOtherName()));
+        this.family = StringUtil.emptyStringToNull(detailPlant.getFamily());
+        this.watering = StringUtil.emptyStringToNull(detailPlant.getWatering());
+        this.lightExposure = StringUtil.emptyStringToNull(String.join(",",detailPlant.getSunlight()));
+        this.soil = StringUtil.emptyStringToNull(String.join(",",detailPlant.getSoil()));
+        this.growthRate = StringUtil.emptyStringToNull(detailPlant.getGrowthRate());
+        this.careLevel = StringUtil.emptyStringToNull(detailPlant.getCareLevel());
         this.poisonousToPet = detailPlant.isPoisonousToPets();
-        this.description = emptyStringToNull(detailPlant.getDescription());
+        this.description = StringUtil.emptyStringToNull(detailPlant.getDescription());
 
         ImageApi defaultImage = detailPlant.getDefaultImage();
         String originalUrl = (defaultImage!=null) ? defaultImage.getOriginalUrl() : null;
-        this.imageUrl = emptyStringToNull(originalUrl);
+        this.imageUrl = StringUtil.emptyStringToNull(originalUrl);
 
         for (CareGuideApiItem item : careGuide.getData()) {
             for (CareGuideApiDescription careDescription : item.getData()) {
+                //Set care guide details
                 switch (careDescription.getType()) {
                     case "watering":
-                        this.wateringDetails = emptyStringToNull(careDescription.getDescription());
+                        this.wateringDetails = StringUtil.emptyStringToNull(careDescription.getDescription());
                         break;
                     case "sunlight":
-                        this.sunlightDetails = emptyStringToNull(careDescription.getDescription());
+                        this.sunlightDetails = StringUtil.emptyStringToNull(careDescription.getDescription());
                         break;
                     case "pruning":
-                        this.pruningDetails = emptyStringToNull(careDescription.getDescription());
+                        this.pruningDetails = StringUtil.emptyStringToNull(careDescription.getDescription());
                         break;
                     default:
                         log.debug("Type de care guide non géré : '{}' pour apiId {}", careDescription.getType(), apiId);
@@ -111,24 +113,20 @@ public class Plant {
     }
 
     public void updatePlantFromDto(PlantDtoFromJson dto) {
-        this.commonName = emptyStringToNull(dto.getCommonName());
-        this.otherName = emptyStringToNull(dto.getOtherName());
-        this.scientificName = emptyStringToNull(dto.getScientificName());
-        this.family = emptyStringToNull(dto.getFamily());
-        this.description = emptyStringToNull(dto.getDescription());
-        this.careLevel = emptyStringToNull(dto.getCareLevel());
-        this.imageUrl = emptyStringToNull(dto.getImageUrl());
-        this.watering = emptyStringToNull(dto.getWatering());
-        this.soil = emptyStringToNull(dto.getSoil());
-        this.lightExposure = emptyStringToNull(dto.getLightExposure());
-        this.growthRate = emptyStringToNull(dto.getGrowthRate());
+        this.commonName = StringUtil.emptyStringToNull(dto.getCommonName());
+        this.otherName = StringUtil.emptyStringToNull(dto.getOtherName());
+        this.scientificName = StringUtil.emptyStringToNull(dto.getScientificName());
+        this.family = StringUtil.emptyStringToNull(dto.getFamily());
+        this.description = StringUtil.emptyStringToNull(dto.getDescription());
+        this.careLevel = StringUtil.emptyStringToNull(dto.getCareLevel());
+        this.imageUrl = StringUtil.emptyStringToNull(dto.getImageUrl());
+        this.watering = StringUtil.emptyStringToNull(dto.getWatering());
+        this.soil = StringUtil.emptyStringToNull(dto.getSoil());
+        this.lightExposure = StringUtil.emptyStringToNull(dto.getLightExposure());
+        this.growthRate = StringUtil.emptyStringToNull(dto.getGrowthRate());
         this.poisonousToPet = dto.isPoisonousToPet();
-        this.wateringDetails = emptyStringToNull(dto.getWateringDetails());
-        this.sunlightDetails = emptyStringToNull(dto.getSunlightDetails());
-        this.pruningDetails = emptyStringToNull(dto.getPruningDetails());
-    }
-
-    private String emptyStringToNull(String value){
-        return (value == null || value.isEmpty()) ? null : value;
+        this.wateringDetails = StringUtil.emptyStringToNull(dto.getWateringDetails());
+        this.sunlightDetails = StringUtil.emptyStringToNull(dto.getSunlightDetails());
+        this.pruningDetails = StringUtil.emptyStringToNull(dto.getPruningDetails());
     }
 }

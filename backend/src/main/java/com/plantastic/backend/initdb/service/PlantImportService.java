@@ -23,81 +23,93 @@ public class PlantImportService {
 
     private final RestTemplate restTemplate;
     private final PlantRepository plantRepository;
+    private final String apiKey;
 
-    //Injecté automatiquement par Spring à partir du fichier application.properties.
-    @Value("${api.key}")
-    private String apiKey;
-
-    public PlantImportService(RestTemplateBuilder builder, PlantRepository plantRepository) {
+    public PlantImportService(RestTemplateBuilder builder, PlantRepository plantRepository,@Value("${api.key}") String apiKey) {
         this.restTemplate = builder.build();
         this.plantRepository = plantRepository;
+        this.apiKey = apiKey;
     }
 
-    //Une page comporte 30 plantes
+    //One page has 30 plants
     public void importThirtyPlantsFromApi(int page) {
         String listUrl = "https://perenual.com/api/v2/species-list?key=" + apiKey + "&indoor=1&page=" + page;
         PlantListApiResponse response = restTemplate.getForObject(listUrl, PlantListApiResponse.class);
 
+        log.info(apiKey);
+
         if (response == null || response.getData() == null || response.getData().isEmpty()) {
-            log.warn("❌ Il n'y a plus de plantes à récupérer");
+            log.warn("❌ There is no more plant to get");
             return;
         }
 
         List<PlantApiSummary> plantSummaries = new ArrayList<>(response.getData());
-        log.debug("🌿 Liste des plantes récupérées : {}", plantSummaries);
+        log.debug("🌿 Plant List : {}", plantSummaries);
 
-        //Boucle for à conserver pour faire les appels sur l'intégralité des données (les 30 plantes qu'on récupère avec un appel api)
         for (PlantApiSummary summary : plantSummaries) {
 
-            importOnePlantFromApi(summary.getApiId());
+            try {
+                Thread.sleep(5000);
+                importOnePlantFromApi(summary.getApiId());
+            } catch (Exception e) {
+                Thread.currentThread().interrupt();
+                log.error("Pause interrupted. Error : {}",e.getMessage(), e);
+                break;
+            }
         }
-        log.info("✅ Import terminé pour {} plantes.", plantSummaries.size());
+        log.info("✅ Import done for{} plants.", plantSummaries.size());
     }
 
-    //Si on souhaite utiliser cette méthode en dehors de cette classe, la mettre en public
     public void importOnePlantFromApi(int apiId) {
         Optional<Plant> plantOpt = createPlantByIdFromApi(apiId);
         if (plantOpt.isPresent()) {
             Plant plant = plantOpt.get();
             plantRepository.save(plant);
-            log.info("✅ Plante importée : {}, apiId : {}", plant.getCommonName(), plant.getApiId());
+            log.info("✅ Plant imported : {}, apiId : {}", plant.getCommonName(), plant.getApiId());
         } else {
-            log.error("❌ Échec de l'import : aucune plante trouvée pour apiId {}", apiId);
+            log.error("❌ Import failed : no plant found forapiId {}", apiId);
         }
     }
 
     private Optional<Plant> createPlantByIdFromApi(int apiId) {
         try {
-            //Récupération des détails de la plante
+            //Plant details
             PlantDetailApiResponse detail = restTemplate.getForObject(
                     "https://perenual.com/api/v2/species/details/" + apiId + "?key=" + apiKey,
                     PlantDetailApiResponse.class
             );
 
             if (detail == null) {
-                log.warn("⚠️Aucun détail trouvé pour l'apiId {}", apiId);
+                log.warn("⚠️No details found for apiId {}", apiId);
                 return Optional.empty();
             }
 
-            // Care guide
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                log.error("Pause interrupted", e);
+            }
+
+            // Care guide for a specific plant
             CareGuideApiResponse careGuide = restTemplate.getForObject(
                     "https://perenual.com/api/species-care-guide-list?species_id=" + apiId + "&key=" + apiKey,
                     CareGuideApiResponse.class
             );
 
             if (careGuide == null || careGuide.getData() == null) {
-                log.warn("⚠️Aucun careGuide trouvé pour l'apiId {}", apiId);
+                log.warn("⚠️No careGuide found for apiId {}", apiId);
             }
 
-            //Vérification de si une plante avec cette apiId existe ou non
-            //Si une plante existe, on la récupère, sinon on en créée une nouvelle
+            //Verify if a plant existe in db with this apiID
+            //If a plant exists, we update this one, otherwise we create a new one
             Optional<Plant> existingPlant = plantRepository.findByApiId(apiId);
             Plant plant = existingPlant.orElseGet(() -> new Plant(detail, careGuide, apiId));
 
             return Optional.of(plant);
         } catch (Exception e) {
-            log.error("❌ Erreur lors de l'import de la plante ID {} : {}", apiId, e.getMessage(), e);
-            return Optional.empty();
+            log.error("❌ Error importing plant with apiId {} : {}", apiId, e.getMessage(), e);
+            throw e;
         }
     }
 
@@ -115,8 +127,8 @@ public class PlantImportService {
             }
 
             plantRepository.save(plant);
-            log.info("✅ Plante importée : {}, apiId : {}", plant.getCommonName(), plant.getApiId());
+            log.info("✅ Plant imported: {}, apiId : {}", plant.getCommonName(), plant.getApiId());
         }
-        log.info("✅ Import terminé pour {} plantes.", plantsList.size());
+        log.info("✅ Import done for {} plants.", plantsList.size());
     }
 }
