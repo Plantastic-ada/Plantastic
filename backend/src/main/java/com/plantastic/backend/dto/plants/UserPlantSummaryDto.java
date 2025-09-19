@@ -13,5 +13,6 @@ public class UserPlantSummaryDto {
     private String commonName;
     private LocalDate lastWatering;
     private LocalDate nextWatering;
-    private String imageUrl;
+    private String plantImageUrl;
+    private String userPlantImageUrl;
 }
