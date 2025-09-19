@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormData } from "../schemas/loginSchema";
 import axios from "../services/axios";
-
 //STYLES COMPONENTS
 import AuthCard from "../components/AuthCard";
 import SubmitButton from "../components/SubmitButton";
@@ -14,70 +13,37 @@ import Description from "../components/Description";
 import BackgroundWrapper from "../components/BackgroundWrapper";
 
 export function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-
   // Set up states and routing for connection
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { authToken, login } = useAuth();
   const nav = useNavigate();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const handleSubmit = async(event) => {
-    event.preventDefault();
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await axios.post("/login", {email, password});
-      if (response.data.token) {
-        login(response.data.token) {
-          login(response.data.token);
-          setError('');
-        }
-      } catch (error) {
-        console.error("Connexion error", error.response || error )
-      }
+      await axios.post("/login", data);
+
+      // Home Navigation
+      nav("/", { replace: true });
+
+      // Error handling
+      // } else {
+      //   const { message } = await response.json();
+      //   setError(message || "Invalid pseudo or password");
+      // }
+    } catch (err) {
+      setError(`Invalid credentials. ${err}`);
+    } finally {
+      setLoading(false);
     }
-  }
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm<LoginFormData> ({
-  //   resolver: zodResolver(loginSchema),
-  // });
-
-  // const onSubmit = async (data: LoginFormData) => {
-  //   setLoading(true);
-  //   setError("");
-
-  //   try {
-  //     const response = await fetch("/api/auth/login", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-type": "application/json",
-  //       },
-  //       credentials: "include", // stores cookie
-  //       body: JSON.stringify(data),
-  //     });
-
-  //     // Home Navigation
-  //     if (response.ok) {
-  //       nav("/", { replace: true });
-
-  //       // Error handling
-  //     } else {
-  //       const { message } = await response.json();
-  //       setError(message || "Invalid pseudo or password");
-  //     }
-  //   } catch (err) {
-  //     setError(
-  //       `An error as occured while trying to log in, please try again. ${err}`
-  //     );
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  };
 
   return (
     <BackgroundWrapper>

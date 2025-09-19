@@ -24,9 +24,9 @@ function Home() {
       <Header></Header>
     <div>
       <div>
-        {/* <button onClick={handleLogout}>
+        <button onClick={handleLogout} color="white" font-weight="bold">
             Logout
-        </button> */}
+        </button>
       </div>
     </div>
     <BottomNavBar></BottomNavBar>
