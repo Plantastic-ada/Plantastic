@@ -40,7 +40,7 @@ public class UserPlant {
     @Column(name = "next_watering", nullable = false)
     private LocalDate nextWatering;
 
-    @Column
+    @Column(name = "image_url")
     private String imageUrl;
 
     public UserPlant(User user, Plant plant, CreateUserPlantRequest request) {
