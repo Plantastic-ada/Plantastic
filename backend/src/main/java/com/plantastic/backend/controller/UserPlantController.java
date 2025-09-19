@@ -27,8 +27,8 @@ public class UserPlantController {
         return ResponseEntity.status(HttpStatus.CREATED).body("UserPlant successfully created: " + userPlant.getId());
     }
 
-    @GetMapping("/details/{id}")
-    public ResponseEntity<UserPlantDto> getUserPlantDetailsById(long userPlantId) {
-        //@Todo
-    }
+//    @GetMapping("/details/{id}")
+//    public ResponseEntity<UserPlantDto> getUserPlantDetailsById(long userPlantId) {
+//        //@Todo
+//    }
 }
