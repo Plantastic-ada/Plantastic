@@ -3,16 +3,26 @@ import { PiUserCircleGearFill } from "react-icons/pi";
 
 export const Header = () => {
   return (
-    <div>
-      <div>
-        <img
-          src={logo}
-          className="w-16 h-20 mt-1 ml-3 sm:w-24 sm:h-32 lg:w-32 lg:h-48 object-contain"
-        />
-        <div>
-          <PiUserCircleGearFill color="white" className="w-8 h-12 sm:w-18 sm:h-24 lg:w-24 lg:h-32 absolute top-0 right-0 size-16 mt-3 mr-3" />
-        </div>
-      </div>
+    <div className="sticky top-0 z-20 bg-transparent h-32 ">
+    <div id="header" className="relative ">
+      <img
+        src={logo}
+        className="w-24 h-24 ml-4
+          sm:w-24 sm:h-32 lg:w-48 sm:ml-5
+          md: md:ml-6
+          lg: lg:ml-1
+          2xl:h-48 2xl:ml-6 
+          object-contain"
+      />
+      <PiUserCircleGearFill
+        color="white"
+        className="w-14 h-14 mr-6
+          sm:w-16 sm:h-16 sm:mr-4 
+          md:w-14 md:h-14 md:mr-8
+          2xl:w-20  2xl:h-20  2xl:mr-10 
+          absolute top-0 right-0"
+      />
+    </div>
     </div>
   );
 };

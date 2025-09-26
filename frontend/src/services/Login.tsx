@@ -60,9 +60,9 @@ export function Login() {
   return (
     <BackgroundWrapper>
       {/* Content */}
-      <div className="relative z-10 flex flex-col lg:flex-row flex-1">
+      <div id="login-content" className="h-screen w-screen z-10 flex flex-col lg:flex-row flex-1">
         {/*  Logo & description  */}
-        <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-6">
+        <div id="description-text" className="w-full lg:w-1/2 flex flex-col items-center justify-center p-6">
           <Description
             descriptionTextJSX={
               <>
@@ -80,7 +80,7 @@ export function Login() {
         </div>
 
         {/*  Form  */}
-        <div className="w-full lg:w-1/2 flex flex-col items-center justify-center px-4 py-6">
+        <div id="login-card" className="w-full lg:w-1/2 flex flex-col items-center justify-center px-4 py-6">
           <AuthCard title="Login">
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <InputField

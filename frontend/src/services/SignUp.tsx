@@ -65,7 +65,7 @@ const SignUp: React.FC = () => {
   return (
     <BackgroundWrapper>
       {/* Content */}
-      <div className="relative z-10 flex flex-col lg:flex-row flex-1">
+      <div className="h-screen w-screen relative z-10 flex flex-col lg:flex-row flex-1">
         {/*  Logo & description  */}
         <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-6">
           <Description
