@@ -29,8 +29,10 @@ export function Login() {
     setLoading(true);
     setError("");
 
+// @TODO : sanitize where? IT's in the mock but now, where it is ? 
+
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
