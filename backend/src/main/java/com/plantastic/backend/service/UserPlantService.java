@@ -1,6 +1,7 @@
 package com.plantastic.backend.service;
 
 import com.plantastic.backend.dto.plants.CreateUserPlantRequest;
+import com.plantastic.backend.dto.plants.UserPlantDetailsDto;
 import com.plantastic.backend.models.entity.Plant;
 import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.models.entity.UserPlant;
@@ -39,5 +40,13 @@ public class UserPlantService {
         //Create and save userPlant
         UserPlant userPlant = new UserPlant(user, plant, request);
         return userPlantRepository.save(userPlant);
+    }
+
+    public UserPlantDetailsDto getUserPlantDetailsById(long userPlantId) {
+        return userPlantRepository.findUserPlantDetailsById(userPlantId);
+    }
+
+    public UserPlantDetailsDto updateWateringDays(UserPlantDetailsDto up) {
+
     }
 }
