@@ -1,8 +1,6 @@
 package com.plantastic.backend.dto.plants;
 
 import com.plantastic.backend.models.types.WateringFrequency;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import java.time.LocalDate;
 
