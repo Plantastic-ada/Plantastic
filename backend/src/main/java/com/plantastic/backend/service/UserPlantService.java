@@ -45,8 +45,4 @@ public class UserPlantService {
     public UserPlantDetailsDto getUserPlantDetailsById(long userPlantId) {
         return userPlantRepository.findUserPlantDetailsById(userPlantId);
     }
-
-    public UserPlantDetailsDto updateWateringDays(UserPlantDetailsDto up) {
-
-    }
 }
