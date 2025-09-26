@@ -3,6 +3,7 @@ package com.plantastic.backend.models.entity;
 import com.plantastic.backend.dto.plants.CreateUserPlantRequest;
 import com.plantastic.backend.models.types.WateringFrequency;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,6 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Table(name = "user_plant")
-
 public class UserPlant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +38,18 @@ public class UserPlant {
     private LocalDate lastWatering;
 
     @Column(name = "next_watering", nullable = false)
+    @Setter(AccessLevel.NONE)
     private LocalDate nextWatering;
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    public void setNextWatering() {
+        if (this.lastWatering != null && this.plant != null) {
+            int wateringFrequency = WateringFrequency.fromString(this.plant.getWatering()).getDays();
+            this.nextWatering = this.lastWatering.plusDays(wateringFrequency);
+        }
+    }
 
     public UserPlant(User user, Plant plant, CreateUserPlantRequest request) {
         this.user = user;

@@ -32,4 +32,10 @@ public class UserPlantController {
         UserPlantDetailsDto userPlantDetailsDto = userPlantService.getUserPlantDetailsById(userPlantId);
         return ResponseEntity.ok(userPlantDetailsDto);
     }
+
+    @PatchMapping("/water-one/{id}")
+    public ResponseEntity<UserPlantDetailsDto> waterUserPlantbyId(@PathVariable("id") long userPlantId) {
+        UserPlantDetailsDto userPlantDetailsDto = userPlantService.updateWateringDaysForOneUserPlant(userPlantId);
+        return ResponseEntity.ok(userPlantDetailsDto);
+    }
 }

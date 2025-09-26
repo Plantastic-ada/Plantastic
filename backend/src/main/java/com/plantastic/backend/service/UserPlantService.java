@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -44,5 +46,17 @@ public class UserPlantService {
 
     public UserPlantDetailsDto getUserPlantDetailsById(long userPlantId) {
         return userPlantRepository.findUserPlantDetailsById(userPlantId);
+    }
+
+    //Update UserPlant's last watering & next watering
+    public UserPlantDetailsDto updateWateringDaysForOneUserPlant(long userPlantId) {
+        UserPlant userPlant = userPlantRepository.findById(userPlantId)
+                .orElseThrow(() -> new EntityNotFoundException("UserPlant not found with id " + userPlantId));
+
+       userPlant.setLastWatering(LocalDate.now());
+       userPlant.setNextWatering();
+       userPlantRepository.save(userPlant);
+
+       return userPlantRepository.findUserPlantDetailsById(userPlantId);
     }
 }
