@@ -10,6 +10,7 @@ import InputField from "../components/InputField";
 import FooterLink from "../components/FooterCard";
 import Description from "../components/Description";
 import BackgroundWrapper from "../components/BackgroundWrapper";
+import { fetchAPI } from "../utils/api";
 
 const SignUp: React.FC = () => {
   const [apiMessage, setApiMessage] = useState<React.ReactNode>(null);
@@ -24,31 +25,30 @@ const SignUp: React.FC = () => {
     resolver: zodResolver(signUpSchema), // replaces submitHandler
   });
 
-  const onSubmit: SubmitHandler<SignUpFormData> = async (formData) => {
+  const onSubmit: SubmitHandler<SignUpFormData> = async (
+    formData: SignUpFormData
+  ) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/signup`, {
+      const { confirmPassword, ...registerData } = formData;
+      const response = await fetchAPI("/auth/register", {
         method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer-fake-token-123",
-        },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(registerData),
       });
 
-      const data = await response.json();
+      const data = await response.text(); 
 
       if (response.status === 401) {
         setApiMessage("Missing or invalid token");
         return;
       }
       if (!response.ok) {
-        setApiMessage(`Error: ${data.error || "Registration failed"}`);
+        setApiMessage(`Error: ${data || "Registration failed"}`);
         return;
       }
+      const username = data.split(": ")[1] || registerData.username;
       setApiMessage(
         <>
-          Welcome <strong>{data[0].pseudo}</strong>! Registration successful.{" "}
+          Welcome <strong>{username}</strong>! Registration successful.{" "}
           Please <Link to="/login">login</Link> to enjoy Plantastic 🌿
         </>
       );
@@ -89,20 +89,20 @@ const SignUp: React.FC = () => {
           <AuthCard title="Sign up">
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <InputField
-                label="Username"
-                placeholder="Enter your username"
-                register={register("pseudo", {
-                  required: "username is required",
-                })}
-                error={errors.pseudo}
-              />
-              <InputField
                 label="Email"
                 placeholder="Enter your email"
                 register={register("email", {
                   required: "email is required",
                 })}
                 error={errors.email}
+              />
+              <InputField
+                label="Username"
+                placeholder="Enter your username"
+                register={register("username", {
+                  required: "username is required",
+                })}
+                error={errors.username}
               />
               <InputField
                 label="Password"

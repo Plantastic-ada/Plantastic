@@ -130,4 +130,6 @@ TODO:
 Reimplement PWA (already pushed)
 
 2/10
-- credentials commented BUT necessary
+- login ✔
+- register ✔
+- to fix LOGOUT ✖

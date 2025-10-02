@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchAPI } from "../utils/api";
 
 // Set up for navigation to check mocked token
 const ProtectedRoutes = () => {
@@ -17,9 +18,9 @@ const ProtectedRoutes = () => {
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
+        // const response = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
+        const response = await fetchAPI("/me",{
           method: "GET",
-          // credentials: "include", //check for token is in HttpOnly cookie
         });
         if (!response.ok) {
           navigate("/login", { replace: true });

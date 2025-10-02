@@ -10,6 +10,7 @@ import InputField from "../components/InputField";
 import FooterLink from "../components/FooterCard";
 import Description from "../components/Description";
 import BackgroundWrapper from "../components/BackgroundWrapper";
+import { fetchAPI } from "../utils/api";
 
 export function Login() {
   // Set up states and routing for connection
@@ -33,12 +34,13 @@ export function Login() {
 
     try {
       // console.log("test", new URLSearchParams(data).toString())
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+      // const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, 
+        const response = await fetchAPI("auth/login", {
         method: "POST",
         headers: {
           "Content-type": "application/x-www-form-urlencoded",
         },
-        credentials: "include", // stores cookie
+        // credentials: "include", // stores cookie
         body: new URLSearchParams(data).toString(),
       });
       // Home Navigation

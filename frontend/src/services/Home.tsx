@@ -6,6 +6,7 @@ import PlantCard from "../components/PlantCard";
 import { useEffect, useState } from "react";
 // import instance from "./axios";
 import type { Plant } from "../types/Plant";
+import { fetchAPI } from "../utils/api";
 
 function Home() {
   const navigate = useNavigate();
@@ -14,9 +15,8 @@ function Home() {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+      await fetchAPI("/auth/logout", {
         method: "POST",
-        credentials: "include",
       });
       // Will delete the token if it's in the local storage, even if it's not supposed to be
       localStorage.removeItem("authToken");

@@ -3,11 +3,11 @@ import { sanitize } from "../utils/sanitize";
 
 export const signUpSchema = z
   .object({
-    pseudo: z
+    email: z.email("Invalid email format").transform(sanitize),
+    username: z
       .string()
       .min(3, "Must be at least 3 characters")
       .transform(sanitize),
-    email: z.email("Invalid email format").transform(sanitize),
     password: z
       .string()
       .min(8, "Your password is too short")
