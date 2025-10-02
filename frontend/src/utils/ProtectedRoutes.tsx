@@ -11,18 +11,19 @@ const ProtectedRoutes = () => {
 // CHECKS IF TOKEN IN LOCAL STORAGE, FUNCTION TO REMOVE LATER
       if (localStorage.getItem("authToken")) {
         console.warn(
-          "⚠️ TOKEN STILL PRESENT IN LOCAL STORAGE !"
+          "TOKEN STILL PRESENT IN LOCAL STORAGE !"
         );
         localStorage.removeItem("authToken");
       }
 
       try {
-        const response = await fetch("/api/auth/me", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/me`, {
           method: "GET",
-          credentials: "include", //check for token is in HttpOnly cookie
+          // credentials: "include", //check for token is in HttpOnly cookie
         });
         if (!response.ok) {
           navigate("/login", { replace: true });
+          console.log("Protected routes", response);
           return;
         }
       } catch (error) {

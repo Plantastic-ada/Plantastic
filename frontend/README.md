@@ -126,3 +126,8 @@ TODO:
 - IMPLEMENT PWA
 - SWITCH MOCKS UP TO ENGLISH
 - ~~PAGES ARCHITECTURE~~
+26/09
+Reimplement PWA (already pushed)
+
+2/10
+- credentials commented BUT necessary

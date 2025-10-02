@@ -32,15 +32,15 @@ export function Login() {
 // @TODO : sanitize where? IT's in the mock but now, where it is ? 
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
+      // console.log("test", new URLSearchParams(data).toString())
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
+          "Content-type": "application/x-www-form-urlencoded",
         },
         credentials: "include", // stores cookie
-        body: JSON.stringify(data),
+        body: new URLSearchParams(data).toString(),
       });
-
       // Home Navigation
       if (response.ok) {
         nav("/", { replace: true });
@@ -88,10 +88,10 @@ export function Login() {
               <InputField
                 label="Pseudo or email"
                 placeholder="Enter pseudo or email"
-                register={register("pseudoOrEmail", {
+                register={register("username", {
                   required: "This field is required",
                 })}
-                error={errors.pseudoOrEmail}
+                error={errors.username}
               />
 
               <InputField

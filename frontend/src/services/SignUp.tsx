@@ -26,7 +26,7 @@ const SignUp: React.FC = () => {
 
   const onSubmit: SubmitHandler<SignUpFormData> = async (formData) => {
     try {
-      const response = await fetch("api/auth/signup", {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/signup`, {
         method: "POST",
         credentials: "include",
         headers: {

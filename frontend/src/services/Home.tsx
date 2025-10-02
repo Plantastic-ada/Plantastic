@@ -4,7 +4,7 @@ import BottomNavBar from "../components/BottomNavBar";
 import { Header } from "../components/Header";
 import PlantCard from "../components/PlantCard";
 import { useEffect, useState } from "react";
-import instance from "./axios";
+// import instance from "./axios";
 import type { Plant } from "../types/Plant";
 
 function Home() {
@@ -14,7 +14,7 @@ function Home() {
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/auth/logout", {
+      await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -27,14 +27,24 @@ function Home() {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      const response = await instance.get(`/my-digital-garden`);
-      console.log("Response.data", response.data);
-      setPlants(response.data);
+useEffect(() => {
+  (async () => {
+    try {
+      const response = await fetch(`/my-digital-garden`);
+      const data = await response.json(); 
+
+      if (!response.ok) {
+        const error = `HTTP error! status: ${response.status}`; 
+        throw new Error(error);
+      }
+      
+      setPlants(data); 
       setIsRead(true);
-    })();
-  }, []);
+    } catch (error) {
+      console.error('Failed to fetch plants:', error);
+    }
+  })();
+}, []);
 
 return (
   <BackgroundWrapper>
