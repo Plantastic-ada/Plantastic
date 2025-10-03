@@ -49,12 +49,12 @@ public class UserPlantService {
         return userPlantRepository.save(userPlant);
     }
 
-    public UserPlantDetailsDto getUserPlantDetailsById(long userPlantId) {
+    public UserPlantDetailsDto getUserPlantDetailsById(Long userPlantId) {
         return userPlantRepository.findUserPlantDetailsById(userPlantId);
     }
 
     //Update UserPlant's last watering & next watering
-    public UserPlantDetailsDto updateWateringDaysForOneUserPlant(long userPlantId) {
+    public UserPlantDetailsDto updateWateringDaysForOneUserPlant(Long userPlantId) {
         UserPlant userPlant = userPlantRepository.findById(userPlantId)
                 .orElseThrow(() -> new EntityNotFoundException("UserPlant not found with id " + userPlantId));
 
@@ -65,10 +65,10 @@ public class UserPlantService {
        return userPlantRepository.findUserPlantDetailsById(userPlantId);
     }
 
-    public List<UserPlantSummaryDto> updateWateringDaysForMultiplesUserPlants(long[] userPlantsIds) {
+    public List<UserPlantSummaryDto> updateWateringDaysForMultiplesUserPlants(List<Long> userPlantsIds) {
         List<UserPlantSummaryDto> summaries = new ArrayList<>();
 
-        for (long userPlantId : userPlantsIds) {
+        for (Long userPlantId : userPlantsIds) {
             UserPlantDetailsDto details = updateWateringDaysForOneUserPlant(userPlantId);
 
             //Conversion to summary

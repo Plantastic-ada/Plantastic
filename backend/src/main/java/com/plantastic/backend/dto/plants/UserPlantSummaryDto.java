@@ -3,7 +3,7 @@ package com.plantastic.backend.dto.plants;
 import java.time.LocalDate;
 
 public record UserPlantSummaryDto(
-        long id,
+        Long id,
         String nickname,
         String commonName,
         LocalDate lastWatering,

@@ -16,11 +16,11 @@ public interface UserPlantRepository extends JpaRepository<UserPlant, Long> {
             "up.id, up.nickname, p.commonName, up.lastWatering, up.nextWatering, p.imageUrl, up.imageUrl) " +
             "FROM UserPlant up JOIN up.plant p " +
             "WHERE up.user.id = :userId")
-    List<UserPlantSummaryDto> findDigitalGardenByUserId(@Param("userId") long userId);
+    List<UserPlantSummaryDto> findDigitalGardenByUserId(@Param("userId") Long userId);
     
     @Query("SELECT new com.plantastic.backend.dto.plants.UserPlantDetailsDto(" +
             "up.id, up.nickname, p.commonName, up.acquisitionDate, p.scientificName, up.lastWatering, up.nextWatering, p.watering, p.imageUrl, up.imageUrl, p.lightExposure) " +
             "FROM UserPlant up JOIN up.plant p " +
             "WHERE up.id = :userPlantId")
-    UserPlantDetailsDto findUserPlantDetailsById(@Param("userPlantId") long userPlantId);
+    UserPlantDetailsDto findUserPlantDetailsById(@Param("userPlantId") Long userPlantId);
 }

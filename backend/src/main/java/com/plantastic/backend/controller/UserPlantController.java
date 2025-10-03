@@ -31,19 +31,19 @@ public class UserPlantController {
     }
 
     @GetMapping("/details/{id}")
-    public ResponseEntity<UserPlantDetailsDto> getUserPlantDetailsById(@PathVariable("id") long userPlantId) {
+    public ResponseEntity<UserPlantDetailsDto> getUserPlantDetailsById(@PathVariable("id") Long userPlantId) {
         UserPlantDetailsDto userPlantDetailsDto = userPlantService.getUserPlantDetailsById(userPlantId);
         return ResponseEntity.ok(userPlantDetailsDto);
     }
 
     @PatchMapping("/water-one/{id}")
-    public ResponseEntity<UserPlantDetailsDto> waterUserPlantbyId(@PathVariable("id") long userPlantId) {
+    public ResponseEntity<UserPlantDetailsDto> waterUserPlantbyId(@PathVariable("id") Long userPlantId) {
         UserPlantDetailsDto userPlantDetailsDto = userPlantService.updateWateringDaysForOneUserPlant(userPlantId);
         return ResponseEntity.ok(userPlantDetailsDto);
     }
 
     @PatchMapping("/water-multiples")
-    public ResponseEntity<List<UserPlantSummaryDto>> waterMultiplesUserPlantByIds(@RequestBody long[] userPlantIds) {
+    public ResponseEntity<List<UserPlantSummaryDto>> waterMultiplesUserPlantByIds(@RequestBody List<Long> userPlantIds) {
         List<UserPlantSummaryDto> summaries = userPlantService.updateWateringDaysForMultiplesUserPlants(userPlantIds);
         return ResponseEntity.ok(summaries);
     }
