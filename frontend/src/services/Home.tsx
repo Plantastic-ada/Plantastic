@@ -46,7 +46,7 @@ function Home() {
     const fetchPlants = async () => {
       try {
         // ⚠️ PROBLÈME ICI : tu dois utiliser fetchAPI avec l'URL complète
-        const response = await fetchAPI("/my-digital-garden", {
+        const response = await fetchAPI("/me/my-digital-garden", {
           method: "GET",
         });
 
