@@ -18,9 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 public class Plant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "api_id")
-    private long apiId;
+    private Long apiId;
     @Column(name = "common_name")
     private String commonName;
     @Column(name = "other_name")
@@ -73,7 +73,7 @@ public class Plant {
     }
 
     //Create a plant from API
-    public Plant(PlantDetailApiResponse detailPlant, CareGuideApiResponse careGuide, int apiId) {
+    public Plant(PlantDetailApiResponse detailPlant, CareGuideApiResponse careGuide, Long apiId) {
         //Set details
         this.setApiId(apiId);
         this.commonName = StringUtil.emptyStringToNull(detailPlant.getCommonName());

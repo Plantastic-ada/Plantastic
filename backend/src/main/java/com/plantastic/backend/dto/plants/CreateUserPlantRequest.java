@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class CreateUserPlantRequest {
-    private long plantId;
+    private Long plantId;
     private String nickname;
     private LocalDate acquisitionDate;
     private LocalDate lastWatering;
