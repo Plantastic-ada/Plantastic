@@ -14,7 +14,8 @@ import 'flowbite'
 
   const root = document.getElementById('root')!;
   ReactDOM.createRoot(root).render(
-    <React.StrictMode>
+    //remove to deploy <React.StrictMode> 
+    <React.StrictMode> 
       <BrowserRouter>
           <App />
       </BrowserRouter>

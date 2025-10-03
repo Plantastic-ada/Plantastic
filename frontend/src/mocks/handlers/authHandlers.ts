@@ -50,13 +50,13 @@ export const loginHandlers = [
       return HttpResponse.json({ message: "Invalid input" }, { status: 400 });
     }
 
-    const { pseudoOrEmail, password } = result.data;
-    const isEmail = z.email().safeParse(pseudoOrEmail).success;
+    const { username, password } = result.data;
+    const isEmail = z.email().safeParse(username).success;
 
     const isValidLogin =
       password === mockUser.password &&
-      ((!isEmail && pseudoOrEmail === mockUser.pseudo) ||
-        (isEmail && pseudoOrEmail === mockUser.email));
+      ((!isEmail && username === mockUser.username) ||
+        (isEmail && username === mockUser.email));
 
     if (isValidLogin) {
       const newToken = generateToken();
@@ -65,7 +65,7 @@ export const loginHandlers = [
       return HttpResponse.json(
         sanitizeUser({
           id: 1,
-          pseudo: mockUser.pseudo,
+          username: mockUser.username,
           email: mockUser.email,
           password: mockUser.password,
         }),
@@ -138,7 +138,7 @@ export const authStatusHandlers = [
     return HttpResponse.json(
       sanitizeUser({
         id: 1,
-        pseudo: mockUser.pseudo,
+        username: mockUser.username,
         email: mockUser.email,
         password: mockUser.password,
       }),

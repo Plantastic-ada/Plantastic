@@ -1,12 +1,19 @@
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const fetchAPI = async (endpoint: string, options: RequestInit = {}) => {
+  const defaultHeaders: HeadersInit = {};
+  
+  // Add a Content6type only if it's not defined
+  if (!options.headers || !('Content-Type' in options.headers)) {
+    defaultHeaders['Content-Type'] = 'application/json';
+  }
+
   return fetch(`${API_URL}${endpoint}`, {
+    credentials: "include", // includes cookies
     ...options,
-    credentials: "include", 
     headers: {
-      "Content-Type": "application/json",
-      ...options.headers,
+      ...defaultHeaders,
+      ...options.headers, 
     },
   });
 };

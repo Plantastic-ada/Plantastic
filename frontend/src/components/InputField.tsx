@@ -30,7 +30,6 @@ export default function InputField({
           "bg-gray-50",
           error ? "border border-red-500 text-red-700" : "border border-gray-300 text-gray-900"
         )}
-        required
       />
       {error && <p className="text-red-500 text-xs mt-1">{error.message}</p>}
     </div>
