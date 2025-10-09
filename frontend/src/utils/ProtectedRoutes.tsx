@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext";
 
 const ProtectedRoutes = () => {
   console.error('🔵🔵🔵 PROTECTED ROUTES CALLED 🔵🔵🔵'); 
-  alert('ProtectedRoutes appelé !');
   const { isAuthenticated, checkAuth } = useAuth();
 
   // 🔍 DEBUGGAGE

@@ -7,9 +7,14 @@
     --font-bellota: "Bellota";
 } */
 
-@layer components {
-  #navbar-button {
-    @apply hover:text-yellow-200 active:-translate-y-1 transition; 
+/* @layer components {
+  #navbar_button {
+    @apply 
   }
+} */
 
+@media only screen and (max-width: 400px) {
+  #navbar_icon {
+    font-size: 36px;
+  }
 }
