@@ -12,12 +12,6 @@ export default function LabelBottomNavigation() {
 
   const isActive = (path: string) => location.pathname === path;
 
-  // const buttonClass =
-  //   "group hover:text-yellow-200 hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-1";
-
-  // const iconClass =
-  //   "w-8 h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 xl:w-10  xl:h-10 2xl:w-14 2xl:h-14 transition-all group-hover:text-yellow-200 group-hover:scale-110";
-  // Remplacez const buttonClass par :
   const getButtonClass = (path: string) => {
     const baseClass =
       "group hover:-translate-y-1 transition-all duration-300 flex flex-col items-center justify-center gap-1";
@@ -96,8 +90,8 @@ export default function LabelBottomNavigation() {
           onClick={() => navigate("/add-plant")}
           className="
       rounded-full w-full h-full 
-      bg-gradient-to-br from-[#2D3D2D] from-50% to-black 
-      hover:from-black hover:to-[#2D3D2D] shadow-lg hover:shadow-xl
+      bg-gradient-to-br from-[#2D3D2D] from-50% to-[#232e23]
+      hover:from-[#232e23] hover:to-[#2D3D2D] shadow-lg hover:shadow-xl
       hover:-translate-y-1
       transition duration-700
       flex items-center justify-center
