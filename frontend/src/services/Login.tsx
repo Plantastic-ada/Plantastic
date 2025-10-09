@@ -38,13 +38,15 @@ export function Login() {
       const response = await fetchAPI("/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded", // overrides the defalut set in api.ts
+          "Content-Type": "application/x-www-form-urlencoded", // overrides the default set in api.ts
         },
         body: new URLSearchParams(data).toString(),
       });
 
       if (response.ok) {
         nav("/", { replace: true });
+        await checkAuth();
+        console.debug("Login successfull")
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Invalid username or password");
@@ -132,3 +134,7 @@ export function Login() {
 }
 
 export default Login;
+function checkAuth() {
+  throw new Error("Function not implemented.");
+}
+

@@ -1,6 +1,6 @@
-import type { Plant } from "../types/Plant";
+import type { UserPlant } from "../types/UserPlant";
 
-export default function PlantCard({ plant }: { plant: Plant }) {
+export default function PlantCard({ plant }: { plant: UserPlant }) {
   return (
     <div
       id="plant-card"
@@ -9,17 +9,20 @@ export default function PlantCard({ plant }: { plant: Plant }) {
       <div
         id="plant-img"
         className="w-28 h-28 flex-shrink-0 rounded-lg bg-cover bg-center"
-        style={{ backgroundImage: `url(${plant.image})` }}
+        style={{ backgroundImage: `url(${plant.imageUrl})` }}
       />
 
-      <div id="plant-card-desc" className="flex-1 flex flex-col font-bellota p-2 justify-between">
+      <div
+        id="plant-card-desc"
+        className="flex-1 flex flex-col font-bellota p-2 justify-between"
+      >
         {/* Infos compactes */}
         <div>
           <h3 className="text-sm font-bold text-gray-900 truncate">
-            {plant.commonName}
+            {plant.nickname}
           </h3>
           <p className="text-xs text-gray-600 italic truncate">
-            {plant.scientificName}
+            Acquisition date: {plant.commonName}
           </p>
           <p className="text-xs text-gray-500 truncate">
             Last watering: {plant.lastWatering}

@@ -1,10 +1,10 @@
-export interface Plant {
+export interface UserPlant {
   id: number;
-  image: string;
-  commonName: string;
-  scientificName: string;
+  nickname: string;
+  commonName: string,
   lastWatering: string;
   nextWatering: string;
+  imageUrl: string;
 }
 
 export interface CreatePlantData {
