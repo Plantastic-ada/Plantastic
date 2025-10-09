@@ -6,7 +6,7 @@ import { HiOutlineLightBulb } from "react-icons/hi2";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router";
 
-export default function LabelBottomNavigation() {
+export default function BottomNavigation() {
   let navigate = useNavigate();
   let location = useLocation();
 
