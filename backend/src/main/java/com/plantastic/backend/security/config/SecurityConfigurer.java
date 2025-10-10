@@ -44,7 +44,7 @@ public class SecurityConfigurer {
                     .requestMatchers("/", LOGIN_ROUTE, REGISTER_ROUTE).permitAll()
                     .anyRequest().authenticated()
                 )
-            // Exception handling : return 401 Unauthorized instead of 200 with default HTML login form
+            // Exception handling : return 401 Unauthorized instead of 200 with default HTML login form if user is not authenticated
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint((request, response, authException) -> {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
