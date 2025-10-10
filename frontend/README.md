@@ -76,11 +76,6 @@ npm install zod
 #**DOM PURIFY**
 DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG.
 
-
-#**MATERIAL UI**
-MUI offers a comprehensive suite of free UI tools to help you ship new features faster.
-(https://mui.com/)
-
 #**REACT ICONS**
 Include popular icons in your React projects easily with react-icons, which utilizes ES6 imports that allows you to include only the icons that your project is using.
 (https://react-icons.github.io/react-icons/)
@@ -95,12 +90,6 @@ Starting with logger in React: https://www.meticulous.ai/blog/getting-started-wi
 #**TBD**
 ~~8/07: Implement style components (defined but not used)~~
 
-include ChakraUI= component system for building products with speed
-https://chakra-ui.com/
-
-include react-aria= Over 50 components with built-in behavior, adaptive interactions, top-tier accessibility, and internationalization out of the box, ready for your styles.
-https://react-spectrum.adobe.com/react-aria/index.html
-
 ~~29/08 : 
 Implements floating action button for add a plant in the home page.~~
 
@@ -111,25 +100,26 @@ Left to do :
 - Header
 - Profile
 - Watering button
-- plant card & mocks? 
+- ~~plant card & mocks?~~ 
 - see how to implements shapes
 - explore the accessibility button
-- highlight icon if on page
+- ~~highlight icon if on page~~
 
 
 
 TODO:
 - HOME PAGE
-- IMPROVE RESPONSIVENESS ON NAV BAR
+- ~~IMPROVE RESPONSIVENESS ON NAV BAR~~
 - TESTS AUTH
-- REDIRECTION WHEN REGISTER TO LOGIN PAGE
-- IMPLEMENT PWA
+- ~~REDIRECTION WHEN REGISTER TO LOGIN PAGE~~
+- ~~IMPLEMENT PWA~~
 - SWITCH MOCKS UP TO ENGLISH
+- USER PERMISSION TO STORE COOKIE ?? 
 - ~~PAGES ARCHITECTURE~~
 26/09
-Reimplement PWA (already pushed)
+~~Reimplement PWA (already pushed)~~
 
 2/10
-- login ✔
-- register ✔
-- to fix LOGOUT ✖
+- ~~login~~ ✔
+- ~~register~~ ✔
+- ~~LOGOUT~~ ✖

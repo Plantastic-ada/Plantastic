@@ -122,7 +122,6 @@ export default function Login() {
                 linkText="Register here"
                 to="/signup"
               />
-
               {error && (
                 <span className="text-red-500 block mt-2">{error}</span>
               )}
