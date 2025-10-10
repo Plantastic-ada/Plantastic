@@ -11,9 +11,11 @@ import FooterLink from "../components/FooterCard";
 import Description from "../components/Description";
 import BackgroundWrapper from "../components/BackgroundWrapper";
 import { fetchAPI } from "../utils/api";
+import { useAuth } from "../context/AuthContext";
 
-export function Login() {
+export default function Login() {
   // Set up states and routing for connection
+  const { resetAuthState } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const nav = useNavigate();
@@ -45,8 +47,7 @@ export function Login() {
 
       if (response.ok) {
         nav("/", { replace: true });
-        await checkAuth();
-        console.debug("Login successfull")
+        resetAuthState()
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Invalid username or password");
@@ -131,10 +132,5 @@ export function Login() {
       </div>
     </BackgroundWrapper>
   );
-}
-
-export default Login;
-function checkAuth() {
-  throw new Error("Function not implemented.");
 }
 

@@ -7,12 +7,6 @@ import "./index.css";
 import "flowbite";
 import { AuthProvider } from "./context/AuthContext";
 
-// async function prepare() {
-//   if (import.meta.env.DEV) {
-//     // Starts MSW in dev mode
-//     await worker.start();
-//   }
-
 const root = document.getElementById("root")!;
 ReactDOM.createRoot(root).render(
   //remove to deploy <React.StrictMode>
@@ -24,6 +18,3 @@ ReactDOM.createRoot(root).render(
     </BrowserRouter>
   </React.StrictMode>
 );
-// }
-
-// prepare();

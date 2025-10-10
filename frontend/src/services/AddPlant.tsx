@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Advices  = () => {
   return (
     <div>Here, you can add a plant 🌿</div>
