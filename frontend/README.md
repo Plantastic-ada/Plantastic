@@ -136,7 +136,12 @@ Reimplement PWA (already pushed)
 
 
 9/10 
-- fix response digital garden from 200 to 401 with JSON when not logged in
+- ~~fix response digital garden from 200 to 401 with JSON when not logged in~~
 - fix logout button in header
 - finish mock ups
+
+HEADER 
+Watering + logout button
+
+Create a plant Modal
 
