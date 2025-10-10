@@ -4,6 +4,8 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+//We can't use a Record there, because nickname & lastWatering are not mandatory
+
 @Data
 public class CreateUserPlantRequest {
     private Long plantId;
