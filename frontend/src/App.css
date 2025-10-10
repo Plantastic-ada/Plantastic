@@ -2,19 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @theme {
-    --font-montserrat: "Montserrat Alternates";
-    --font-bellota: "Bellota";
-} */
-
-/* @layer components {
-  #navbar_button {
-    @apply 
-  }
-} */
-
-@media only screen and (max-width: 400px) {
-  #navbar_icon {
-    font-size: 36px;
-  }
-}

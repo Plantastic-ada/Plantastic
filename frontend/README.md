@@ -133,3 +133,10 @@ Reimplement PWA (already pushed)
 - login ✔
 - register ✔
 - to fix LOGOUT ✖
+
+
+9/10 
+- fix response digital garden from 200 to 401 with JSON when not logged in
+- fix logout button in header
+- finish mock ups
+
