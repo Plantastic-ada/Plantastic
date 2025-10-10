@@ -1,59 +1,76 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchAPI } from "../utils/api";
-
-interface AuthContextType {
-  isAuthenticated: boolean | null;
-  checkAuth: () => Promise<void>;
-  logout: () => void;
-}
+import type { AuthContextType } from "../types/AuthContextType";
+import type { UserPlant } from "../types/UserPlant";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  console.log("🟢🟢🟢 AUTH PROVIDER RENDERED 🟢🟢🟢");
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const navigate = useNavigate();
 
-  const checkAuth = async () => {
-    console.log("🔍 checkAuth - Starting...");
+  // Returns data
+  const checkAuth = async (): Promise<UserPlant[] | null> => {
 
     try {
       const response = await fetchAPI("/me/my-digital-garden", {
         method: "GET",
       });
 
-      console.log("📡 checkAuth - Response status:", response.status);
-
+      // UNAUTHORIZED RESPONSE
       if (response.status === 401) {
-        console.log("❌ checkAuth - Unauthorized (401)");
         setIsAuthenticated(false);
         navigate("/login", { replace: true });
-        return;
+        return null;
       }
 
       if (response.ok) {
-        console.log("✅ checkAuth - Authenticated");
+        const data = await response.json();
         setIsAuthenticated(true);
+        return data; // returns plants but do not stores them
       } else {
-        console.log("⚠️ checkAuth - Unexpected status:", response.status);
         setIsAuthenticated(false);
+        return null;
       }
     } catch (error) {
-      console.error("❌ checkAuth - Error:", error);
+      setIsAuthenticated(false);
+      navigate("/login", { replace: true });
+      return null;
+    }
+  };
+
+  // LOGOUT 
+  const logout = async (): Promise<void> => {
+    console.debug("Logging out...");
+
+    try {
+      const response = await fetchAPI("/auth/logout", {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        console.debug("Logout successful");
+      } else {
+        console.warn("Logout returned non-OK status:", response.status);
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      // CLEANS LOCAL STORAGE EVEN IF IT'S EMPTY
+      localStorage.removeItem("authToken");
       setIsAuthenticated(false);
       navigate("/login", { replace: true });
     }
   };
 
-  const logout = () => {
-    console.log("🚪 Logging out...");
-    setIsAuthenticated(false);
-    navigate("/login", { replace: true });
+  // RESET AUTH STATE TO NULL AND NOT FALSE
+  const resetAuthState = () => {
+    setIsAuthenticated(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, checkAuth, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, checkAuth, logout, resetAuthState }}>
       {children}
     </AuthContext.Provider>
   );

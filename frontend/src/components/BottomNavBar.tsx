@@ -1,4 +1,3 @@
-import * as React from "react";
 import { PiPlantBold } from "react-icons/pi";
 import { BiSolidBookBookmark } from "react-icons/bi";
 import { RiAddLargeLine } from "react-icons/ri";

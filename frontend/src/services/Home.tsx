@@ -1,66 +1,40 @@
-import { useNavigate } from "react-router-dom";
 import BackgroundWrapper from "../components/BackgroundWrapper";
 import BottomNavBar from "../components/BottomNavBar";
 import { Header } from "../components/Header";
 import PlantCard from "../components/PlantCard";
 import { useEffect, useState } from "react";
 import type { UserPlant } from "../types/UserPlant";
-import { fetchAPI } from "../utils/api";
+import { useAuth } from "../context/AuthContext";
 
-function Home() {
-  const navigate = useNavigate();
+export default function Home() {
+  const { checkAuth, logout } = useAuth();
   const [plants, setPlants] = useState<UserPlant[]>([]);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleLogout = async () => {
-    if (isLoggingOut) return;
-    setIsLoggingOut(true);
-
-    try {
-      const response = await fetchAPI("/auth/logout", {
-        method: "POST",
-      });
-
-      if (response.ok) {
-        console.debug("Logout successful");
-        try {
-          const data = await response.text();
-          console.log("Backend response:", data);
-        } catch (e) {}
-      } else {
-        console.warn("Logout returned non-OK status:", response.status);
-      }
-    } catch (error) {
-      console.error("Logout failed:", error);
-    } finally {
-      // Removes token from local storage if it's needed
-      localStorage.removeItem("authToken");
-      console.debug("You are successfully logged out!");
-
-      navigate("/login", { replace: true });
-    }
-  };
-
-  useEffect(() => {
-    const fetchPlants = async () => {
-      try {
-        const response = await fetchAPI("/me/my-digital-garden", {
-          method: "GET",
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
+    useEffect(() => {
+    const initializePage = async () => {
+      setIsLoading(true);
+      const data = await checkAuth(); 
+      
+      if (data) {
         setPlants(data);
-      } catch (error) {
-        console.error("Failed to fetch plants:", error);
       }
+      
+      setIsLoading(false);
     };
 
-    fetchPlants();
+    initializePage();
   }, []);
+
+    if (isLoading) {
+    return (
+      <BackgroundWrapper>
+        <div className="flex items-center justify-center h-screen">
+          <p className="text-gray-500"> ⏳ Loading...</p>
+        </div>
+      </BackgroundWrapper>
+    );
+  }
 
   return (
     <BackgroundWrapper>
@@ -77,16 +51,13 @@ function Home() {
         </div>
 
         <button
-          onClick={handleLogout}
+          onClick={logout}
           className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
-          disabled={isLoggingOut}
         >
-          {isLoggingOut ? "Logging out..." : "Logout"}
+          Logout
         </button>
       </main>
       <BottomNavBar />
     </BackgroundWrapper>
   );
 }
-
-export default Home;
