@@ -2,7 +2,12 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        montserrat:['"Montserrat Alternates"', 'sans-serif'],
+        bellota: ['"Bellota"', 'cursive']
+      }
+    },
   },
   plugins: [],
 };
