@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @theme {
-    --font-montserrat: "Montserrat Alternates";
-    --font-bellota: "Bellota";
-} */
 
 @layer components {
   #navbar-button {

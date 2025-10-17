@@ -9,7 +9,7 @@ import { AuthProvider } from "./context/AuthContext";
 
 const root = document.getElementById("root")!;
 ReactDOM.createRoot(root).render(
-  //remove to deploy <React.StrictMode>
+  // MUST REMOVE <React.StrictMode> TO DEPLOY
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>

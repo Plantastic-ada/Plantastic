@@ -1,7 +1,7 @@
-const Advices  = () => {
+const AddPlant  = () => {
   return (
     <div>Here, you can add a plant 🌿</div>
   )
 }
 
-export default Advices 
+export default AddPlant 
