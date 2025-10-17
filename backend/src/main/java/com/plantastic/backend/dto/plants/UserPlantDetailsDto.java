@@ -5,7 +5,7 @@ import com.plantastic.backend.models.types.WateringFrequency;
 import java.time.LocalDate;
 
 public record UserPlantDetailsDto(
-        long id,
+        Long id,
         String nickname,
         String commonName,
         LocalDate acquisitionDate,
@@ -17,7 +17,7 @@ public record UserPlantDetailsDto(
         String userPlantImageUrl,
         String lightExposure
 ) {
-    public UserPlantDetailsDto(long id,
+    public UserPlantDetailsDto(Long id,
                                String nickname,
                                String commonName,
                                LocalDate acquisitionDate,

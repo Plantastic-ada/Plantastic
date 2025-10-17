@@ -60,7 +60,7 @@ public class PlantImportService {
         log.info("✅ Import done for{} plants.", plantSummaries.size());
     }
 
-    public void importOnePlantFromApi(int apiId) {
+    public void importOnePlantFromApi(Long apiId) {
         Optional<Plant> plantOpt = createPlantByIdFromApi(apiId);
         if (plantOpt.isPresent()) {
             Plant plant = plantOpt.get();
@@ -71,7 +71,7 @@ public class PlantImportService {
         }
     }
 
-    private Optional<Plant> createPlantByIdFromApi(int apiId) {
+    private Optional<Plant> createPlantByIdFromApi(Long apiId) {
         try {
             //Plant details
             PlantDetailApiResponse detail = restTemplate.getForObject(
@@ -104,7 +104,10 @@ public class PlantImportService {
             //Verify if a plant existe in db with this apiID
             //If a plant exists, we update this one, otherwise we create a new one
             Optional<Plant> existingPlant = plantRepository.findByApiId(apiId);
-            Plant plant = existingPlant.orElseGet(() -> new Plant(detail, careGuide, apiId));
+            Plant plant = existingPlant.orElseGet(() -> {
+                assert careGuide != null;
+                return new Plant(detail, careGuide, apiId);
+            });
 
             return Optional.of(plant);
         } catch (Exception e) {
@@ -116,7 +119,7 @@ public class PlantImportService {
     public void importAllPlantsFromJson(List<PlantDtoFromJson> plantsList) {
         for (PlantDtoFromJson jsonPLant : plantsList) {
 
-            int jsonPlantApiId = (int) jsonPLant.getApiId();
+            Long jsonPlantApiId = jsonPLant.getApiId();
 
             Optional<Plant> existingPlant = plantRepository.findByApiId(jsonPlantApiId);
 

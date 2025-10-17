@@ -1,7 +1,7 @@
 package com.plantastic.backend.dto.plants;
 
 public record PlantSummaryDto(
-        long id,
+        Long id,
         String commonName,
         String scientificName,
         String imageUrl
