@@ -1,8 +1,8 @@
-export interface UserPlant {
+export interface CreatePlantData {
 	id: number;
-	nickname: string;
+	image: string;
 	commonName: string;
+	scientificName: string;
 	lastWatering: string;
 	nextWatering: string;
-	imageUrl: string;
 }
