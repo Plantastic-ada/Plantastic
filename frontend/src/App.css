@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @theme {
-    --font-montserrat: "Montserrat Alternates";
-    --font-bellota: "Bellota";
-} */
+
+@layer components {
+  #navbar-button {
+    @apply hover:text-yellow-200 active:-translate-y-1 transition; 
+  }
+
+}

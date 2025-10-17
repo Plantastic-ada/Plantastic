@@ -1,12 +1,15 @@
-// import { describe, expect, it } from "vitest";
-// import { mockUser } from "../mocks/mockUser"
+import { describe, expect, it } from "vitest";
+import { mockUser } from "../mocks/mockUser";
+import { loginSchema } from "../schemas/loginSchema";
 
-// describe("LoginSchema validation", () => {
-//   it("logs successfully with correct credentials with MSW", async () => {
-//     const result = await ({
-//       email: mockUser.email,
-//       password: mockUser.password,
-//     });
+describe("Login schema validation", () => {
+  it("successfull login with correct credentials", async () => {
+    const credentials = {
+      pseudoOrEmail: mockUser.email,
+      password: mockUser.password,
+    };
 
-//   })
-//   });
+    const result = loginSchema.safeParse(credentials);
+    expect(result.success).toBe(true);
+  });
+});

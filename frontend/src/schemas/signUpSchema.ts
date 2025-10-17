@@ -1,13 +1,11 @@
 import { z } from "zod";
-import { sanitize } from "../utils/sanitize";
 
 export const signUpSchema = z
   .object({
-    pseudo: z
+    email: z.email("Invalid email format"),
+    username: z
       .string()
-      .min(3, "Must be at least 3 characters")
-      .transform(sanitize),
-    email: z.email("Invalid email format").transform(sanitize),
+      .min(3, "Must be at least 3 characters"),
     password: z
       .string()
       .min(8, "Your password is too short")
@@ -24,7 +22,7 @@ export const signUpSchema = z
         /[#?!@$ %^&*-]/,
         "Your password must contain at least one special character"
       ),
-    confirmPassword: z.string().transform(sanitize),
+    confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

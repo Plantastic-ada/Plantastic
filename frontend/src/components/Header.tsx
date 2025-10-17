@@ -1,0 +1,28 @@
+import logo from "@/assets/img/plantastic_logo.png";
+import { PiUserCircleGearFill } from "react-icons/pi";
+
+export const Header = () => {
+  return (
+    <div className="sticky top-0 z-20 bg-transparent h-32 ">
+    <div id="header" className="relative ">
+      <img
+        src={logo}
+        className="w-24 h-24 ml-4
+          sm:w-24 sm:h-32 lg:w-48 sm:ml-5
+          md: md:ml-6
+          lg: lg:ml-1
+          2xl:h-48 2xl:ml-6 
+          object-contain"
+      />
+      <PiUserCircleGearFill
+        color="white"
+        className="w-14 h-14 mr-6
+          sm:w-16 sm:h-16 sm:mr-4 
+          md:w-14 md:h-14 md:mr-8
+          2xl:w-20  2xl:h-20  2xl:mr-10 
+          absolute top-0 right-0"
+      />
+    </div>
+    </div>
+  );
+};
