@@ -33,10 +33,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return data; // returns plants but do not stores them
       } else {
         setIsAuthenticated(false);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return null;
       }
     } catch (_error) {
+      console.error("checkAuth - Error:", _error); 
       setIsAuthenticated(false);
       navigate("/login", { replace: true });
       return null;
