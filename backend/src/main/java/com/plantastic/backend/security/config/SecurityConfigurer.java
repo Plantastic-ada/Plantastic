@@ -4,7 +4,6 @@ import com.plantastic.backend.security.handler.CustomLoginFailureHandler;
 import com.plantastic.backend.security.handler.CustomLoginSuccessHandler;
 import com.plantastic.backend.security.handler.CustomLogoutSuccessHandler;
 import com.plantastic.backend.security.user.UserDetailsImplService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -39,18 +38,10 @@ public class SecurityConfigurer {
     public SecurityFilterChain filterChain(HttpSecurity http, Environment env) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", LOGIN_ROUTE, REGISTER_ROUTE).permitAll()
-                        .anyRequest().authenticated()
-                )
-                // Exception handling : return 401 Unauthorized instead of 200 with default HTML login form if user is not authenticated
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.setContentType("application/json");
-                            response.getWriter().write("{\"error\":\"User is not authenticated\"}");
-                        })
+            .cors(Customizer.withDefaults())
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/", LOGIN_ROUTE, REGISTER_ROUTE).permitAll()
+                    .anyRequest().authenticated()
                 );
 
         //Login with cookie session
@@ -75,6 +66,7 @@ public class SecurityConfigurer {
 
         return http.build();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
