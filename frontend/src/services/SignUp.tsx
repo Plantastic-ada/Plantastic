@@ -29,6 +29,7 @@ const SignUp: React.FC = () => {
     formData: SignUpFormData
   ) => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { confirmPassword, ...registerData } = formData;
       const response = await fetchAPI("/auth/register", {
         method: "POST",

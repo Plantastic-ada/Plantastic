@@ -1,5 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
+/* eslint-disable no-undef */
 export const fetchAPI = async (endpoint: string, options: RequestInit = {}) => {
   const defaultHeaders: HeadersInit = {};
   

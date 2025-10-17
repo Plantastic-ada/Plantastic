@@ -4,6 +4,8 @@ import { fetchAPI } from "../utils/api";
 import type { AuthContextType } from "../types/AuthContextType";
 import type { UserPlant } from "../types/UserPlant";
 
+/* eslint-disable react-refresh/only-export-components */
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -31,9 +33,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return data; // returns plants but do not stores them
       } else {
         setIsAuthenticated(false);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return null;
       }
-    } catch (error) {
+    } catch (_error) {
       setIsAuthenticated(false);
       navigate("/login", { replace: true });
       return null;

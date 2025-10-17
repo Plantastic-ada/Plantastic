@@ -52,7 +52,7 @@ export default function Login() {
         const errorData = await response.json();
         setError(errorData.message || "Invalid username or password");
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred while trying to log in, please try again.");
     } finally {
       setLoading(false);
