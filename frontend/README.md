@@ -142,6 +142,10 @@ Reimplement PWA (already pushed)
 
 HEADER 
 Watering + logout button
+Remove DOMpurify
 
 Create a plant Modal
+
+MODAL 
+https://www.youtube.com/watch?v=1CN7C6u31zA
 
