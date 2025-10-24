@@ -4,11 +4,16 @@ import { RiAddLargeLine } from "react-icons/ri";
 import { HiOutlineLightBulb } from "react-icons/hi2";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router";
+import Modal from './Modal';
+import Form from "./Form"
+import { useState } from "react";
+
 
 export default function BottomNavigation() {
   let navigate = useNavigate();
   let location = useLocation();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const isActive = (path: string) => location.pathname === path;
 
   const getButtonClass = (path: string) => {
@@ -86,7 +91,7 @@ export default function BottomNavigation() {
       <div className={AddButton}>
         <button
           id="add_button"
-          onClick={() => navigate("/add-plant")}
+          onClick={() => setIsModalOpen(true)}
           className="
       rounded-full w-full h-full 
       bg-gradient-to-br from-[#2D3D2D] from-50% to-[#232e23]
@@ -100,6 +105,9 @@ export default function BottomNavigation() {
             <RiAddLargeLine className={getIconClass("add-plant")} />
           </div>
         </button>
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <Form onClose={() => setIsModalOpen(false)}></Form>
+        </Modal>
       </div>
       <div
         id="midddle_navbar"
