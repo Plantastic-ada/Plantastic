@@ -105,7 +105,7 @@ export default function BottomNavigation() {
             <RiAddLargeLine className={getIconClass("add-plant")} />
           </div>
         </button>
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
           <Form onClose={() => setIsModalOpen(false)}></Form>
         </Modal>
       </div>
