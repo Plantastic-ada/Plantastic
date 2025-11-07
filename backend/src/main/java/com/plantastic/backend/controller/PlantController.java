@@ -31,7 +31,7 @@ public class PlantController {
     }
 
     @GetMapping("/encyclopedia")
-    public ResponseEntity<List<PlantEncyclopediaDto>> getAllPlantsEncylopedia() {
+    public ResponseEntity<List<PlantEncyclopediaDto>> getAllPlantsEncyclopedia() {
         List<PlantEncyclopediaDto> plants = plantService.getAllPlantsEncyclopedia();
         return ResponseEntity.ok(plants);
     }
