@@ -29,8 +29,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         if (authentication.getPrincipal() instanceof CustomUserDetails userDetails
                 && authentication.getPrincipal() != null) {
-                userId = userDetails.getId();
-            }
+            userId = userDetails.getId();
+        }
 
         log.info("User '{}' / '{}' has successfully logged in.", userId, authentication.getName());
 

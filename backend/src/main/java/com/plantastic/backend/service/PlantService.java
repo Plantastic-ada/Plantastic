@@ -1,5 +1,6 @@
 package com.plantastic.backend.service;
 
+import com.plantastic.backend.dto.plants.PlantEncyclopediaDto;
 import com.plantastic.backend.dto.plants.PlantSummaryDto;
 import com.plantastic.backend.repository.PlantRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,5 +15,9 @@ public class PlantService {
 
     public List<PlantSummaryDto> getAllPlantsSummaries() {
         return plantRepository.findAllPlantsSummaries();
+    }
+
+    public List<PlantEncyclopediaDto> getAllPlantsEncyclopedia() {
+        return plantRepository.findAllPlantsForEncyclopedia();
     }
 }
