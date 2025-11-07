@@ -7,6 +7,7 @@ import com.plantastic.backend.security.config.JwtUtil;
 import com.plantastic.backend.security.user.UserDetailsImplService;
 import com.plantastic.backend.service.UserService;
 import com.plantastic.backend.util.UserUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,24 +32,20 @@ public class AuthenticationController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> createRegisterResponse(@RequestBody RegisterRequest registerRequest) {
-        //Verify that the email doesn't exist in db and is valid
+    public ResponseEntity<String> createRegisterResponse(@Valid @RequestBody RegisterRequest registerRequest) {
         String emailToCheck = registerRequest.getEmail();
+        String usernameToCheck = registerRequest.getUsername();
+
+        //Verify that the email doesn't exist in db and is valid
         if (userService.emailExists(emailToCheck)) {
             log.warn("Email is already used: {}", emailToCheck);
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already used: " + emailToCheck);
         }
 
-        if (!UserUtil.isValidEmail(emailToCheck)) {
-            log.warn("Invalid email format : {}", emailToCheck);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid email format: " + emailToCheck);
-        }
-
         //Verify that username doesn't exist in db
-        String usernameToCheck = registerRequest.getUsername();
         if (userService.usernameExists(usernameToCheck)) {
             log.warn("Username is already used: {}", usernameToCheck);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already used: " + usernameToCheck);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username is already used: " + usernameToCheck);
         }
 
         userService.createUser(registerRequest);
