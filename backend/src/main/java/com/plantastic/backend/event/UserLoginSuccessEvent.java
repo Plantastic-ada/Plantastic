@@ -7,5 +7,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserLoginSuccessEvent {
     private final String username;
-
+    private final Long userId;
 }
