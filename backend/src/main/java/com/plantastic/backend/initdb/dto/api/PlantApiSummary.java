@@ -13,7 +13,7 @@ import lombok.Setter;
 public class PlantApiSummary {
 
     @JsonProperty("id")
-    private int apiId;
+    private Long apiId;
 
     @Override
     public String toString() {

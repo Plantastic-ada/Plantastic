@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Care {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column (name = "care_type",nullable = false)

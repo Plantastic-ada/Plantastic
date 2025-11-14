@@ -3,7 +3,9 @@ import type { UserPlant } from "./UserPlant";
 
 export interface AuthContextType {
   isAuthenticated: boolean | null;
-  checkAuth: () => Promise<UserPlant[] | null>;
+  isLoading: boolean;
+  plants: UserPlant[];
+  refreshAuth: () => Promise<void>; 
   logout: () => Promise<void>;
   resetAuthState: () => void;
 }

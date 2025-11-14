@@ -1,6 +1,9 @@
 package com.plantastic.backend.service;
 
 import com.plantastic.backend.dto.plants.CreateUserPlantRequest;
+import com.plantastic.backend.dto.plants.UserPlantDetailsDto;
+import com.plantastic.backend.dto.plants.UserPlantSummaryDto;
+import com.plantastic.backend.mapper.UserPlantMapper;
 import com.plantastic.backend.models.entity.Plant;
 import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.models.entity.UserPlant;
@@ -13,6 +16,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -20,6 +27,7 @@ public class UserPlantService {
     private final UserRepository userRepository;
     private final PlantRepository plantRepository;
     private final UserPlantRepository userPlantRepository;
+    private final UserPlantMapper userPlantMapper;
 
     public UserPlant createOneUserPlant(CreateUserPlantRequest request, CustomUserDetails currentUser) {
         //Get user
@@ -39,5 +47,34 @@ public class UserPlantService {
         //Create and save userPlant
         UserPlant userPlant = new UserPlant(user, plant, request);
         return userPlantRepository.save(userPlant);
+    }
+
+    public UserPlantDetailsDto getUserPlantDetailsById(Long userPlantId) {
+        return userPlantRepository.findUserPlantDetailsById(userPlantId);
+    }
+
+    //Update UserPlant's last watering & next watering
+    public UserPlantDetailsDto updateWateringDaysForOneUserPlant(Long userPlantId) {
+        UserPlant userPlant = userPlantRepository.findById(userPlantId)
+                .orElseThrow(() -> new EntityNotFoundException("UserPlant not found with id " + userPlantId));
+
+       userPlant.setLastWatering(LocalDate.now());
+       userPlant.setNextWatering();
+       userPlantRepository.save(userPlant);
+
+       return userPlantRepository.findUserPlantDetailsById(userPlantId);
+    }
+
+    public List<UserPlantSummaryDto> updateWateringDaysForMultiplesUserPlants(List<Long> userPlantsIds) {
+        List<UserPlantSummaryDto> summaries = new ArrayList<>();
+
+        for (Long userPlantId : userPlantsIds) {
+            UserPlantDetailsDto details = updateWateringDaysForOneUserPlant(userPlantId);
+
+            //Conversion to summary
+            UserPlantSummaryDto summary = userPlantMapper.toSummary(details);
+            summaries.add(summary);
+        }
+        return summaries;
     }
 }

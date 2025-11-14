@@ -13,7 +13,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlantDtoFromJson {
     @JsonProperty("api_id")
-    private long apiId;
+    private Long apiId;
     @JsonProperty("common_name")
     private String commonName;
     @JsonProperty("other_name")

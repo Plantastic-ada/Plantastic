@@ -1,6 +1,7 @@
 package com.plantastic.backend.security.handler;
 
 import com.plantastic.backend.event.UserLoginSuccessEvent;
+import com.plantastic.backend.security.user.CustomUserDetails;
 import com.plantastic.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,9 +25,17 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        log.info("User '{}' has successfully logged in.", authentication.getName());
+        Long userId = null;
+
+        if (authentication.getPrincipal() instanceof CustomUserDetails userDetails
+                && authentication.getPrincipal() != null) {
+                userId = userDetails.getId();
+            }
+
+        log.info("User '{}' / '{}' has successfully logged in.", userId, authentication.getName());
+
         // Update last connection
-        eventPublisher.publishEvent(new UserLoginSuccessEvent(authentication.getName()));
+        eventPublisher.publishEvent(new UserLoginSuccessEvent(authentication.getName(), userId));
 
         //Prepare JSON response
         request.getSession();
@@ -34,7 +43,10 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         String jsonResponse = String.format(
-                "{\"status\":\"success\",\"username\":\"%s\"}", authentication.getName()
+                "{\"status\":\"success\"," +
+                        "\"mail\":\"%s\"," +
+                        "\"id\":\"%s\"}"
+                , authentication.getName(), userId
         );
         response.getWriter().write(jsonResponse);
 

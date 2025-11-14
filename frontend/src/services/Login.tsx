@@ -15,7 +15,6 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   // Set up states and routing for connection
-  const { resetAuthState } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const nav = useNavigate();
@@ -29,6 +28,7 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   });
 
+  const { refreshAuth } = useAuth();
   const onSubmit = async (data: LoginFormData) => {
     // prevents double submit
     if (loading || isSubmitting.current) return; 
@@ -48,13 +48,14 @@ export default function Login() {
       });
 
       if (response.ok) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        await refreshAuth();
         nav("/", { replace: true });
-        resetAuthState()
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Invalid credentials");
       }
-    } catch (err) {
+    } catch {
       setError("An error occurred while trying to log in, please try again.");
     } finally {
       setLoading(false);
@@ -124,7 +125,6 @@ export default function Login() {
                 linkText="Register here"
                 to="/signup"
               />
-
               {error && (
                 <span className="text-red-500 block mt-2">{error}</span>
               )}

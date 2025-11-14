@@ -60,7 +60,7 @@ public class ConnectedUserController {
 
     @GetMapping("/my-digital-garden")
     public ResponseEntity<List<UserPlantSummaryDto>> getMyDigitalGarden(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<UserPlantSummaryDto> digitalGarden = userPlantRepository.findSummaryByUserId(userDetails.getId());
+        List<UserPlantSummaryDto> digitalGarden = userPlantRepository.findDigitalGardenByUserId(userDetails.getId());
 
         if (digitalGarden.isEmpty()) {
             log.warn("User with id {} seems to have no plants", userDetails.getId());
