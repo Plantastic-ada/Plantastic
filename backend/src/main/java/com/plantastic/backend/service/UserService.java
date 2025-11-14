@@ -29,7 +29,7 @@ public class UserService {
 
     @EventListener
     public void handleUserLoginSuccess(UserLoginSuccessEvent event) {
-        updateLastLogin(event.getUsername());
+        updateLastLogin(event.username());
     }
 
     /**
