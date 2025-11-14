@@ -3,18 +3,21 @@ package com.plantastic.backend.service;
 import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
 class UserServiceTest {
 
     @Mock
@@ -23,7 +26,7 @@ class UserServiceTest {
     private UserService userService;
 
     /**
-     *
+     * Must return an existant User using their email
      */
     @Test
     void testFindUserByUsernameOrEmailWithEmail() {
@@ -44,6 +47,9 @@ class UserServiceTest {
         Mockito.verify(userRepository, Mockito.never()).findByUsername(Mockito.anyString());
     }
 
+    /**
+     * Must return an existant User using their username
+     */
     @Test
     void testFindUserByUsernameOrEmailWithUsername() {
         //Arrange
@@ -63,6 +69,9 @@ class UserServiceTest {
         Mockito.verify(userRepository, Mockito.never()).findByEmail(Mockito.anyString());
     }
 
+    /**
+     * Must not return an existant User
+     */
     @Test
     void testFindUserByUsernameOrEmailWithAWrongUser() {
         //Arrange
