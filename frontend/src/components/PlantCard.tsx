@@ -22,7 +22,7 @@ export default function PlantCard({ plant }: { plant: UserPlant }) {
             {plant.nickname}
           </h3>
           <p className="text-xs text-gray-600 italic truncate">
-            Acquisition date: {plant.commonName}
+            Common name: {plant.commonName}
           </p>
           <p className="text-xs text-gray-500 truncate">
             Last watering: {plant.lastWatering}
