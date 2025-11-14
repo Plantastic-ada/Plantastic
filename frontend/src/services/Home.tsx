@@ -2,30 +2,31 @@ import BackgroundWrapper from "../components/BackgroundWrapper";
 import BottomNavBar from "../components/BottomNavBar";
 import { Header } from "../components/Header";
 import PlantCard from "../components/PlantCard";
-import { useEffect, useState } from "react";
-import type { UserPlant } from "../types/UserPlant";
+// import { useEffect, useState } from "react";
+// import type { UserPlant } from "../types/UserPlant";
 import { useAuth } from "../context/AuthContext";
 
 export default function Home() {
-  const { checkAuth, logout } = useAuth();
-  const [plants, setPlants] = useState<UserPlant[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { plants, isLoading, logout } = useAuth();
+  // // const { checkAuth, logout } = useAuth();
+  // const [plants, setPlants] = useState<UserPlant[]>([]);
+  // const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-    const initializePage = async () => {
-      setIsLoading(true);
-      const data = await checkAuth(); 
+  //   useEffect(() => {
+  //   const initializePage = async () => {
+  //     setIsLoading(true);
+  //     const data = await checkAuth(); 
       
-      if (data) {
-        setPlants(data);
-      }
+  //     if (data) {
+  //       setPlants(data);
+  //     }
       
-      setIsLoading(false);
-    };
+  //     setIsLoading(false);
+  //   };
 
-    initializePage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   initializePage();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
     if (isLoading) {
     return (

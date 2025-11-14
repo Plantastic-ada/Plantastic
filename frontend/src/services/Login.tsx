@@ -29,6 +29,7 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   });
 
+  const { refreshAuth } = useAuth();
   const onSubmit = async (data: LoginFormData) => {
     if (loading || isSubmitting.current) return; // prevents double submit
 
@@ -46,8 +47,12 @@ export default function Login() {
       });
 
       if (response.ok) {
+        console.log("✅ Login successful");
+        await new Promise(resolve => setTimeout(resolve, 100));
+        console.log("🔄 Calling refreshAuth...");
+        await refreshAuth();
+        console.log("🚀 Navigating to home");
         nav("/", { replace: true });
-        resetAuthState()
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Invalid username or password");
