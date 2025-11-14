@@ -55,6 +55,9 @@ export default tseslint.config({
 
 #**ESLINT ON CI/CD**
 Will be applied before the build by the dependency defined in package.json. by "eslint:github-action"
+#**RUN CI PRE PUSH**
+Check can be done before pushing by running *npm run check:ci*
+
 
 
 #**INSTALL REACT ROUTER**

@@ -19,23 +19,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   const verifyInitialAuth = async () => {
-    console.log("🔍 Verifying auth...");
     try {
       const response = await fetchAPI("/me/my-digital-garden", {
         method: "GET",
       });
-      console.log("📡 Response status:", response.status);
-      console.log(
-        "📡 Response content-type:",
-        response.headers.get("content-type")
-      );
       if (response.ok) {
         const data = await response.json();
-        console.log("✅ Plants loaded:", data);
         setPlants(data || []);
         setIsAuthenticated(true);
       } else {
-        console.log("❌ Response not OK");
         setIsAuthenticated(false);
         setPlants([]);
       }
@@ -82,7 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const resetAuthState = () => {
     setIsAuthenticated(null);
-    setPlants([]); // 👈 Nettoie les plantes
+    setPlants([]); 
   };
 
   return (
@@ -101,6 +93,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

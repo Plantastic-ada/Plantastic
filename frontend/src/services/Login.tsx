@@ -15,7 +15,6 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   // Set up states and routing for connection
-  const { resetAuthState } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const nav = useNavigate();
@@ -47,11 +46,8 @@ export default function Login() {
       });
 
       if (response.ok) {
-        console.log("✅ Login successful");
         await new Promise(resolve => setTimeout(resolve, 100));
-        console.log("🔄 Calling refreshAuth...");
         await refreshAuth();
-        console.log("🚀 Navigating to home");
         nav("/", { replace: true });
       } else {
         const errorData = await response.json();
