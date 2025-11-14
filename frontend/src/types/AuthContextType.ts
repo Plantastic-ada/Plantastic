@@ -1,5 +1,4 @@
 // Checks if the user is logged in, clears infos if logged out, retrieves users infos 
-
 import type { UserPlant } from "./UserPlant";
 
 export interface AuthContextType {

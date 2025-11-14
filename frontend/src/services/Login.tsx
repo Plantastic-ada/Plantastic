@@ -30,8 +30,9 @@ export default function Login() {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    if (loading || isSubmitting.current) return; // prevents double submit
-
+    // prevents double submit
+    if (loading || isSubmitting.current) return; 
+    
     isSubmitting.current = true;
     setLoading(true);
     setError("");
@@ -40,7 +41,8 @@ export default function Login() {
       const response = await fetchAPI("/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded", // overrides the default set in api.ts
+          // overrides the default set in api.ts
+          "Content-Type": "application/x-www-form-urlencoded", 
         },
         body: new URLSearchParams(data).toString(),
       });
@@ -50,7 +52,7 @@ export default function Login() {
         resetAuthState()
       } else {
         const errorData = await response.json();
-        setError(errorData.message || "Invalid username or password");
+        setError(errorData.message || "Invalid credentials");
       }
     } catch (err) {
       setError("An error occurred while trying to log in, please try again.");
