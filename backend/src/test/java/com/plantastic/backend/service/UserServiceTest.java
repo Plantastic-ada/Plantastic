@@ -153,7 +153,7 @@ class UserServiceTest {
     void testDeleteUserById() {
         //Act
         User userToDelete = userRepository.findByEmail(EXISTING_EMAIL).orElseThrow();
-        userRepository.delete(userToDelete);
+        userService.deleteUserById(userToDelete.getId());
 
         //Assert
         Optional<User> deletedUser = userRepository.findByEmail(EXISTING_EMAIL);
