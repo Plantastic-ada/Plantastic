@@ -52,6 +52,7 @@ public class UserService {
         return UserUtil.findByUsernameOrEmail(userRepository, usernameOrEmail);
     }
 
+    @Transactional
     public void createUser(RegisterRequest registerRequest) {
         if (UserUtil.isValidEmail(registerRequest.getEmail())) {
             User user = new User();
@@ -62,7 +63,7 @@ public class UserService {
             user.setUpdatedAt(LocalDateTime.now());
             user.setRole(UserRole.USER);
             user.setNotificationsConsent(false);
-            user.setNotificationsPreferences(NotificationsPreferences.STANDARD);
+            user.setNotificationsPreferences(null);
             user.setCameraConsent(false);
             userRepository.save(user);
         }
