@@ -3,6 +3,7 @@ package com.plantastic.backend.security.user;
 import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.models.types.UserRole;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor(force = true)
 public class CustomUserDetails implements UserDetails {
     private final Long id;
     private final String email;
