@@ -1,7 +1,7 @@
 export interface CreateUserPlantDto {
     plantId: number, 
-    nickname?: string,
+    nickname: string | null,
     acquisitionDate: string,
-    lastWatering?: string,
+    lastWatering: string | null,
     picture: string,
 }

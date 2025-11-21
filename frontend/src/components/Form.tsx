@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEventHandler } from "react";
+import { useEffect, useState } from "react";
 import type { FormProps } from "../types/FormProps";
 import { fetchAPI } from "../utils/api";
 import { type Plant } from "../types/Plant";
@@ -14,27 +14,41 @@ export default function Form({ onClose }: FormProps) {
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
   const [userPicture, setUserPicture] = useState<string | null>(null);
   const [apiMessage, setApiMessage] = useState<React.ReactNode>(null);
+  const [isPlantSelected, setIsPlantSelected] = useState(false);
 
-  useForm<CreateUserPlantDto>({
-    resolver: zodResolver(createPlantSchema),
-  });
+  const { register, handleSubmit, formState, setValue } =
+    useForm<CreateUserPlantDto>({
+      resolver: zodResolver(createPlantSchema),
+    });
 
   const onSubmit: SubmitHandler<CreateUserPlantDto> = async (
     formData: CreateUserPlantDto
   ) => {
     try {
-      const { ...registerData } = formData;
-      const response = await fetchAPI("//user-plants/create-one", {
+      const dataToSend = {
+        plantId: selectedPlant?.id,
+        nickname: formData.nickname,
+        acquisitionDate: formData.acquisitionDate,
+        lastWatering: formData.lastWatering,
+        picture: userPicture || selectedPlant?.imageUrl,
+      };
+      const response = await fetchAPI("/user-plants/create-one", {
         method: "POST",
-        body: JSON.stringify(registerData),
+        body: JSON.stringify(dataToSend),
       });
       const data = await response.text();
       if (!response.ok) {
         setApiMessage(`Error: ${data || "Error saving data"}`);
+      } else {
+        onClose();
       }
     } catch (error) {
       console.error(error);
       setApiMessage("An error occured.");
+    }
+    if (!selectedPlant) {
+      setApiMessage("Please select a plant first");
+      return;
     }
   };
 
@@ -55,28 +69,27 @@ export default function Form({ onClose }: FormProps) {
     fetchData();
   }, []);
 
+  // DEBOUNCING 
   useEffect(() => {
-    if (searchValue.trim() === "") {
-      setSuggestions([]);
-      return;
+    if (searchValue.trim().length < 3  || isPlantSelected) {
+        setSuggestions([])
+      return
     }
-
-    const filtered = allPlants.filter((plant) =>
-      plant.commonName.toLowerCase().includes(searchValue.toLowerCase())
-    );
-    setSuggestions(filtered);
-  }, [searchValue, allPlants]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("form submitted");
-    onClose();
-  };
+    const timeOutId = setTimeout(() => {
+      const filtered = allPlants.filter((plant) =>
+        plant.commonName.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      setSuggestions(filtered);
+    }, 300);
+    return () => {
+      clearTimeout(timeOutId);
+    };
+  }, [searchValue, allPlants, isPlantSelected]);
 
   const imageToDisplay = userPicture || selectedPlant?.imageUrl;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <h2 className="text-2-xl text-black font-bold mb-4">Add a plant</h2>
       <div>
         {/* PLANT SEARCH */}
@@ -95,10 +108,12 @@ export default function Form({ onClose }: FormProps) {
               <div
                 key={plant.id}
                 className="p-2 hover:bg-gray-100 cursor-pointer"
-                onClick={() => {
+                onMouseDown={() => {
                   setSearchValue(plant.commonName);
                   setSuggestions([]);
                   setSelectedPlant(plant);
+                  setValue("plantId", plant.id);
+                  setValue("picture", plant.imageUrl);
                 }}
               >
                 <span className="text-gray-800 text-sm flex">
@@ -129,6 +144,7 @@ export default function Form({ onClose }: FormProps) {
             if (file) {
               const imageUrl = URL.createObjectURL(file);
               setUserPicture(imageUrl);
+              setValue("picture", imageUrl);
             }
           }}
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
@@ -139,6 +155,7 @@ export default function Form({ onClose }: FormProps) {
           Name:
         </label>
         <input
+          {...register("nickname")}
           type="text"
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
         />
@@ -148,6 +165,7 @@ export default function Form({ onClose }: FormProps) {
           Acquisition date:
         </label>
         <input
+          {...register("acquisitionDate")}
           type="date"
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
         />
@@ -157,9 +175,15 @@ export default function Form({ onClose }: FormProps) {
           Last watering date :
         </label>
         <input
+          {...register("lastWatering")}
           type="date"
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
         />
+        {Object.keys(formState.errors).length > 0 && (
+          <div className="bg-red-100 p-2 rounded">
+            {JSON.stringify(formState.errors)}
+          </div>
+        )}
       </div>
 
       {/* SUBMIT FORM  */}
