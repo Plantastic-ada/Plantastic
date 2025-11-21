@@ -3,10 +3,8 @@ package com.plantastic.backend.controller;
 
 import com.plantastic.backend.dto.auth.RegisterRequest;
 import com.plantastic.backend.repository.UserRepository;
-import com.plantastic.backend.security.config.JwtUtil;
 import com.plantastic.backend.security.user.UserDetailsImplService;
 import com.plantastic.backend.service.UserService;
-import com.plantastic.backend.util.UserUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsImplService userDetailsImplService;
-    private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
