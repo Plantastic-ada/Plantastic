@@ -86,10 +86,10 @@ class UserPlantTest {
 
     @Test
     void setNextWateringTest() {
-        plant.setWatering("frequent");
+        plant.setWatering("average");
 
         UserPlant userPlant = new UserPlant(user, plant, request);
 
-        assertEquals(userPlant.getNextWatering(), userPlant.getLastWatering().plusDays(5));
+        assertEquals(userPlant.getNextWatering(), userPlant.getLastWatering().plusDays(10));
     }
 }
