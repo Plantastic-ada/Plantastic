@@ -13,6 +13,7 @@ export default function Form({ onClose }: FormProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
   const [userPicture, setUserPicture] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [apiMessage, setApiMessage] = useState<React.ReactNode>(null);
   const [isPlantSelected, setIsPlantSelected] = useState(false);
 
@@ -69,15 +70,16 @@ export default function Form({ onClose }: FormProps) {
     fetchData();
   }, []);
 
-  // DEBOUNCING 
+  // DEBOUNCING
   useEffect(() => {
-    if (searchValue.trim().length < 3  || isPlantSelected) {
-        setSuggestions([])
-      return
+    if (searchValue.trim().length < 3 || isPlantSelected) {
+      setSuggestions([]);
+      return;
     }
     const timeOutId = setTimeout(() => {
+      const lowerSearch = searchValue.toLowerCase();
       const filtered = allPlants.filter((plant) =>
-        plant.commonName.toLowerCase().includes(searchValue.toLowerCase())
+        plant.commonName.toLowerCase().includes(lowerSearch)
       );
       setSuggestions(filtered);
     }, 300);
@@ -98,36 +100,54 @@ export default function Form({ onClose }: FormProps) {
         </label>
         <input
           value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={(e) => {
+            setSearchValue(e.target.value);
+            setIsPlantSelected(false);
+          }}
+          onBlur={() => {
+            setSuggestions([]);
+          }}
           type="search"
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
         />
-        {suggestions.length > 0 && (
-          <div className="border rounded-lg mt-2 maw-h-60 overflow-y-auto bg-white">
-            {suggestions.map((plant) => (
-              <div
-                key={plant.id}
-                className="p-2 hover:bg-gray-100 cursor-pointer"
-                onMouseDown={() => {
-                  setSearchValue(plant.commonName);
-                  setSuggestions([]);
-                  setSelectedPlant(plant);
-                  setValue("plantId", plant.id);
-                  setValue("picture", plant.imageUrl);
-                }}
-              >
-                <span className="text-gray-800 text-sm flex">
-                  {plant.commonName} - {plant.scientificName}{" "}
-                  <img
-                    className="h-16 w-16"
-                    src={plant.imageUrl}
-                    alt={plant.commonName}
-                  />
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
+        <>
+          {suggestions.length > 0 && (
+            <div className="border rounded-lg mt-2 max-h-60 overflow-y-auto bg-white">
+              {suggestions.map((plant) => (
+                <div
+                  key={plant.id}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSearchValue(plant.commonName);
+                    setSelectedPlant(plant);
+                    setValue("plantId", plant.id);
+                    setValue("picture", plant.imageUrl);
+                    setSuggestions([]);
+                    setIsPlantSelected(true);
+                  }}
+                >
+                  <span className="text-gray-800 text-sm flex">
+                    {plant.commonName} - {plant.scientificName}{" "}
+                    <img
+                      className="h-16 w-16"
+                      src={plant.imageUrl}
+                      alt={plant.commonName}
+                    />
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+          {suggestions.length === 0 &&
+            searchValue.length >= 3 &&
+            !isPlantSelected && (
+              <p className="text-gray-500 text-sm p-4 text-center">
+                No results found!
+              </p>
+            )}
+        </>
 
         {/* PICTURE  */}
         <label className="block text-sm text-black font-medium  mt-5 mb-1">

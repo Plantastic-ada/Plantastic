@@ -4,7 +4,8 @@ import { PiUserCircleGearFill } from "react-icons/pi";
 import { useNavigate } from "react-router";
 
 export const Header = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   return (
     <div className="sticky top-0 z-20 bg-transparent h-32 ">

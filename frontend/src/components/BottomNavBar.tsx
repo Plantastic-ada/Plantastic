@@ -10,8 +10,8 @@ import { useState } from "react";
 
 
 export default function BottomNavigation() {
-  let navigate = useNavigate();
-  let location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const isActive = (path: string) => location.pathname === path;
