@@ -18,15 +18,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserPlantServiceTest {
@@ -59,63 +60,75 @@ class UserPlantServiceTest {
         request = new CreateUserPlantRequest();
         request.setPlantId(plantId);
         request.setNickname("Mon ficus");
+        request.setAcquisitionDate(LocalDate.now());
 
         user = new User();
         user.setId(userId);
 
         plant = new Plant();
         plant.setId(plantId);
+        plant.setWatering("frequent");
     }
 
+
     @Test
-    void testCreateOneUserPlantSuccess() {
-        //Arrange
-        UserPlant savedUserPlant = new UserPlant(user, plant, request);
+    void testCreateOneUserPlantSuccess2() {
+        // Arrange
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(plantRepository.findById(plantId)).thenReturn(Optional.of(plant));
 
-        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        Mockito.when(plantRepository.findById(plantId)).thenReturn(Optional.of(plant));
-        Mockito.when(userPlantRepository.save(Mockito.any())).thenReturn(savedUserPlant);
+        // Repository return exactly the object we passed
+        when(userPlantRepository.save(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
-        //Act
+        ArgumentCaptor<UserPlant> captor = ArgumentCaptor.forClass(UserPlant.class);
+
+        // Act
         UserPlant result = userPlantService.createOneUserPlant(request, currentUser);
 
-        //Assert
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(userId, result.getUser().getId());
-        Assertions.assertEquals(plantId, result.getPlant().getId());
-        Assertions.assertEquals("Mon ficus", result.getNickname());
+        // We capture the exact object passed to the repo
+        verify(userPlantRepository).save(captor.capture());
+        UserPlant saved = captor.getValue();
 
-        Mockito.verify(userRepository).findById(userId);
-        Mockito.verify(plantRepository).findById(plantId);
-        Mockito.verify(userPlantRepository).save(Mockito.any(UserPlant.class));
+        // Assert :
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(saved, result);
+
+        Assertions.assertEquals(userId, saved.getUser().getId());
+        Assertions.assertEquals(plantId, saved.getPlant().getId());
+
+        Assertions.assertEquals("Mon ficus", saved.getNickname());
+
+        // nextWatering : calculée automatiquement depuis lastWatering et la fréquence de la plante
+        Assertions.assertNotNull(saved.getNextWatering());
     }
 
     @Test
     void testCreateOneUserPlantUserNotFound() {
         //Arrange
-        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         //Act inside the Assert
         Assertions.assertThrows(EntityNotFoundException.class, () ->
                 userPlantService.createOneUserPlant(request, currentUser)
         );
 
-        Mockito.verify(userRepository).findById(userId);
+        verify(userRepository).findById(userId);
     }
 
     @Test
     void testCreateOneUserPlantPlantnotFound() {
         //Arrange
-        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-        Mockito.when(plantRepository.findById(plantId)).thenReturn(Optional.empty());
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(plantRepository.findById(plantId)).thenReturn(Optional.empty());
 
         //Act inside the Assert
         Assertions.assertThrows(EntityNotFoundException.class, () ->
                 userPlantService.createOneUserPlant(request, currentUser)
         );
 
-        Mockito.verify(userRepository).findById(userId);
-        Mockito.verify(plantRepository).findById(plantId);
+        verify(userRepository).findById(userId);
+        verify(plantRepository).findById(plantId);
     }
 
     @Test
@@ -128,11 +141,11 @@ class UserPlantServiceTest {
         UserPlant userPlant = new UserPlant();
         userPlant.setPlant(plant);
 
-        Mockito.when(userPlantRepository.findById(userPlantId))
+        when(userPlantRepository.findById(userPlantId))
                 .thenReturn(Optional.of(userPlant));
 
         UserPlantDetailsDto expectedDto = Mockito.mock(UserPlantDetailsDto.class);
-        Mockito.when(userPlantRepository.findUserPlantDetailsById(userPlantId))
+        when(userPlantRepository.findUserPlantDetailsById(userPlantId))
                 .thenReturn(expectedDto);
 
         // Act
@@ -149,7 +162,7 @@ class UserPlantServiceTest {
         );
 
         // Assert interactions
-        Mockito.verify(userPlantRepository).save(userPlant);
+        verify(userPlantRepository).save(userPlant);
         Assertions.assertEquals(expectedDto, result);
     }
 
@@ -158,7 +171,7 @@ class UserPlantServiceTest {
         // Arrange
         Long userPlantId = 99L;
 
-        Mockito.when(userPlantRepository.findById(userPlantId))
+        when(userPlantRepository.findById(userPlantId))
                 .thenReturn(Optional.empty());
 
         // Act inside the Assert
@@ -173,14 +186,14 @@ class UserPlantServiceTest {
         Long userPlantId = 1L;
         UserPlantDetailsDto expectedDto = Mockito.mock(UserPlantDetailsDto.class);
 
-        Mockito.when(userPlantRepository.findUserPlantDetailsById(userPlantId))
+        when(userPlantRepository.findUserPlantDetailsById(userPlantId))
                 .thenReturn(expectedDto);
 
         // Act
         UserPlantDetailsDto result = userPlantService.getUserPlantDetailsById(userPlantId);
 
         // Assert
-        Mockito.verify(userPlantRepository).findUserPlantDetailsById(userPlantId);
+        verify(userPlantRepository).findUserPlantDetailsById(userPlantId);
         Assertions.assertEquals(expectedDto, result);
     }
 
@@ -189,14 +202,14 @@ class UserPlantServiceTest {
         // Arrange
         Long userPlantId = 42L;
 
-        Mockito.when(userPlantRepository.findUserPlantDetailsById(userPlantId))
+        when(userPlantRepository.findUserPlantDetailsById(userPlantId))
                 .thenReturn(null);
 
         // Act
         UserPlantDetailsDto result = userPlantService.getUserPlantDetailsById(userPlantId);
 
         // Assert
-        Mockito.verify(userPlantRepository).findUserPlantDetailsById(userPlantId);
+        verify(userPlantRepository).findUserPlantDetailsById(userPlantId);
         Assertions.assertNull(result);
     }
 
@@ -219,9 +232,9 @@ class UserPlantServiceTest {
         UserPlantSummaryDto summary2 = Mockito.mock(UserPlantSummaryDto.class);
         UserPlantSummaryDto summary3 = Mockito.mock(UserPlantSummaryDto.class);
 
-        Mockito.when(userPlantMapper.toSummary(details1)).thenReturn(summary1);
-        Mockito.when(userPlantMapper.toSummary(details2)).thenReturn(summary2);
-        Mockito.when(userPlantMapper.toSummary(details3)).thenReturn(summary3);
+        when(userPlantMapper.toSummary(details1)).thenReturn(summary1);
+        when(userPlantMapper.toSummary(details2)).thenReturn(summary2);
+        when(userPlantMapper.toSummary(details3)).thenReturn(summary3);
 
         //Act
         List<UserPlantSummaryDto> result = userPlantService.updateWateringDaysForMultiplesUserPlants(userPlantIds);
@@ -230,12 +243,12 @@ class UserPlantServiceTest {
         Assertions.assertEquals(3, result.size());
         Assertions.assertEquals(List.of(summary1, summary2, summary3), result);
 
-        Mockito.verify(userPlantService).updateWateringDaysForOneUserPlant(1L);
-        Mockito.verify(userPlantService).updateWateringDaysForOneUserPlant(2L);
-        Mockito.verify(userPlantService).updateWateringDaysForOneUserPlant(3L);
+        verify(userPlantService).updateWateringDaysForOneUserPlant(1L);
+        verify(userPlantService).updateWateringDaysForOneUserPlant(2L);
+        verify(userPlantService).updateWateringDaysForOneUserPlant(3L);
 
-        Mockito.verify(userPlantMapper).toSummary(details1);
-        Mockito.verify(userPlantMapper).toSummary(details2);
-        Mockito.verify(userPlantMapper).toSummary(details3);
+        verify(userPlantMapper).toSummary(details1);
+        verify(userPlantMapper).toSummary(details2);
+        verify(userPlantMapper).toSummary(details3);
     }
 }
