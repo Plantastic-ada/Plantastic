@@ -5,7 +5,7 @@ import { HiOutlineLightBulb } from "react-icons/hi2";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router";
 import Modal from './Modal';
-import AddPlantForm from "./AddPlantForm"
+import AddPlantForm from "./AddPlantForm";
 import { useState } from "react";
 
 
