@@ -46,7 +46,7 @@ public class User {
     private LocalDate lastLoginAt;
 
     @Enumerated(EnumType.STRING)
-    @Column (name = "notifications_preferences",nullable = false)
+    @Column (name = "notifications_preferences")
     private NotificationsPreferences notificationsPreferences;
 
     @Column(name = "notifications_time")

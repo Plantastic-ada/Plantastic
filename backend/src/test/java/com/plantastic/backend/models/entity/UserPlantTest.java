@@ -4,11 +4,13 @@ import com.plantastic.backend.dto.plants.CreateUserPlantRequest;
 import com.plantastic.backend.models.types.WateringFrequency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
 class UserPlantTest {
 
     private User user;
@@ -35,11 +37,8 @@ class UserPlantTest {
         // GIVEN
         plant.setWatering("frequent");
 
-        request.setPlantId(plant.getId());
         request.setNickname("My abutilon");
-        request.setAcquisitionDate(LocalDate.of(2025, 9, 1));
         request.setLastWatering(LocalDate.of(2025, 9, 3));
-        request.setPicture("https://example.com/pic.jpg");
 
         // WHEN
         UserPlant userPlant = new UserPlant(user, plant, request);
@@ -83,5 +82,14 @@ class UserPlantTest {
                 request.getAcquisitionDate().plusDays(WateringFrequency.fromString("minimum").getDays()),
                 userPlant.getNextWatering()
         );
+    }
+
+    @Test
+    void setNextWateringTest() {
+        plant.setWatering("average");
+
+        UserPlant userPlant = new UserPlant(user, plant, request);
+
+        assertEquals(userPlant.getNextWatering(), userPlant.getLastWatering().plusDays(10));
     }
 }
