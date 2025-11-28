@@ -45,7 +45,7 @@ public class AuthenticationController {
         //Verify that username doesn't exist in db
         if (userService.usernameExists(usernameToCheck)) {
             log.warn("Username is already used: {}", usernameToCheck);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username is already used: " + usernameToCheck);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already used: " + usernameToCheck);
         }
 
         userService.createUser(registerRequest);

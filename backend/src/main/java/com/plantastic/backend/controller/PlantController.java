@@ -1,5 +1,6 @@
 package com.plantastic.backend.controller;
 
+import com.plantastic.backend.dto.plants.PlantEncyclopediaDto;
 import com.plantastic.backend.dto.plants.PlantSummaryDto;
 import com.plantastic.backend.models.entity.Plant;
 import com.plantastic.backend.repository.PlantRepository;
@@ -26,6 +27,12 @@ public class PlantController {
     @GetMapping("/summaries")
     public ResponseEntity<List<PlantSummaryDto>> getAllPlantsSummaries() {
         List<PlantSummaryDto> plants = plantService.getAllPlantsSummaries();
+        return ResponseEntity.ok(plants);
+    }
+
+    @GetMapping("/encyclopedia")
+    public ResponseEntity<List<PlantEncyclopediaDto>> getAllPlantsEncyclopedia() {
+        List<PlantEncyclopediaDto> plants = plantService.getAllPlantsEncyclopedia();
         return ResponseEntity.ok(plants);
     }
 }
