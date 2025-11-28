@@ -16,6 +16,8 @@ export default function Form({ onClose }: FormProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [apiMessage, setApiMessage] = useState<React.ReactNode>(null);
   const [isPlantSelected, setIsPlantSelected] = useState(false);
+  // TODO: Keyboard navigation
+  // const [activeIndex, setActiveIndex] = useState(-1);
 
   const { register, handleSubmit, formState, setValue } =
     useForm<CreateUserPlantDto>({
@@ -91,8 +93,8 @@ export default function Form({ onClose }: FormProps) {
   const imageToDisplay = userPicture || selectedPlant?.imageUrl;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <h2 className="text-2-xl text-black font-bold mb-4">Add a plant</h2>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
+      <h1 className="text-2-xl text-black font-bold mb-4">Add a plant</h1>
       <div>
         {/* PLANT SEARCH */}
         <label className="block text-sm text-black font-medium mb-1">
@@ -108,7 +110,7 @@ export default function Form({ onClose }: FormProps) {
             setSuggestions([]);
           }}
           type="search"
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2"
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 placeholder:italic placeholder:text-gray-500"
         />
         <>
           {suggestions.length > 0 && (
@@ -187,7 +189,7 @@ export default function Form({ onClose }: FormProps) {
         <input
           {...register("acquisitionDate")}
           type="date"
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5 "
         />
 
         {/* LAST WATERING DATE  */}
@@ -210,7 +212,7 @@ export default function Form({ onClose }: FormProps) {
       <button
         type="submit"
         id="form"
-        className="w-full bg-red text-black py-2 rounded-lg hover:bg-blue-600"
+        className="w-full bg-red bg-[#4f674f] text-white py-2 rounded-lg hover:bg-[#374737]"
       >
         Send
       </button>

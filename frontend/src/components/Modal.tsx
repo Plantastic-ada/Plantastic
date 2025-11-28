@@ -16,7 +16,7 @@ export default function Modal({ isOpen, onClose, children, size="md" }: ModalPro
       onClick={onClose}
     >
       <div
-        className={`bg-white rounded-lg p-8 w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto relative shadow-xl`}
+        className={`bg-amber-50/95 rounded-lg p-8 w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto relative shadow-xl font-bellota`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
