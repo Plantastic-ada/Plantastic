@@ -41,10 +41,9 @@ class AuthenticationControllerTest {
     private PasswordEncoder passwordEncoder;
 
     private RegisterRequest registerRequest;
-    private User user;
 
-    private final String LOGIN_ROUTE = "/api/auth/login";
-    private final String REGISTER_ROUTE = "/api/auth/register";
+    private static final String LOGIN_ROUTE = "/api/auth/login";
+    private static final String REGISTER_ROUTE = "/api/auth/register";
 
     @BeforeEach
     void setup() {
@@ -52,7 +51,7 @@ class AuthenticationControllerTest {
         userRepository.flush();
 
         // Create a new user with a encoded password in the db
-        user = new User();
+        User user = new User();
         user.setUsername("existingUser");
         user.setEmail("existingUser@example.com");
         user.setPassword(passwordEncoder.encode("secret"));
