@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsImplService userDetailsImplService;
+//    private final UserDetailsImplService userDetailsImplService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
