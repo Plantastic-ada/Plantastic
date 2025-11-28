@@ -5,7 +5,7 @@ import { HiOutlineLightBulb } from "react-icons/hi2";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router";
 import Modal from './Modal';
-import Form from "./Form"
+import Form from "./AddPlantForm"
 import { useState } from "react";
 
 
@@ -110,7 +110,7 @@ export default function BottomNavigation() {
         </Modal>
       </div>
       <div
-        id="midddle_navbar"
+        id="middle_navbar"
         className="
         absolute z-10 bottom-0 h-full left-1/2 -translate-x-1/2 w-1/2 bg-[#2D3D2D] pointer-events-none "
       ></div>
