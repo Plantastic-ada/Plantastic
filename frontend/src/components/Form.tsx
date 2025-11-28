@@ -24,7 +24,9 @@ export default function Form({ onClose }: FormProps) {
     useForm<CreateUserPlantDto>({
       resolver: zodResolver(createPlantSchema),
     });
+    
 
+// CALL FOR USER PLANT CREATION
   const onSubmit: SubmitHandler<CreateUserPlantDto> = async (
     formData: CreateUserPlantDto
   ) => {
@@ -56,6 +58,7 @@ export default function Form({ onClose }: FormProps) {
     }
   };
 
+  // CALL FOR AUTOCOMPLETION LIST
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -91,6 +94,7 @@ export default function Form({ onClose }: FormProps) {
     };
   }, [searchValue, allPlants, isPlantSelected]);
 
+  // Display user-uploaded picture or fallback to plant's default image
   const imageToDisplay = userPicture || selectedPlant?.imageUrl;
 
   return (
@@ -143,6 +147,7 @@ export default function Form({ onClose }: FormProps) {
               ))}
             </div>
           )}
+          {/* UNCONCLUSIVE SEARCH */}
           {suggestions.length === 0 &&
             searchValue.length >= 3 &&
             !isPlantSelected && (
