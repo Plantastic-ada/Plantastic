@@ -1,12 +1,11 @@
 import logo from "@/assets/img/plantastic_logo.png";
-import { useState } from "react";
+// import { useState } from "react";
 import { PiUserCircleGearFill } from "react-icons/pi";
 import { useNavigate } from "react-router";
 
 export const Header = () => {
   const navigate = useNavigate();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  // const [isLoggingOut, setIsLoggingOut] = useState(false);
   return (
     <div className="sticky top-0 z-20 bg-transparent h-32 ">
       <div id="header" className="relative ">

@@ -6,6 +6,7 @@ import { type CreateUserPlantDto } from "../dto/CreateUserPlantDto";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { createPlantSchema } from "../schemas/createPlantSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type ReactNode } from 'react';
 
 export default function Form({ onClose }: FormProps) {
   const [allPlants, setAllPlants] = useState<Plant[]>([]);
@@ -14,7 +15,7 @@ export default function Form({ onClose }: FormProps) {
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
   const [userPicture, setUserPicture] = useState<string | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [apiMessage, setApiMessage] = useState<React.ReactNode>(null);
+  const [_apiMessage, setApiMessage] = useState<ReactNode>(null);
   const [isPlantSelected, setIsPlantSelected] = useState(false);
   // TODO: Keyboard navigation
   // const [activeIndex, setActiveIndex] = useState(-1);
