@@ -1,49 +1,54 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchAPI } from "../utils/api";
 import type { AuthContextType } from "../types/AuthContextType";
 import type { UserPlant } from "../types/UserPlant";
 
-/* eslint-disable react-refresh/only-export-components */
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [plants, setPlants] = useState<UserPlant[]>([]);
   const navigate = useNavigate();
 
-  // Returns data
-  const checkAuth = async (): Promise<UserPlant[] | null> => {
-
+  const verifyInitialAuth = async () => {
     try {
       const response = await fetchAPI("/me/my-digital-garden", {
         method: "GET",
       });
-
-      // UNAUTHORIZED RESPONSE
-      if (response.status === 401) {
-        setIsAuthenticated(false);
-        navigate("/login", { replace: true });
-        return null;
-      }
-
       if (response.ok) {
         const data = await response.json();
+        setPlants(data || []);
         setIsAuthenticated(true);
-        return data; // returns plants but do not stores them
       } else {
         setIsAuthenticated(false);
-        return null;
+        setPlants([]);
       }
-    } catch (_error) {
-      console.error("checkAuth - Error:", _error); 
+    } catch (error) {
+      console.error("Auth error:", error);
       setIsAuthenticated(false);
-      navigate("/login", { replace: true });
-      return null;
+      setPlants([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // LOGOUT 
+  useEffect(() => {
+    verifyInitialAuth();
+  }, []);
+
+  const refreshAuth = async () => {
+    setIsLoading(true);
+    await verifyInitialAuth();
+  };
+
   const logout = async (): Promise<void> => {
     console.debug("Logging out...");
 
@@ -60,25 +65,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
-      // CLEANS LOCAL STORAGE EVEN IF IT'S EMPTY
       localStorage.removeItem("authToken");
+      setPlants([]); 
       setIsAuthenticated(false);
       navigate("/login", { replace: true });
     }
   };
 
-  // RESET AUTH STATE TO NULL AND NOT FALSE
   const resetAuthState = () => {
     setIsAuthenticated(null);
+    setPlants([]); 
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, checkAuth, logout, resetAuthState }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        isLoading,
+        plants,
+        refreshAuth,
+        logout,
+        resetAuthState,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

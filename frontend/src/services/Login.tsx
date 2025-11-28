@@ -15,7 +15,6 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   // Set up states and routing for connection
-  const { resetAuthState } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const nav = useNavigate();
@@ -29,9 +28,11 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   });
 
+  const { refreshAuth } = useAuth();
   const onSubmit = async (data: LoginFormData) => {
-    if (loading || isSubmitting.current) return; // prevents double submit
-
+    // prevents double submit
+    if (loading || isSubmitting.current) return; 
+    
     isSubmitting.current = true;
     setLoading(true);
     setError("");
@@ -40,17 +41,19 @@ export default function Login() {
       const response = await fetchAPI("/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded", // overrides the default set in api.ts
+          // overrides the default set in api.ts
+          "Content-Type": "application/x-www-form-urlencoded", 
         },
         body: new URLSearchParams(data).toString(),
       });
 
       if (response.ok) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        await refreshAuth();
         nav("/", { replace: true });
-        resetAuthState()
       } else {
         const errorData = await response.json();
-        setError(errorData.message || "Invalid username or password");
+        setError(errorData.message || "Invalid credentials");
       }
     } catch {
       setError("An error occurred while trying to log in, please try again.");

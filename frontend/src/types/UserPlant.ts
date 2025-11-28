@@ -6,3 +6,4 @@ export interface UserPlant {
 	nextWatering: string;
 	imageUrl: string;
 }
+
