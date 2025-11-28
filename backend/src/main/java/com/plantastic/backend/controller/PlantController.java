@@ -19,11 +19,6 @@ public class PlantController {
     private final PlantRepository plantRepository;
     private final PlantService plantService;
 
-    @PostMapping
-    public Plant addOnePlant(@RequestBody Plant plant) {
-        return plantRepository.save(plant);
-    }
-
     @GetMapping("/summaries")
     public ResponseEntity<List<PlantSummaryDto>> getAllPlantsSummaries() {
         List<PlantSummaryDto> plants = plantService.getAllPlantsSummaries();
