@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import "flowbite";
 import { AuthProvider } from "./context/AuthContext";
+import GardenProvider from "./context/GardenContext";
 
 const root = document.getElementById("root")!;
 ReactDOM.createRoot(root).render(
@@ -13,7 +14,9 @@ ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <GardenProvider>
+          <App />
+        </GardenProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

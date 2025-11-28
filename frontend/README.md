@@ -143,8 +143,10 @@ TODO:
 - ~~schema for dto done~~
 - ~~form submit for /create-one-plant on the form.~~
 
-#**IN PROGRESS 21/11**
+#**IN PROGRESS 28/11**
 - begin RNCP report  
+- refresh garden => create context
+- update next watering
 
 #**LAST AUDIT FIX**
 27/11: found 0 vulnerabilities 
