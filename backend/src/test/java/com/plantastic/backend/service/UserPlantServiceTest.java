@@ -8,6 +8,7 @@ import com.plantastic.backend.models.entity.Plant;
 import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.models.entity.UserPlant;
 import com.plantastic.backend.models.types.UserRole;
+import com.plantastic.backend.models.types.WateringFrequency;
 import com.plantastic.backend.repository.PlantRepository;
 import com.plantastic.backend.repository.UserPlantRepository;
 import com.plantastic.backend.repository.UserRepository;
@@ -119,24 +120,35 @@ class UserPlantServiceTest {
 
     @Test
     void testUpdateWateringDaysForOneUserPlantSuccess() {
-        //Arrange
+        // Arrange
         Long userPlantId = 1L;
 
-        UserPlant userPlant = Mockito.mock(UserPlant.class);
-        UserPlantDetailsDto expectedDto = Mockito.mock(UserPlantDetailsDto.class);
+        plant.setWatering("frequent");
+
+        UserPlant userPlant = new UserPlant();
+        userPlant.setPlant(plant);
 
         Mockito.when(userPlantRepository.findById(userPlantId))
                 .thenReturn(Optional.of(userPlant));
 
+        UserPlantDetailsDto expectedDto = Mockito.mock(UserPlantDetailsDto.class);
         Mockito.when(userPlantRepository.findUserPlantDetailsById(userPlantId))
                 .thenReturn(expectedDto);
 
-        //Act
-        UserPlantDetailsDto result = userPlantService.updateWateringDaysForOneUserPlant(userPlantId);
+        // Act
+        UserPlantDetailsDto result =
+                userPlantService.updateWateringDaysForOneUserPlant(userPlantId);
 
-        //Assert
-        Mockito.verify(userPlant).setLastWatering(LocalDate.now());
-        Mockito.verify(userPlant).setNextWatering();
+        int expectedFreq = WateringFrequency.fromString(plant.getWatering()).getDays();
+
+        // Assert on logic
+        Assertions.assertEquals(LocalDate.now(), userPlant.getLastWatering());
+        Assertions.assertEquals(
+                LocalDate.now().plusDays(expectedFreq),
+                userPlant.getNextWatering()
+        );
+
+        // Assert interactions
         Mockito.verify(userPlantRepository).save(userPlant);
         Assertions.assertEquals(expectedDto, result);
     }
@@ -191,7 +203,7 @@ class UserPlantServiceTest {
     @Test
     void updateWateringDaysForMultiplesUserPlants_shouldReturnSummaries() {
         //Arrange
-        List<Long> ids = List.of(1L, 2L, 3L);
+        List<Long> userPlantIds = List.of(1L, 2L, 3L);
 
         //Details mocks (updateWateringDaysForOneUserPlant)
         UserPlantDetailsDto details1 = Mockito.mock(UserPlantDetailsDto.class);
@@ -212,7 +224,7 @@ class UserPlantServiceTest {
         Mockito.when(userPlantMapper.toSummary(details3)).thenReturn(summary3);
 
         //Act
-        List<UserPlantSummaryDto> result = userPlantService.updateWateringDaysForMultiplesUserPlants(ids);
+        List<UserPlantSummaryDto> result = userPlantService.updateWateringDaysForMultiplesUserPlants(userPlantIds);
 
         //Assert
         Assertions.assertEquals(3, result.size());
