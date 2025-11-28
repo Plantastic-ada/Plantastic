@@ -5,7 +5,7 @@ import { HiOutlineLightBulb } from "react-icons/hi2";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router";
 import Modal from './Modal';
-import Form from "./AddPlantForm"
+import AddPlantForm from "./AddPlantForm"
 import { useState } from "react";
 
 
@@ -106,7 +106,7 @@ export default function BottomNavigation() {
           </div>
         </button>
         <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
-          <Form onClose={() => setIsModalOpen(false)}></Form>
+          <AddPlantForm onClose={() => setIsModalOpen(false)}></AddPlantForm>
         </Modal>
       </div>
       <div
