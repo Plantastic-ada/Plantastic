@@ -9,8 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { fetchAPI } from "../utils/api";
 import type { AuthContextType } from "../types/AuthContextType";
 import type { UserPlant } from "../types/UserPlant";
-
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import type { ApiPlantDto } from "../dto/ApiPlantDto";
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -25,6 +27,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       if (response.ok) {
         const data = await response.json();
+        const transformedPlants = data.map((plant: ApiPlantDto) => {
+          return {
+            id: plant.id,
+            nickname: plant.nickname,
+            commonName: plant.commonName,
+            lastWatering: plant.lastWatering,
+            nextWatering: plant.nextWatering,
+            imageUrl: plant.userPlantImageUrl || plant.plantImageUrl,
+          };
+        });
+        setPlants(transformedPlants);
         setPlants(data || []);
         setIsAuthenticated(true);
       } else {
@@ -66,7 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error("Logout failed:", error);
     } finally {
       localStorage.removeItem("authToken");
-      setPlants([]); // 👈 Nettoie les plantes
+      setPlants([]);
       setIsAuthenticated(false);
       navigate("/login", { replace: true });
     }
@@ -74,7 +87,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const resetAuthState = () => {
     setIsAuthenticated(null);
-    setPlants([]); 
+    setPlants([]);
   };
 
   return (
