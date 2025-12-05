@@ -60,6 +60,5 @@ public class UserPlant {
 
         //Calculate the next watering date from last watering date and plant watering delay
         this.setNextWatering();
-        this.imageUrl = request.getPicture() == null ? plant.getImageUrl() : request.getPicture();
     }
 }
