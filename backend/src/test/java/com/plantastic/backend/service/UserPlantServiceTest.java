@@ -20,14 +20,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserPlantServiceTest {
@@ -39,6 +40,9 @@ class UserPlantServiceTest {
     private UserPlantRepository userPlantRepository;
     @Mock
     private UserPlantMapper userPlantMapper;
+    @Mock
+    private CloudinaryService cloudinaryService;
+
     @InjectMocks
     @Spy
     private UserPlantService userPlantService;
@@ -49,6 +53,7 @@ class UserPlantServiceTest {
     private Plant plant;
     private CreateUserPlantRequest request;
     private CustomUserDetails currentUser;
+    private MultipartFile file;
 
     @BeforeEach
     void init() {
@@ -72,7 +77,7 @@ class UserPlantServiceTest {
 
 
     @Test
-    void testCreateOneUserPlantSuccess2() {
+    void testCreateOneUserPlantSuccess() throws IOException {
         // Arrange
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(plantRepository.findById(plantId)).thenReturn(Optional.of(plant));
@@ -81,10 +86,14 @@ class UserPlantServiceTest {
         when(userPlantRepository.save(any()))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
+        file = mock(MultipartFile.class);
+        when(cloudinaryService.uploadFile(eq(file), eq("user plants")))
+                .thenReturn("https://fake-cloudinary-url.com/img.png");
+
         ArgumentCaptor<UserPlant> captor = ArgumentCaptor.forClass(UserPlant.class);
 
         // Act
-        UserPlant result = userPlantService.createOneUserPlant(request, currentUser);
+        UserPlant result = userPlantService.createOneUserPlant(request, file, currentUser);
 
         // We capture the exact object passed to the repo
         verify(userPlantRepository).save(captor.capture());
@@ -104,27 +113,27 @@ class UserPlantServiceTest {
     }
 
     @Test
-    void testCreateOneUserPlantUserNotFound() {
+    void testCreateOneUserPlantUserNotFound() throws IOException {
         //Arrange
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         //Act inside the Assert
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                userPlantService.createOneUserPlant(request, currentUser)
+                userPlantService.createOneUserPlant(request, file, currentUser)
         );
 
         verify(userRepository).findById(userId);
     }
 
     @Test
-    void testCreateOneUserPlantPlantnotFound() {
+    void testCreateOneUserPlantPlantnotFound() throws IOException {
         //Arrange
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(plantRepository.findById(plantId)).thenReturn(Optional.empty());
 
         //Act inside the Assert
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                userPlantService.createOneUserPlant(request, currentUser)
+                userPlantService.createOneUserPlant(request, file, currentUser)
         );
 
         verify(userRepository).findById(userId);
@@ -144,7 +153,7 @@ class UserPlantServiceTest {
         when(userPlantRepository.findById(userPlantId))
                 .thenReturn(Optional.of(userPlant));
 
-        UserPlantDetailsDto expectedDto = Mockito.mock(UserPlantDetailsDto.class);
+        UserPlantDetailsDto expectedDto = mock(UserPlantDetailsDto.class);
         when(userPlantRepository.findUserPlantDetailsById(userPlantId))
                 .thenReturn(expectedDto);
 
@@ -184,7 +193,7 @@ class UserPlantServiceTest {
     void getUserPlantDetailsById_shouldReturnDto() {
         // Arrange
         Long userPlantId = 1L;
-        UserPlantDetailsDto expectedDto = Mockito.mock(UserPlantDetailsDto.class);
+        UserPlantDetailsDto expectedDto = mock(UserPlantDetailsDto.class);
 
         when(userPlantRepository.findUserPlantDetailsById(userPlantId))
                 .thenReturn(expectedDto);
@@ -219,18 +228,18 @@ class UserPlantServiceTest {
         List<Long> userPlantIds = List.of(1L, 2L, 3L);
 
         //Details mocks (updateWateringDaysForOneUserPlant)
-        UserPlantDetailsDto details1 = Mockito.mock(UserPlantDetailsDto.class);
-        UserPlantDetailsDto details2 = Mockito.mock(UserPlantDetailsDto.class);
-        UserPlantDetailsDto details3 = Mockito.mock(UserPlantDetailsDto.class);
+        UserPlantDetailsDto details1 = mock(UserPlantDetailsDto.class);
+        UserPlantDetailsDto details2 = mock(UserPlantDetailsDto.class);
+        UserPlantDetailsDto details3 = mock(UserPlantDetailsDto.class);
 
         Mockito.doReturn(details1).when(userPlantService).updateWateringDaysForOneUserPlant(1L);
         Mockito.doReturn(details2).when(userPlantService).updateWateringDaysForOneUserPlant(2L);
         Mockito.doReturn(details3).when(userPlantService).updateWateringDaysForOneUserPlant(3L);
 
         //Summaries mocks (
-        UserPlantSummaryDto summary1 = Mockito.mock(UserPlantSummaryDto.class);
-        UserPlantSummaryDto summary2 = Mockito.mock(UserPlantSummaryDto.class);
-        UserPlantSummaryDto summary3 = Mockito.mock(UserPlantSummaryDto.class);
+        UserPlantSummaryDto summary1 = mock(UserPlantSummaryDto.class);
+        UserPlantSummaryDto summary2 = mock(UserPlantSummaryDto.class);
+        UserPlantSummaryDto summary3 = mock(UserPlantSummaryDto.class);
 
         when(userPlantMapper.toSummary(details1)).thenReturn(summary1);
         when(userPlantMapper.toSummary(details2)).thenReturn(summary2);
