@@ -132,7 +132,9 @@ TODO:
 - TESTS AUTH
 - USER PERMISSION TO STORE COOKIE ??
   HEADER
-  Watering + logout button
+  Watering button
+  logout button=> improve dropdown style
+  to fix : space for the last plant card (bottom nav bar on top of it)
   Remove DOMpurify
   Calculate next watering in plant card ✔
   Update watering in plant Card 
@@ -151,3 +153,13 @@ TODO:
 
 #**LAST AUDIT FIX**
 27/11: found 0 vulnerabilities 
+
+
+#**ON THE 5/12**
+PLAN FOR WATERING FUNCTION :
+- onClick={ wateringButton} => open Modal 
+    - with list of plants in digital garden with checkboxes
+    - button for validation
+        - onClick={ wateringValidationButton} => PUT to /water-multiples + refreshGarden()
+        Message validation "Your plants are no longer thirsty 💧" with OK button to close
+

@@ -2,7 +2,7 @@ import BackgroundWrapper from "../components/BackgroundWrapper";
 import BottomNavBar from "../components/BottomNavBar";
 import { Header } from "../components/Header";
 import PlantCard from "../components/PlantCard";
-import { useAuth } from "../context/AuthContext";
+// import { useAuth } from "../context/AuthContext";
 import { useGarden } from "../context/GardenContext";
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
   // }
 
     const { plants, isLoading } = useGarden();
-    const { logout } = useAuth()
+    // const { logout } = useAuth()
     if (isLoading) {
     return (
       <BackgroundWrapper>
@@ -28,8 +28,6 @@ export default function Home() {
       </BackgroundWrapper>
     );
   }
-
-
 
   return (
     <BackgroundWrapper>
@@ -45,12 +43,12 @@ export default function Home() {
           )}
         </div>
 
-        <button
+        {/* <button
           onClick={logout}
           className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
         >
           Logout
-        </button>
+        </button> */}
       </main>
       <BottomNavBar />
     </BackgroundWrapper>
