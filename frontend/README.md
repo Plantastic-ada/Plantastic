@@ -127,16 +127,17 @@ TODO:
 - fix logout button in header
 - finish mock ups
 
-#**TO DO 14/11**
+#**TO DO 05/12**
 
 - TESTS AUTH
 - USER PERMISSION TO STORE COOKIE ??
   HEADER
   Watering + logout button
   Remove DOMpurify
-  Calculate next watering in plant card
-  Update watering in plant Card
-  Finish plant add form
+  Calculate next watering in plant card ✔
+  Update watering in plant Card 
+  Finish plant add form ✔
+  Bugfix - error handling when empty fields
 
 #**IN PROGRESS 14/11**
 
@@ -145,7 +146,7 @@ TODO:
 
 #**IN PROGRESS 28/11**
 - begin RNCP report  
-- refresh garden => create context
+- refresh garden => create context ✔
 - update next watering
 
 #**LAST AUDIT FIX**
