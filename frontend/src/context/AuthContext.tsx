@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error("Logout failed:", error);
     } finally {
       localStorage.removeItem("authToken");
-      setPlants([]); // 👈 Nettoie les plantes
+      setPlants([]); 
       setIsAuthenticated(false);
       navigate("/login", { replace: true });
     }
