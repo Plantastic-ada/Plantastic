@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type ReactNode } from "react";
 import { useGarden } from "../context/GardenContext";
 
-export default function Form({ onClose }: FormProps) {
+export default function AddPlantForm({ onClose }: FormProps) {
   const [allPlants, setAllPlants] = useState<Plant[]>([]);
   const [suggestions, setSuggestions] = useState<Plant[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
