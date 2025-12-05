@@ -38,7 +38,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           };
         });
         setPlants(transformedPlants);
-        setPlants(data || []);
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
