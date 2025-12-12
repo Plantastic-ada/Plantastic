@@ -29,7 +29,6 @@ class UserPlantTest {
         request = new CreateUserPlantRequest();
         request.setPlantId(plant.getId());
         request.setAcquisitionDate(LocalDate.of(2025, 9, 1));
-        request.setPicture("https://example.com/pic.jpg");
     }
 
     @Test
@@ -49,7 +48,6 @@ class UserPlantTest {
         assertEquals("My abutilon", userPlant.getNickname());
         assertEquals(LocalDate.of(2025, 9, 1), userPlant.getAcquisitionDate());
         assertEquals(LocalDate.of(2025, 9, 3), userPlant.getLastWatering());
-        assertEquals("https://example.com/pic.jpg", userPlant.getImageUrl());
 
         // check next watering
         WateringFrequency frequency = WateringFrequency.fromString(plant.getWatering());
