@@ -54,6 +54,7 @@ class UserPlantServiceTest {
     private CreateUserPlantRequest request;
     private CustomUserDetails currentUser;
     private MultipartFile file;
+    private final LocalDate now = LocalDate.now();
 
     @BeforeEach
     void init() {
@@ -159,7 +160,7 @@ class UserPlantServiceTest {
 
         // Act
         UserPlantDetailsDto result =
-                userPlantService.updateWateringDaysForOneUserPlant(userPlantId);
+                userPlantService.updateWateringDaysForOneUserPlant(userPlantId, now);
 
         int expectedFreq = WateringFrequency.fromString(plant.getWatering()).getDays();
 
@@ -185,7 +186,7 @@ class UserPlantServiceTest {
 
         // Act inside the Assert
         Assertions.assertThrows(EntityNotFoundException.class, () ->
-                userPlantService.updateWateringDaysForOneUserPlant(userPlantId)
+                userPlantService.updateWateringDaysForOneUserPlant(userPlantId, now)
         );
     }
 
@@ -232,9 +233,9 @@ class UserPlantServiceTest {
         UserPlantDetailsDto details2 = mock(UserPlantDetailsDto.class);
         UserPlantDetailsDto details3 = mock(UserPlantDetailsDto.class);
 
-        Mockito.doReturn(details1).when(userPlantService).updateWateringDaysForOneUserPlant(1L);
-        Mockito.doReturn(details2).when(userPlantService).updateWateringDaysForOneUserPlant(2L);
-        Mockito.doReturn(details3).when(userPlantService).updateWateringDaysForOneUserPlant(3L);
+        Mockito.doReturn(details1).when(userPlantService).updateWateringDaysForOneUserPlant(1L, now);
+        Mockito.doReturn(details2).when(userPlantService).updateWateringDaysForOneUserPlant(2L,now);
+        Mockito.doReturn(details3).when(userPlantService).updateWateringDaysForOneUserPlant(3L, now);
 
         //Summaries mocks (
         UserPlantSummaryDto summary1 = mock(UserPlantSummaryDto.class);
@@ -246,15 +247,15 @@ class UserPlantServiceTest {
         when(userPlantMapper.toSummary(details3)).thenReturn(summary3);
 
         //Act
-        List<UserPlantSummaryDto> result = userPlantService.updateWateringDaysForMultiplesUserPlants(userPlantIds);
+        List<UserPlantSummaryDto> result = userPlantService.updateWateringDaysForMultiplesUserPlants(userPlantIds, now);
 
         //Assert
         Assertions.assertEquals(3, result.size());
         Assertions.assertEquals(List.of(summary1, summary2, summary3), result);
 
-        verify(userPlantService).updateWateringDaysForOneUserPlant(1L);
-        verify(userPlantService).updateWateringDaysForOneUserPlant(2L);
-        verify(userPlantService).updateWateringDaysForOneUserPlant(3L);
+        verify(userPlantService).updateWateringDaysForOneUserPlant(1L, now);
+        verify(userPlantService).updateWateringDaysForOneUserPlant(2L, now);
+        verify(userPlantService).updateWateringDaysForOneUserPlant(3L, now);
 
         verify(userPlantMapper).toSummary(details1);
         verify(userPlantMapper).toSummary(details2);

@@ -7,6 +7,7 @@ import com.plantastic.backend.models.entity.UserPlant;
 import com.plantastic.backend.security.user.CustomUserDetails;
 import com.plantastic.backend.service.UserPlantService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -41,14 +43,18 @@ public class UserPlantController {
     }
 
     @PatchMapping("/water-one/{id}")
-    public ResponseEntity<UserPlantDetailsDto> waterUserPlantbyId(@PathVariable("id") Long userPlantId) {
-        UserPlantDetailsDto userPlantDetailsDto = userPlantService.updateWateringDaysForOneUserPlant(userPlantId);
+    public ResponseEntity<UserPlantDetailsDto> waterUserPlantbyId(
+            @PathVariable("id") Long userPlantId,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate wateringDate) {
+        UserPlantDetailsDto userPlantDetailsDto = userPlantService.updateWateringDaysForOneUserPlant(userPlantId, wateringDate);
         return ResponseEntity.ok(userPlantDetailsDto);
     }
 
     @PatchMapping("/water-multiples")
-    public ResponseEntity<List<UserPlantSummaryDto>> waterMultiplesUserPlantByIds(@RequestBody List<Long> userPlantIds) {
-        List<UserPlantSummaryDto> summaries = userPlantService.updateWateringDaysForMultiplesUserPlants(userPlantIds);
+    public ResponseEntity<List<UserPlantSummaryDto>> waterMultiplesUserPlantByIds(
+            @RequestBody List<Long> userPlantIds,
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate wateringDate) {
+        List<UserPlantSummaryDto> summaries = userPlantService.updateWateringDaysForMultiplesUserPlants(userPlantIds, wateringDate);
         return ResponseEntity.ok(summaries);
     }
 

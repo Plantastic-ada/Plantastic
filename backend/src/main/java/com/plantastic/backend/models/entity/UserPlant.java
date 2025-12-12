@@ -48,6 +48,8 @@ public class UserPlant {
         if (this.lastWatering != null && this.plant != null) {
             int wateringFrequency = WateringFrequency.fromString(this.plant.getWatering()).getDays();
             this.nextWatering = this.lastWatering.plusDays(wateringFrequency);
+        } else {
+            this.nextWatering = LocalDate.now();
         }
     }
 

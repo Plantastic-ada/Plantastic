@@ -60,22 +60,22 @@ public class UserPlantService {
     }
 
     //Update UserPlant's last watering & next watering
-    public UserPlantDetailsDto updateWateringDaysForOneUserPlant(Long userPlantId) {
+    public UserPlantDetailsDto updateWateringDaysForOneUserPlant(Long userPlantId, LocalDate date) {
         UserPlant userPlant = userPlantRepository.findById(userPlantId)
                 .orElseThrow(() -> new EntityNotFoundException("UserPlant not found with id " + userPlantId));
 
-       userPlant.setLastWatering(LocalDate.now());
+       userPlant.setLastWatering(date);
        userPlant.setNextWatering();
        userPlantRepository.save(userPlant);
 
        return userPlantRepository.findUserPlantDetailsById(userPlantId);
     }
 
-    public List<UserPlantSummaryDto> updateWateringDaysForMultiplesUserPlants(List<Long> userPlantsIds) {
+    public List<UserPlantSummaryDto> updateWateringDaysForMultiplesUserPlants(List<Long> userPlantsIds, LocalDate date) {
         List<UserPlantSummaryDto> summaries = new ArrayList<>();
 
         for (Long userPlantId : userPlantsIds) {
-            UserPlantDetailsDto details = updateWateringDaysForOneUserPlant(userPlantId);
+            UserPlantDetailsDto details = updateWateringDaysForOneUserPlant(userPlantId, date);
 
             //Conversion to summary
             UserPlantSummaryDto summary = userPlantMapper.toSummary(details);

@@ -19,3 +19,6 @@ api.key=your_api_key
 jwt.secret=${JWT_SECRET_BACK}
 jwt.expirationMs=30000
 
+cloudinary.cloud_name=${CLOUDINARY_CLOUD_NAME}
+cloudinary.api_key=${CLOUDINARY_API_KEY}
+cloudinary.api_secret=${CLOUDINARY_API_SECRET}
