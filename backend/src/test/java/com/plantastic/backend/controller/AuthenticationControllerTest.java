@@ -55,7 +55,7 @@ class AuthenticationControllerTest {
         user.setUsername("existingUser");
         user.setEmail("existingUser@example.com");
         user.setPassword(passwordEncoder.encode("secret"));
-        user.setRole(UserRole.USER);
+        user.setRole(UserRole.ROLE_USER);
         user.setNotificationsPreferences(NotificationsPreferences.STANDARD);
         userRepository.save(user);
 
