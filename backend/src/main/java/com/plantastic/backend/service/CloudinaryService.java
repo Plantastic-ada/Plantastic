@@ -21,7 +21,7 @@ public class CloudinaryService {
      * @param folder target folder on Cloudinary
      * @return image secure url
      */
-    public String uploadFile(MultipartFile file, String folder) throws IOException {
+    public String uploadFileAndGetUrl(MultipartFile file, String folder) throws IOException {
         long timestamp = System.currentTimeMillis() / 1000;
 
         String presetName = "Plantastic";

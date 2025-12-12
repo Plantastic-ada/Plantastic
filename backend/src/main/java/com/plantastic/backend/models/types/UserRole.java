@@ -1,5 +1,5 @@
 package com.plantastic.backend.models.types;
 
 public enum UserRole {
-    ADMIN, USER
+    ROLE_ADMIN, ROLE_USER
 }
