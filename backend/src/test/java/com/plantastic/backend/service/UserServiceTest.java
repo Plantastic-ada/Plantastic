@@ -1,83 +1,165 @@
 package com.plantastic.backend.service;
 
+import com.plantastic.backend.dto.auth.RegisterRequest;
+import com.plantastic.backend.event.UserLoginSuccessEvent;
 import com.plantastic.backend.models.entity.User;
+import com.plantastic.backend.models.types.NotificationsPreferences;
+import com.plantastic.backend.models.types.UserRole;
 import com.plantastic.backend.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@AutoConfigureTestDatabase
+@ActiveProfiles("test")
 class UserServiceTest {
 
-    @Mock
+    @Autowired
     private UserRepository userRepository;
-    @InjectMocks
+    @Autowired
     private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
+    private static final String EXISTING_USERNAME = "existingUser";
+    private static final String EMAIL_SUFFIX = "@example.com";
+    private static final String EXISTING_EMAIL = EXISTING_USERNAME + EMAIL_SUFFIX;
+    private static final String PASSWORD = "passwordTest";
+    private static final LocalDateTime ACTUAL_DATE_TIME = LocalDateTime.now();
+    private static final LocalDate ACTUAL_DATE = LocalDate.now();
+
+    private User existingUser;
+
+    @BeforeEach
+    void init() {
+        userRepository.deleteAll();
+
+        existingUser = new User();
+        existingUser.setEmail(EXISTING_EMAIL);
+        existingUser.setUsername(EXISTING_USERNAME);
+        existingUser.setPassword(passwordEncoder.encode(PASSWORD));
+        existingUser.setCreatedAt(LocalDateTime.of(2025, Month.JANUARY, 1, 0, 0));
+        existingUser.setUpdatedAt(LocalDateTime.of(2025, Month.JANUARY, 1, 0, 0));
+        existingUser.setRole(UserRole.USER);
+        existingUser.setNotificationsConsent(false);
+        existingUser.setNotificationsPreferences(NotificationsPreferences.STANDARD);
+        existingUser.setCameraConsent(false);
+        userRepository.save(existingUser);
+    }
 
     /**
-     *
+     * Must return an existant User using their email
      */
     @Test
     void testFindUserByUsernameOrEmailWithEmail() {
-        //Arrange
-        String email = "test@example.com";
-        User expectedUser = new User();
-        expectedUser.setEmail(email);
-        Mockito.when(userRepository.findByEmail(email))
-                .thenReturn(Optional.of(expectedUser));
-
         //Act
-        Optional<User> result = userService.findUserByUsernameOrEmail(email);
+        Optional<User> result = userService.findUserByUsernameOrEmail(EXISTING_EMAIL);
 
         //Assert
         assertTrue(result.isPresent());
-        assertEquals(email, result.get().getEmail());
-        Mockito.verify(userRepository).findByEmail(email);
-        Mockito.verify(userRepository, Mockito.never()).findByUsername(Mockito.anyString());
+        assertEquals(EXISTING_EMAIL, result.get().getEmail());
     }
 
+    /**
+     * Must return an existant User using their username
+     */
     @Test
     void testFindUserByUsernameOrEmailWithUsername() {
-        //Arrange
-        String username = "known user";
-        User expectedUser = new User();
-        expectedUser.setUsername(username);
-        Mockito.when(userRepository.findByUsername(username))
-                .thenReturn(Optional.of(expectedUser));
-
         //Act
-        Optional<User> result = userService.findUserByUsernameOrEmail(username);
+        Optional<User> result = userService.findUserByUsernameOrEmail(EXISTING_USERNAME);
 
         //Assert
         assertTrue(result.isPresent());
-        assertEquals(username, result.get().getUsername());
-        Mockito.verify(userRepository).findByUsername(username);
-        Mockito.verify(userRepository, Mockito.never()).findByEmail(Mockito.anyString());
+        assertEquals(EXISTING_USERNAME, result.get().getUsername());
     }
 
+    /**
+     * Must not return an existant User
+     */
     @Test
     void testFindUserByUsernameOrEmailWithAWrongUser() {
         //Arrange
-        String username = "unknown user";
-        User expectedUser = new User();
-        expectedUser.setUsername(username);
-        Mockito.when(userRepository.findByUsername(username))
-                .thenReturn(Optional.empty());
+        String wrongUsername = "unknown user";
 
         //Act
-        Optional<User> result = userService.findUserByUsernameOrEmail(username);
+        Optional<User> result = userService.findUserByUsernameOrEmail(wrongUsername);
 
         //Assert
         assertTrue(result.isEmpty());
-        Mockito.verify(userRepository).findByUsername(username);
-        Mockito.verify(userRepository, Mockito.never()).findByEmail(Mockito.anyString());
     }
+
+    @Test
+    void testUpdateLastLogin() {
+        //Act
+        userService.updateLastLogin(EXISTING_EMAIL);
+
+        //Assert
+        User updatedUser = userRepository.findByEmail(EXISTING_EMAIL).orElseThrow();
+        assertNotNull(updatedUser);
+        assertEquals(ACTUAL_DATE, updatedUser.getLastLoginAt());
+    }
+
+    @Test
+    void testHandleSuccessLoginEvent() {
+        //Act
+        eventPublisher.publishEvent(new UserLoginSuccessEvent(EXISTING_USERNAME, existingUser.getId()));
+
+        //Assert
+        User updatedUser = userRepository.findByEmail(EXISTING_EMAIL).orElseThrow();
+        assertNotNull(updatedUser);
+        assertEquals(ACTUAL_DATE, updatedUser.getLastLoginAt());
+    }
+
+    @Test
+    void testCreateUser() {
+        //Arrange
+        String username = "newUser";
+        String email = username + EMAIL_SUFFIX;
+        RegisterRequest regReq = new RegisterRequest(email, username, PASSWORD);
+
+        //Act
+        userService.createUser(regReq);
+        User newUser = userRepository.findByUsername(username).orElseThrow();
+
+        //Assert
+        assertNotNull(newUser);
+        assertEquals(email, newUser.getEmail());
+        assertEquals(username, newUser.getUsername());
+        assertTrue(passwordEncoder.matches(PASSWORD, newUser.getPassword()));
+        assertTrue(newUser.getCreatedAt().isAfter(ACTUAL_DATE_TIME));
+        assertTrue(newUser.getUpdatedAt().isAfter(ACTUAL_DATE_TIME));
+        assertEquals(UserRole.USER, newUser.getRole());
+        assertFalse(newUser.isNotificationsConsent());
+        assertNull(newUser.getNotificationsPreferences());
+        assertFalse(newUser.isCameraConsent());
+    }
+
+    @Test
+    void testDeleteUserById() {
+        //Act
+        User userToDelete = userRepository.findByEmail(EXISTING_EMAIL).orElseThrow();
+        userService.deleteUserById(userToDelete.getId());
+
+        //Assert
+        Optional<User> deletedUser = userRepository.findByEmail(EXISTING_EMAIL);
+        assertTrue(deletedUser.isEmpty());
+    }
+
+
+
 }

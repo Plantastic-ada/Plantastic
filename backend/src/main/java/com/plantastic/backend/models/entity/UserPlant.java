@@ -59,8 +59,6 @@ public class UserPlant {
         this.lastWatering = request.getLastWatering() == null ? request.getAcquisitionDate() : request.getLastWatering();
 
         //Calculate the next watering date from last watering date and plant watering delay
-        WateringFrequency frequency = WateringFrequency.fromString(plant.getWatering());
-        this.nextWatering = this.lastWatering.plusDays(frequency.getDays());
-        this.imageUrl = request.getPicture() == null ? plant.getImageUrl() : request.getPicture();
+        this.setNextWatering();
     }
 }

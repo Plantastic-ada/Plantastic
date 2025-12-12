@@ -29,7 +29,7 @@ public class SecurityConfigurer {
     private final CustomLoginFailureHandler customLoginFailureHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
-    private final UserDetailsImplService userDetailsImplService;
+//    private final UserDetailsImplService userDetailsImplService;
 
     private static final String LOGIN_ROUTE = "/api/auth/login";
     private static final String REGISTER_ROUTE = "/api/auth/register";

@@ -3,10 +3,8 @@ package com.plantastic.backend.controller;
 
 import com.plantastic.backend.dto.auth.RegisterRequest;
 import com.plantastic.backend.repository.UserRepository;
-import com.plantastic.backend.security.config.JwtUtil;
 import com.plantastic.backend.security.user.UserDetailsImplService;
 import com.plantastic.backend.service.UserService;
-import com.plantastic.backend.util.UserUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsImplService userDetailsImplService;
-    private final JwtUtil jwtUtil;
+//    private final UserDetailsImplService userDetailsImplService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
@@ -45,7 +42,7 @@ public class AuthenticationController {
         //Verify that username doesn't exist in db
         if (userService.usernameExists(usernameToCheck)) {
             log.warn("Username is already used: {}", usernameToCheck);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username is already used: " + usernameToCheck);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already used: " + usernameToCheck);
         }
 
         userService.createUser(registerRequest);

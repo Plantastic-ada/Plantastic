@@ -15,7 +15,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +30,9 @@ public class UserPlantService {
     private final PlantRepository plantRepository;
     private final UserPlantRepository userPlantRepository;
     private final UserPlantMapper userPlantMapper;
+    private final CloudinaryService cloudinaryService;
 
-    public UserPlant createOneUserPlant(CreateUserPlantRequest request, CustomUserDetails currentUser) {
+    public UserPlant createOneUserPlant(CreateUserPlantRequest request, MultipartFile file, CustomUserDetails currentUser) throws IOException {
         //Get user
         User user = userRepository.findById(currentUser.getId())
                 .orElseThrow(() -> {
@@ -44,8 +47,11 @@ public class UserPlantService {
                     return new EntityNotFoundException("Plant not found with id: " + request.getPlantId());
                 });
 
+        String userPlantImageUrl = cloudinaryService.uploadFile(file, "user plants");
+
         //Create and save userPlant
         UserPlant userPlant = new UserPlant(user, plant, request);
+        userPlant.setImageUrl(userPlantImageUrl);
         return userPlantRepository.save(userPlant);
     }
 
