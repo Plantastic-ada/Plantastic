@@ -5,11 +5,15 @@ import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { LuDroplets } from "react-icons/lu";
 import Modal from "./Modal";
+import { useGarden } from "../context/GardenContext";
+import { WateringModal } from "./WateringModal";
 
 export const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dropDownIsOpen, setDropDownIsOpen] = useState(false);
   const { logout } = useAuth();
+  const { plants } = useGarden();
+
   const navigate = useNavigate();
   const toogleDropDown = () => {
     setDropDownIsOpen(!dropDownIsOpen);
@@ -39,8 +43,8 @@ export const Header = () => {
           2xl:w-24  2xl:h-24  2xl:mr-10"
           />
         </button>
-        <Modal isOpen={isModalOpen} onClose={()=> setIsModalOpen(false)} >
-          You opened a Modal ✨
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <WateringModal onClose={() => setIsModalOpen(false)} />
         </Modal>
       </div>
       {dropDownIsOpen && (
