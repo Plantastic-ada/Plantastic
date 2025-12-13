@@ -6,5 +6,6 @@ public record PlantEncyclopediaDto(
         String scientificName,
         String imageUrl, 
         String family, 
-        String description
+        String description,
+        String watering
 ) {}

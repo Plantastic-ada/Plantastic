@@ -19,7 +19,14 @@ public interface PlantRepository extends JpaRepository<Plant, Long> {
     @Query("SELECT new com.plantastic.backend.dto.plants.PlantSummaryDto(p.id, p.commonName, p.scientificName, p.imageUrl) FROM Plant p")
     List<PlantSummaryDto> findAllPlantsSummaries();
 
-    @Query("SELECT new com.plantastic.backend.dto.plants.PlantEncyclopediaDto(p.id, p.commonName, p.scientificName, p.imageUrl, p.family, p.description) FROM Plant p")
+    @Query("SELECT new com.plantastic.backend.dto.plants.PlantEncyclopediaDto(" +
+            "p.id, p.commonName, p.scientificName, p.imageUrl, p.family, p.description, " +
+            "CASE p.watering " +
+            "WHEN 'FREQUENT' THEN 'Frequent (5 days)' " +
+            "WHEN 'AVERAGE' THEN 'Average (10 days)' " +
+            "WHEN 'MINIMUM' THEN 'Minimum (20 days)' " +
+            "ELSE 'Average (10 days)' END) " +
+            "FROM Plant p")
     List<PlantEncyclopediaDto> findAllPlantsForEncyclopedia();
 }
 
