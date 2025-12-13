@@ -1,6 +1,6 @@
 package com.plantastic.backend.dto.plants;
 
-public record PlantEncyclopediaDto(
+public record PlantEncyclopediaSummaryDto(
         Long id,
         String commonName,
         String scientificName,

@@ -4,15 +4,16 @@ import BackgroundWrapper from "../components/BackgroundWrapper";
 import BottomNavBar from "../components/BottomNavBar";
 import { Header } from "../components/Header";
 import { fetchAPI } from "../utils/api";
-import type { Plant } from "../types/Plant";
-import PlantCardEncyclopedia from "../components/PlantCardEncyclopedia";
+import type { PlantSummary } from "../types/PlantSummary.ts";
+import PlantCardEncyclopedia from "../components/EncyclopediaSummaryCard";
 import Modal from "../components/Modal";
+import EncyclopediaDetailsCard from "../components/EncyclopediaDetailsCard.tsx";
 
 export default function Encyclopedia() {
-	const [plants, setPlants] = useState<Plant[]>([]);
+	const [plants, setPlants] = useState<PlantSummary[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
+	const [selectedPlant, setSelectedPlant] = useState<PlantSummary | null>(null);
 
 	useEffect(() => {
 		const fetchPlants = async () => {
@@ -21,7 +22,7 @@ export default function Encyclopedia() {
 				if (!response.ok) {
 					throw new Error("Failed to fetch plants");
 				}
-				const data: Plant[] = await response.json();
+				const data: PlantSummary[] = await response.json();
 				setPlants(data);
 			} catch (err) {
 				setError(err instanceof Error ? err.message : "An unknown error occurred");
@@ -33,7 +34,7 @@ export default function Encyclopedia() {
 		fetchPlants();
 	}, []);
 
-	const handleCardClick = (plant: Plant) => {
+	const handleCardClick = (plant: PlantSummary) => {
 		setSelectedPlant(plant);
 	};
 
@@ -63,30 +64,7 @@ export default function Encyclopedia() {
 			</main>
 			{selectedPlant && (
 				<Modal isOpen={!!selectedPlant} onClose={closeModal} size="lg">
-					<div className="text-black">
-						<h2 className="text-2xl font-bold mb-4">{selectedPlant.commonName}</h2>
-						<img
-							src={selectedPlant.imageUrl}
-							alt={selectedPlant.commonName}
-							className="w-full h-64 object-cover rounded-lg mb-4"
-						/>
-						<p>
-							<strong>Scientific Name:</strong> {selectedPlant.scientificName}
-						</p>
-						<p>
-							<strong>Family:</strong> {selectedPlant.family}
-						</p>
-						<p>
-							<strong>Description:</strong> {selectedPlant.description}
-						</p>
-						<p>
-							<strong>Watering:</strong> {selectedPlant.watering}
-						</p>
-						<p>
-							<strong>Care Level:</strong> {selectedPlant.careLevel}
-						</p>
-						{/* Ajoutez ici d'autres champs que vous souhaitez afficher */}
-					</div>
+					<EncyclopediaDetailsCard selectedPlant={selectedPlant} />
 				</Modal>
 			)}
 			<BottomNavBar />

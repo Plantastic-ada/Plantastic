@@ -1,4 +1,4 @@
-import type { Plant } from "../types/Plant";
+import type { Plant } from "../types/PlantSelection";
 
 type PlantCardEncyclopediaProps = {
 	plant: Plant;
