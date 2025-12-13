@@ -1,14 +1,14 @@
-import type { Plant } from "../types/PlantSelection";
+import type { PlantSummary } from "../types/PlantSummary";
 
 type PlantCardEncyclopediaProps = {
-	plant: Plant;
+	plant: PlantSummary;
 	onClick: () => void;
 };
 
 export default function PlantCardEncyclopedia({ plant, onClick }: PlantCardEncyclopediaProps) {
 	const descriptionSnippet =
-		plant.description && plant.description.length > 100
-			? `${plant.description.substring(0, 100)}...`
+		plant.description && plant.description.length > 200
+			? `${plant.description.substring(0, 200)}...`
 			: plant.description;
 
 	return (
