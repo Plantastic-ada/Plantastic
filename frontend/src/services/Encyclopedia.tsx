@@ -1,5 +1,5 @@
 // import React from 'react'
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BackgroundWrapper from "../components/BackgroundWrapper";
 import BottomNavBar from "../components/BottomNavBar";
 import { Header } from "../components/Header";
@@ -14,6 +14,7 @@ export default function Encyclopedia() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [selectedPlant, setSelectedPlant] = useState<PlantSummary | null>(null);
+	const [searchQuery, setSearchQuery] = useState("");
 
 	useEffect(() => {
 		const fetchPlants = async () => {
@@ -42,17 +43,37 @@ export default function Encyclopedia() {
 		setSelectedPlant(null);
 	};
 
+	const filteredPlants = useMemo(() => {
+		const query = searchQuery.toLowerCase();
+
+		return plants.filter((plant) => {
+			const commonName = plant.commonName?.toLowerCase() || "";
+			const scientificName = plant.scientificName.toLowerCase();
+			return commonName.includes(query) || scientificName.includes(query);
+		});
+	}, [plants, searchQuery]);
+
 	return (
 		<BackgroundWrapper>
 			<Header />
-			<main className="flex flex-col items-center w-full px-4 pt-4">
-				<h1 className="text-white flex justify-center font-montserrat">This is the Encyclopedia page 📚</h1>
-
+			<main className="flex flex-col items-center w-full px-4">
+				<div className="sticky top-0 z-10 w-full flex justify-center bg-transparent pb-14 pt-4 ">
+					<input
+						type="text"
+						placeholder="Search a plant by common name..."
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+						className="w-full max-w-lg p-3 text-white bg-[#2D3D2D] border border-gray-600 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-200 opacity-95"
+					/>
+				</div>
 				{isLoading && <p className="text-white mt-4">Loading plants...</p>}
 				{error && <p className="text-red-400 mt-4">Error: {error}</p>}
+				{!isLoading && !error && filteredPlants.length === 0 && (
+					<p className="text-gray-400 mt-6">No plants found 🌱</p>
+				)}
 				{!isLoading && !error && (
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full mt-6">
-						{plants.map((plant) => (
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full ">
+						{filteredPlants.map((plant) => (
 							<PlantCardEncyclopedia
 								key={plant.id}
 								plant={plant}

@@ -4,31 +4,32 @@ import { PiUserCircleGearFill } from "react-icons/pi";
 import { useNavigate } from "react-router";
 
 export const Header = () => {
-  const navigate = useNavigate();
-  // const [isLoggingOut, setIsLoggingOut] = useState(false);
-  return (
-    <div className="sticky top-0 z-20 bg-transparent h-32 ">
-      <div id="header" className="relative ">
-        <img
-          onClick={() => navigate("/")}
-          src={logo}
-          className="w-24 h-24 ml-4
+	const navigate = useNavigate();
+	// const [isLoggingOut, setIsLoggingOut] = useState(false);
+	return (
+		<div className="sticky top-0 z-20 bg-transparent h-10 pointer-events-none ">
+			<div id="header" className="relative ">
+				<img
+					onClick={() => navigate("/")}
+					src={logo}
+					className="w-24 h-24 ml-4
+          pointer-events-auto cursor-pointer
           sm:w-24 sm:h-32 lg:w-48 sm:ml-5
           md: md:ml-6
           lg: lg:ml-1
           2xl:h-48 2xl:ml-6 
           object-contain"
-        />
-        <div className="absolute top-0 right-4 flex flex-col items-center gap-2">
-          <PiUserCircleGearFill
-            color="white"
-            className="w-14 h-14 mr-6
+				/>
+				<div className="absolute top-8 right-4 flex flex-col items-center gap-2">
+					<PiUserCircleGearFill
+						color="white"
+						className="w-14 h-14 mr-6
           sm:w-16 sm:h-16 sm:mr-4 
           md:w-14 md:h-14 md:mr-8
           2xl:w-24  2xl:h-24  2xl:mr-10"
-          />
-        </div>
-      </div>
-    </div>
-  );
+					/>
+				</div>
+			</div>
+		</div>
+	);
 };
