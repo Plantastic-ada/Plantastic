@@ -61,7 +61,7 @@ class UserPlantServiceTest {
         userId = 1L;
         plantId = 10L;
 
-        currentUser = new CustomUserDetails(userId, "user@example.com", "user", "password", UserRole.USER);
+        currentUser = new CustomUserDetails(userId, "user@example.com", "user", "password", UserRole.ROLE_USER);
 
         request = new CreateUserPlantRequest();
         request.setPlantId(plantId);
@@ -88,7 +88,7 @@ class UserPlantServiceTest {
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         file = mock(MultipartFile.class);
-        when(cloudinaryService.uploadFile(eq(file), eq("user plants")))
+        when(cloudinaryService.uploadFileAndGetUrl(file, "user plants"))
                 .thenReturn("https://fake-cloudinary-url.com/img.png");
 
         ArgumentCaptor<UserPlant> captor = ArgumentCaptor.forClass(UserPlant.class);
@@ -114,7 +114,7 @@ class UserPlantServiceTest {
     }
 
     @Test
-    void testCreateOneUserPlantUserNotFound() throws IOException {
+    void testCreateOneUserPlantUserNotFound() {
         //Arrange
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
@@ -127,7 +127,7 @@ class UserPlantServiceTest {
     }
 
     @Test
-    void testCreateOneUserPlantPlantnotFound() throws IOException {
+    void testCreateOneUserPlantPlantnotFound() {
         //Arrange
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(plantRepository.findById(plantId)).thenReturn(Optional.empty());

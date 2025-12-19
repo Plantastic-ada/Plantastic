@@ -3,7 +3,6 @@ package com.plantastic.backend.security.config;
 import com.plantastic.backend.security.handler.CustomLoginFailureHandler;
 import com.plantastic.backend.security.handler.CustomLoginSuccessHandler;
 import com.plantastic.backend.security.handler.CustomLogoutSuccessHandler;
-import com.plantastic.backend.security.user.UserDetailsImplService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +28,10 @@ public class SecurityConfigurer {
     private final CustomLoginFailureHandler customLoginFailureHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
-//    private final UserDetailsImplService userDetailsImplService;
-
     private static final String LOGIN_ROUTE = "/api/auth/login";
     private static final String REGISTER_ROUTE = "/api/auth/register";
     private static final String LOGOUT_ROUTE = "/api/auth/logout";
+    private static final String ADD_PLANT_ROUTE = "/api/plant/add-one";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, Environment env) throws Exception {
@@ -42,6 +40,7 @@ public class SecurityConfigurer {
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/", LOGIN_ROUTE, REGISTER_ROUTE).permitAll()
+                    .requestMatchers(ADD_PLANT_ROUTE).hasRole("ADMIN")
                     .anyRequest().authenticated()
                 )
             // Exception handling : return 401 Unauthorized instead of 200 with default HTML login form if user is not authenticated

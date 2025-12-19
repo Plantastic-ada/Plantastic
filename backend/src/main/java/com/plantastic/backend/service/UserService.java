@@ -1,11 +1,10 @@
 package com.plantastic.backend.service;
 
 import com.plantastic.backend.dto.auth.RegisterRequest;
+import com.plantastic.backend.event.UserLoginSuccessEvent;
 import com.plantastic.backend.models.entity.User;
-import com.plantastic.backend.models.types.NotificationsPreferences;
 import com.plantastic.backend.models.types.UserRole;
 import com.plantastic.backend.repository.UserRepository;
-import com.plantastic.backend.event.UserLoginSuccessEvent;
 import com.plantastic.backend.util.UserUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -61,7 +60,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             user.setCreatedAt(LocalDateTime.now());
             user.setUpdatedAt(LocalDateTime.now());
-            user.setRole(UserRole.USER);
+            user.setRole(UserRole.ROLE_USER);
             user.setNotificationsConsent(false);
             user.setNotificationsPreferences(null);
             user.setCameraConsent(false);

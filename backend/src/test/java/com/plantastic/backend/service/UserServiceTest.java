@@ -55,7 +55,7 @@ class UserServiceTest {
         existingUser.setPassword(passwordEncoder.encode(PASSWORD));
         existingUser.setCreatedAt(LocalDateTime.of(2025, Month.JANUARY, 1, 0, 0));
         existingUser.setUpdatedAt(LocalDateTime.of(2025, Month.JANUARY, 1, 0, 0));
-        existingUser.setRole(UserRole.USER);
+        existingUser.setRole(UserRole.ROLE_USER);
         existingUser.setNotificationsConsent(false);
         existingUser.setNotificationsPreferences(NotificationsPreferences.STANDARD);
         existingUser.setCameraConsent(false);
@@ -143,7 +143,7 @@ class UserServiceTest {
         assertTrue(passwordEncoder.matches(PASSWORD, newUser.getPassword()));
         assertTrue(newUser.getCreatedAt().isAfter(ACTUAL_DATE_TIME));
         assertTrue(newUser.getUpdatedAt().isAfter(ACTUAL_DATE_TIME));
-        assertEquals(UserRole.USER, newUser.getRole());
+        assertEquals(UserRole.ROLE_USER, newUser.getRole());
         assertFalse(newUser.isNotificationsConsent());
         assertNull(newUser.getNotificationsPreferences());
         assertFalse(newUser.isCameraConsent());
