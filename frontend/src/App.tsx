@@ -7,15 +7,16 @@ import Encyclopedia from "./services/Encyclopedia";
 import Advices from "./services/Advices";
 import Forum from "./services/Forum";
 import AddPlant from "./services/AddPlant";
-
+import { Toaster } from "react-hot-toast";
 
 export function App() {
   return (
     <>
+      <Toaster />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-                  {/* PROTECTED PAGES  */}
+        {/* PROTECTED PAGES  */}
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<Home />} />
           <Route path="/encyclopedia" element={<Encyclopedia />} />
