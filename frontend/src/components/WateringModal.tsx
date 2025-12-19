@@ -1,11 +1,13 @@
 import { useState, type ReactNode } from "react";
 import { useGarden } from "../context/GardenContext";
 import { fetchAPI } from "../utils/api";
+import toast from "react-hot-toast";
 
 export const WateringModal = ({ onClose }: { onClose: () => void }) => {
   const { plants, refreshGarden } = useGarden();
   const [selectedPlantIds, setSelectedPlantIds] = useState<number[]>([]);
   const [_apiMessage, setApiMessage] = useState<ReactNode>(null);
+  const [wateringDate, setWateringDate] = useState(new Date());
 
   const handleCheckboxChange = (plantId: number, isChecked: boolean) => {
     if (isChecked) {
@@ -16,20 +18,26 @@ export const WateringModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleWatering = async () => {
+      const dateParam = wateringDate.toISOString().split("T")[0];
+      console.log("Sent date:", dateParam);
     try {
-      const response = await fetchAPI("/water-multiples", {
-        method: "PUT",
+      const response = await fetchAPI(`/user-plants/water-multiples?date=${wateringDate.toISOString().split("T")[0]}`, {
+        method: "PATCH",
         body: JSON.stringify(selectedPlantIds),
       });
+
       const data = await response.json();
+      console.log("3. data", data);
 
       if (!response.ok) {
         setApiMessage(`Error: ${data || "Error saving data"}`);
       } else {
         await refreshGarden();
-        onClose();
+        setTimeout(() => onClose(), 2000);
+        toast("Your plants are no longer thirsty", { icon: "🌿" });
       }
     } catch (error) {
+      console.log("Error catch:", error);
       console.error(error);
     }
   };
@@ -49,6 +57,12 @@ export const WateringModal = ({ onClose }: { onClose: () => void }) => {
       ) : (
         <p>You have no plant to water!</p>
       )}
+
+      <input
+        type="date"
+        value={wateringDate.toISOString().split("T")[0]}
+        onChange={(e) => setWateringDate(new Date(e.target.value))}
+      />
 
       <button
         onClick={handleWatering}

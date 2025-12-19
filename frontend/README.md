@@ -137,7 +137,7 @@ TODO:
   to fix : space for the last plant card (bottom nav bar on top of it)
   Remove DOMpurify
   Calculate next watering in plant card ✔
-  Update watering in plant Card 
+  Update watering in plant Card
   Finish plant add form ✔
   Bugfix - error handling when empty fields
 
@@ -147,19 +147,31 @@ TODO:
 - ~~form submit for /create-one-plant on the form.~~
 
 #**IN PROGRESS 28/11**
-- begin RNCP report  
+
+- begin RNCP report
 - refresh garden => create context ✔
 - update next watering
 
 #**LAST AUDIT FIX**
-27/11: found 0 vulnerabilities 
-
+27/11: found 0 vulnerabilities
 
 #**ON THE 5/12**
 PLAN FOR WATERING FUNCTION :
+
 - ~~onClick={ wateringButton} => open Modal~~
-    - ~~with list of plants in digital garden with checkboxes~~
-    - ~~button for validation~~
-    - MOVE THE LOGIC IN WATERINGMODAL
-        - onClick={ wateringValidationButton} => PUT to /water-multiples + refreshGarden()
-        Message validation "Your plants are no longer thirsty 💧" with OK button to close
+  - ~~with list of plants in digital garden with checkboxes~~
+  - ~~button for validation~~
+  - MOVE THE LOGIC IN WATERINGMODAL
+    - ~~onClick={ wateringValidationButton} => PATCH to /water-multiples + refreshGarden()~~
+      ~~Message validation "Your plants are no longer thirsty 💧" with OK button to close~~
+      To do : set Watering date*
+
+
+#**BUGFIX 19/12**
+- plant selection in add plant form
+- PWA
+- Header
+- responsiveness
+- check global styles 
+
+
