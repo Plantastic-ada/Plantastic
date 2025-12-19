@@ -1,4 +1,7 @@
 package com.plantastic.backend.dto.auth;
 
-public class AuthUserDto {
-}
+public record AuthUserDto(
+        Long id,
+        String email,
+        com.plantastic.backend.models.types.UserRole role
+) {}

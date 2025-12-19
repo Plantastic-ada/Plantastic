@@ -1,5 +1,7 @@
 package com.plantastic.backend.controller;
 
+import com.plantastic.backend.dto.auth.AuthUserDto;
+import com.plantastic.backend.dto.auth.DigitalGardenResponseDto;
 import com.plantastic.backend.dto.plants.UserPlantSummaryDto;
 import com.plantastic.backend.repository.UserPlantRepository;
 import com.plantastic.backend.security.user.CustomUserDetails;
@@ -10,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -59,13 +63,21 @@ public class ConnectedUserController {
     }
 
     @GetMapping("/my-digital-garden")
-    public ResponseEntity<List<UserPlantSummaryDto>> getMyDigitalGarden(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<DigitalGardenResponseDto> getMyDigitalGarden(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        AuthUserDto authUserDto = new AuthUserDto(userDetails.getId(), userDetails.getEmail(), userDetails.getRole());
         List<UserPlantSummaryDto> digitalGarden = userPlantRepository.findDigitalGardenByUserId(userDetails.getId());
 
         if (digitalGarden.isEmpty()) {
             log.warn("User with id {} seems to have no plants", userDetails.getId());
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(new DigitalGardenResponseDto(authUserDto, Collections.emptyList()));
         }
-        return ResponseEntity.ok(digitalGarden);
+        return ResponseEntity.ok(new DigitalGardenResponseDto(authUserDto, digitalGarden));
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<AuthUserDto> getAuthInformations(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        AuthUserDto authUserDto = new AuthUserDto(userDetails.getId(), userDetails.getEmail(), userDetails.getRole());
+        return ResponseEntity.ok(authUserDto);
     }
 }
