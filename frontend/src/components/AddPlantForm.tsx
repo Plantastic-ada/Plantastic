@@ -6,7 +6,8 @@ import { type CreateUserPlantDto } from "../dto/CreateUserPlantDto";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { createPlantSchema } from "../schemas/createPlantSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type ReactNode } from 'react';
+import { type ReactNode } from "react";
+import { useGarden } from "../context/GardenContext";
 
 export default function AddPlantForm({ onClose }: FormProps) {
   const [allPlants, setAllPlants] = useState<Plant[]>([]);
@@ -17,6 +18,7 @@ export default function AddPlantForm({ onClose }: FormProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_apiMessage, setApiMessage] = useState<ReactNode>(null);
   const [isPlantSelected, setIsPlantSelected] = useState(false);
+  const { refreshGarden } = useGarden();
   // TODO: Keyboard navigation
   // const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -24,9 +26,8 @@ export default function AddPlantForm({ onClose }: FormProps) {
     useForm<CreateUserPlantDto>({
       resolver: zodResolver(createPlantSchema),
     });
-    
 
-// CALL FOR USER PLANT CREATION
+  // CALL FOR USER PLANT CREATION
   const onSubmit: SubmitHandler<CreateUserPlantDto> = async (
     formData: CreateUserPlantDto
   ) => {
@@ -46,6 +47,7 @@ export default function AddPlantForm({ onClose }: FormProps) {
       if (!response.ok) {
         setApiMessage(`Error: ${data || "Error saving data"}`);
       } else {
+        await refreshGarden();
         onClose();
       }
     } catch (error) {
@@ -112,7 +114,11 @@ export default function AddPlantForm({ onClose }: FormProps) {
             setIsPlantSelected(false);
           }}
           onBlur={() => {
-            setSuggestions([]);
+            setTimeout(() => {
+              if (!isPlantSelected) {
+                setSuggestions([]);
+              }
+            }, 200);
           }}
           type="search"
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 placeholder:italic placeholder:text-gray-500"

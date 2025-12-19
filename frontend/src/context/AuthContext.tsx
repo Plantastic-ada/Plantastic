@@ -9,8 +9,10 @@ import { useNavigate } from "react-router-dom";
 import { fetchAPI } from "../utils/api";
 import type { AuthContextType } from "../types/AuthContextType";
 import type { UserPlant } from "../types/UserPlant";
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import type { ApiPlantDto } from "../dto/ApiPlantDto";
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
@@ -25,7 +27,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       if (response.ok) {
         const data = await response.json();
-        setPlants(data || []);
+        const transformedPlants = data.map((plant: ApiPlantDto) => {
+          return {
+            id: plant.id,
+            nickname: plant.nickname,
+            commonName: plant.commonName,
+            lastWatering: plant.lastWatering,
+            nextWatering: plant.nextWatering,
+            imageUrl: plant.userPlantImageUrl || plant.plantImageUrl,
+          };
+        });
+        setPlants(transformedPlants);
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
@@ -74,7 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const resetAuthState = () => {
     setIsAuthenticated(null);
-    setPlants([]); 
+    setPlants([]);
   };
 
   return (
@@ -93,7 +105,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
