@@ -18,6 +18,7 @@ export default function AddPlantForm({ onClose }: FormProps) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_apiMessage, setApiMessage] = useState<ReactNode>(null);
 	const [isPlantSelected, setIsPlantSelected] = useState(false);
+	const { refreshGarden } = useGarden();
 	// TODO: Keyboard navigation
 	// const [activeIndex, setActiveIndex] = useState(-1);
 
