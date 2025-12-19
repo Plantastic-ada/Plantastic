@@ -164,14 +164,19 @@ PLAN FOR WATERING FUNCTION :
   - MOVE THE LOGIC IN WATERINGMODAL
     - ~~onClick={ wateringValidationButton} => PATCH to /water-multiples + refreshGarden()~~
       ~~Message validation "Your plants are no longer thirsty 💧" with OK button to close~~
-      To do : set Watering date*
-
+      To do : set Watering date\*
 
 #**BUGFIX 19/12**
+
 - plant selection in add plant form
 - PWA
 - Header
 - responsiveness
-- check global styles 
+- check global styles
 
+#**TO DO 19/12**
 
+- add select all
+- dispay nickname
+- prevent future dates
+- controlled checkboxes
