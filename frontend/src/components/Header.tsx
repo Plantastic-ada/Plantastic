@@ -9,29 +9,30 @@ import Modal from "./Modal";
 import { WateringModal } from "./WateringModal";
 
 export const Header = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [dropDownIsOpen, setDropDownIsOpen] = useState(false);
-  const { logout } = useAuth();
-  // const { plants } = useGarden();
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [dropDownIsOpen, setDropDownIsOpen] = useState(false);
+	const { logout } = useAuth();
+	// const { plants } = useGarden();
 
-  const navigate = useNavigate();
-  const toogleDropDown = () => {
-    setDropDownIsOpen(!dropDownIsOpen);
-  };
-  return (
-    <div className="sticky top-0 z-20 bg-transparent  flex justify-between items-center h-40 ">
-      {/* <div id="header"> */}
-      <div>
-        <img
-          onClick={() => navigate("/")}
-          src={logo}
-          className="w-24 h-24 ml-4
+	const navigate = useNavigate();
+	const toogleDropDown = () => {
+		setDropDownIsOpen(!dropDownIsOpen);
+	};
+	return (
+		<div className="sticky top-0 z-20 bg-transparent  flex justify-between items-center h-10 pointer-events-none  ">
+			{/* <div id="header"> */}
+			<div>
+				<img
+					onClick={() => navigate("/")}
+					src={logo}
+					className="w-24 h-24 ml-4
+          pointer-events-auto cursor-pointer
           sm:w-24 sm:h-30 lg:w-48 sm:ml-5
           md: md:ml-6
           lg: lg:ml-1
           2xl:h-48 2xl:ml-6 
           object-contain"
-        />
+				/>
         <button>
           <LuDroplets
             color="white"
@@ -77,18 +78,17 @@ export const Header = () => {
         </div>
       )}
       <div>
-        <button className="">
-          <PiUserCircleGearFill
-            onClick={toogleDropDown}
-            color="white"
-            className="w-14 h-14 mr-6
+        <button className=""></button>
+					<PiUserCircleGearFill
+           onClick={toogleDropDown}
+						color="white"
+						className="w-14 h-14 mr-6
           sm:w-16 sm:h-16 sm:mr-4 
           md:w-14 md:h-14 md:mr-8
           2xl:w-24  2xl:h-24  2xl:mr-10"
-          />
-        </button>
-      </div>
-      {/* </div> */}
-    </div>
-  );
+					/>
+				</div>
+			</div>
+		</div>
+	);
 };

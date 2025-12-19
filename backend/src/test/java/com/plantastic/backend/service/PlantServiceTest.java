@@ -1,6 +1,6 @@
 package com.plantastic.backend.service;
 
-import com.plantastic.backend.dto.plants.PlantEncyclopediaDto;
+import com.plantastic.backend.dto.plants.PlantEncyclopediaSummaryDto;
 import com.plantastic.backend.dto.plants.PlantSummaryDto;
 import com.plantastic.backend.repository.PlantRepository;
 import org.junit.jupiter.api.Assertions;
@@ -57,15 +57,15 @@ class PlantServiceTest {
     @Test
     void testGetAllPlantsEncyclopediaSuccess() {
         // Arrange
-        PlantEncyclopediaDto e1 = Mockito.mock(PlantEncyclopediaDto.class);
-        PlantEncyclopediaDto e2 = Mockito.mock(PlantEncyclopediaDto.class);
-        List<PlantEncyclopediaDto> expectedList = List.of(e1, e2);
+        PlantEncyclopediaSummaryDto e1 = Mockito.mock(PlantEncyclopediaSummaryDto.class);
+        PlantEncyclopediaSummaryDto e2 = Mockito.mock(PlantEncyclopediaSummaryDto.class);
+        List<PlantEncyclopediaSummaryDto> expectedList = List.of(e1, e2);
 
         Mockito.when(plantRepository.findAllPlantsForEncyclopedia())
                 .thenReturn(expectedList);
 
         // Act
-        List<PlantEncyclopediaDto> result = plantService.getAllPlantsEncyclopedia();
+        List<PlantEncyclopediaSummaryDto> result = plantService.getAllPlantsEncyclopedia();
 
         // Assert
         Mockito.verify(plantRepository).findAllPlantsForEncyclopedia();
@@ -79,7 +79,7 @@ class PlantServiceTest {
                 .thenReturn(List.of());
 
         // Act
-        List<PlantEncyclopediaDto> result = plantService.getAllPlantsEncyclopedia();
+        List<PlantEncyclopediaSummaryDto> result = plantService.getAllPlantsEncyclopedia();
 
         // Assert
         Mockito.verify(plantRepository).findAllPlantsForEncyclopedia();

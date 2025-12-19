@@ -1,7 +1,8 @@
 package com.plantastic.backend.service;
 
 import com.plantastic.backend.dto.plants.CreatePlantRequest;
-import com.plantastic.backend.dto.plants.PlantEncyclopediaDto;
+import com.plantastic.backend.dto.plants.PlantEncyclopediaDetailsDto;
+import com.plantastic.backend.dto.plants.PlantEncyclopediaSummaryDto;
 import com.plantastic.backend.dto.plants.PlantSummaryDto;
 import com.plantastic.backend.mapper.PlantMapper;
 import com.plantastic.backend.models.entity.Plant;
@@ -23,8 +24,12 @@ public class PlantService {
         return plantRepository.findAllPlantsSummaries();
     }
 
-    public List<PlantEncyclopediaDto> getAllPlantsEncyclopedia() {
+    public List<PlantEncyclopediaSummaryDto> getAllPlantsEncyclopedia() {
         return plantRepository.findAllPlantsForEncyclopedia();
+    }
+
+    public PlantEncyclopediaDetailsDto getOnePlantEncylopediaDetails(Long plantId) {
+        return plantRepository.findPlantEncyclopediaDetails(plantId);
     }
 
     public Plant createPlantAndSaveToDb(CreatePlantRequest request, MultipartFile image) throws IOException {
@@ -33,4 +38,5 @@ public class PlantService {
         newPlantToSave.setImageUrl(plantImageUrl);
         return plantRepository.save(newPlantToSave);
     }
+
 }

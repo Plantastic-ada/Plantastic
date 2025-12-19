@@ -1,7 +1,8 @@
 package com.plantastic.backend.controller;
 
 import com.plantastic.backend.dto.plants.CreatePlantRequest;
-import com.plantastic.backend.dto.plants.PlantEncyclopediaDto;
+import com.plantastic.backend.dto.plants.PlantEncyclopediaDetailsDto;
+import com.plantastic.backend.dto.plants.PlantEncyclopediaSummaryDto;
 import com.plantastic.backend.dto.plants.PlantSummaryDto;
 import com.plantastic.backend.models.entity.Plant;
 import com.plantastic.backend.repository.PlantRepository;
@@ -32,9 +33,15 @@ public class PlantController {
     }
 
     @GetMapping("/encyclopedia")
-    public ResponseEntity<List<PlantEncyclopediaDto>> getAllPlantsEncyclopedia() {
-        List<PlantEncyclopediaDto> plants = plantService.getAllPlantsEncyclopedia();
+    public ResponseEntity<List<PlantEncyclopediaSummaryDto>> getAllPlantsEncyclopedia() {
+        List<PlantEncyclopediaSummaryDto> plants = plantService.getAllPlantsEncyclopedia();
         return ResponseEntity.ok(plants);
+    }
+
+    @GetMapping("/details/{id}")
+    public ResponseEntity<PlantEncyclopediaDetailsDto> getOnePlantEncyclopediaDetails(@PathVariable("id") Long plantId) {
+        PlantEncyclopediaDetailsDto plantDetails= plantService.getOnePlantEncylopediaDetails(plantId);
+        return ResponseEntity.ok(plantDetails);
     }
 
     @PostMapping(value = "/add-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
