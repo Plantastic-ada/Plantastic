@@ -5,14 +5,14 @@ import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { LuDroplets } from "react-icons/lu";
 import Modal from "./Modal";
-import { useGarden } from "../context/GardenContext";
+// import { useGarden } from "../context/GardenContext";
 import { WateringModal } from "./WateringModal";
 
 export const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dropDownIsOpen, setDropDownIsOpen] = useState(false);
   const { logout } = useAuth();
-  const { plants } = useGarden();
+  // const { plants } = useGarden();
 
   const navigate = useNavigate();
   const toogleDropDown = () => {

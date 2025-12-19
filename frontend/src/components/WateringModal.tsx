@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { useGarden } from "../context/GardenContext";
 import { fetchAPI } from "../utils/api";
 import toast from "react-hot-toast";
@@ -18,8 +18,6 @@ export const WateringModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleWatering = async () => {
-    const dateParam = wateringDate.toISOString().split("T")[0];
-    console.log("Sent date:", dateParam);
     try {
       const response = await fetchAPI(
         `/user-plants/water-multiples?date=${
@@ -32,7 +30,6 @@ export const WateringModal = ({ onClose }: { onClose: () => void }) => {
       );
 
       const data = await response.json();
-      console.log("3. data", data);
 
       if (!response.ok) {
         toast(`Error: ${data || "Error saving data"}`);
@@ -42,7 +39,6 @@ export const WateringModal = ({ onClose }: { onClose: () => void }) => {
         toast("Your plants are no longer thirsty", { icon: "🌿" });
       }
     } catch (error) {
-      console.error(error);
       toast(`Error: ${error}`);
     }
   };

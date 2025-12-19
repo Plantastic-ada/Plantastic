@@ -177,6 +177,6 @@ PLAN FOR WATERING FUNCTION :
 #**TO DO 19/12**
 
 - add select all
-- dispay nickname
+- display nickname
 - prevent future dates
 - controlled checkboxes
