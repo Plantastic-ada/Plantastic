@@ -1,17 +1,21 @@
 import { PiPlantBold } from "react-icons/pi";
 import { BiSolidBookBookmark } from "react-icons/bi";
-import { RiAddLargeLine } from "react-icons/ri";
+// import { RiAddLargeLine } from "react-icons/ri";
 import { HiOutlineLightBulb } from "react-icons/hi2";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router";
-import Modal from "./Modal";
+// import Modal from "./Modal";
 import AddPlantForm from "./AddPlantForm";
-import { useState } from "react";
+import AddEncyclopediaPlantForm from "./AddEncyclopediaPlantForm";
+// import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import FloatingAddButton from "./FloatingAddButton";
 
 export default function BottomNavigation() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	// const [isModalOpen, setIsModalOpen] = useState(false);
+	const { isAdmin } = useAuth();
 
 	const isActive = (path: string) => location.pathname === path;
 
@@ -30,9 +34,6 @@ export default function BottomNavigation() {
 	};
 
 	const textClass = "hidden sm:block sm:text-xs xl:text-sm 2xl:text-lg";
-
-	const AddButton =
-		"h-16 w-16 sm:h-20 sm:w-20 xl:h-24 xl:w-24 2xl:h-28 2xl:w-28 absolute -top-6 md:-top-10 xl:-top-12  2xl:-top-14 left-1/2 -translate-x-1/2  bg-[#2D3D2D] rounded-full z-30";
 
 	return (
 		<div
@@ -87,28 +88,10 @@ export default function BottomNavigation() {
 			</div>
 
 			{/* ADD A PLANT BUTTON */}
-			{isActive("/") && (
-				<div className={AddButton}>
-					<button
-						id="add_button"
-						onClick={() => setIsModalOpen(true)}
-						className="
-        rounded-full w-full h-full 
-        bg-gradient-to-br from-[#2D3D2D] from-50% to-[#232e23]
-        hover:from-[#232e23] hover:to-[#2D3D2D] shadow-lg hover:shadow-xl
-        hover:-translate-y-1
-        transition duration-700
-        flex items-center justify-center
-        group"
-					>
-						<div className="grid group-hover:-translate-y-1 transition duration-700">
-							<RiAddLargeLine className={getIconClass("add-plant")} />
-						</div>
-					</button>
-					<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
-						<AddPlantForm onClose={() => setIsModalOpen(false)}></AddPlantForm>
-					</Modal>
-				</div>
+			{isActive("/") && <FloatingAddButton FormComponent={AddPlantForm}></FloatingAddButton>}
+			{/* ADD A PLANT TO ENCYCLOPEDIA BUTTON */}
+			{isActive("/encyclopedia") && isAdmin && (
+				<FloatingAddButton FormComponent={AddEncyclopediaPlantForm}></FloatingAddButton>
 			)}
 			<div
 				id="middle_navbar"

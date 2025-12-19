@@ -4,7 +4,7 @@ import { fetchAPI } from "../utils/api";
 import { type PlantSelection } from "../types/PlantSelection";
 import { type CreateUserPlantDto } from "../dto/CreateUserPlantDto";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { createPlantSchema } from "../schemas/createPlantSchema";
+import { createUserPlantSchema } from "../schemas/createUserPlantSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type ReactNode } from "react";
 
@@ -21,7 +21,7 @@ export default function AddPlantForm({ onClose }: FormProps) {
 	// const [activeIndex, setActiveIndex] = useState(-1);
 
 	const { register, handleSubmit, formState, setValue } = useForm<CreateUserPlantDto>({
-		resolver: zodResolver(createPlantSchema),
+		resolver: zodResolver(createUserPlantSchema),
 	});
 
 	// CALL FOR USER PLANT CREATION
