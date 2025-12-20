@@ -1,13 +1,10 @@
 import { PiPlantBold } from "react-icons/pi";
 import { BiSolidBookBookmark } from "react-icons/bi";
-// import { RiAddLargeLine } from "react-icons/ri";
 import { HiOutlineLightBulb } from "react-icons/hi2";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router";
-// import Modal from "./Modal";
 import AddPlantForm from "./AddPlantForm";
 import AddEncyclopediaPlantForm from "./AddEncyclopediaPlantForm";
-// import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import FloatingAddButton from "./FloatingAddButton";
 
