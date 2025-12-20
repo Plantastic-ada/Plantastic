@@ -150,7 +150,7 @@ TODO:
 
 - begin RNCP report
 - refresh garden => create context ✔
-- update next watering
+- update next watering ✔
 
 #**LAST AUDIT FIX**
 27/11: found 0 vulnerabilities
@@ -164,7 +164,11 @@ PLAN FOR WATERING FUNCTION :
   - MOVE THE LOGIC IN WATERINGMODAL
     - ~~onClick={ wateringValidationButton} => PATCH to /water-multiples + refreshGarden()~~
       ~~Message validation "Your plants are no longer thirsty 💧" with OK button to close~~
-      To do : set Watering date\*
+      ~~To do : set Watering date~~
+  - ~~add select all~~
+  - ~~display nickname~~
+  - ~~prevent future dates~~
+  - ~~controlled checkboxes~~
 
 #**BUGFIX 19/12**
 
@@ -173,10 +177,8 @@ PLAN FOR WATERING FUNCTION :
 - Header
 - responsiveness
 - check global styles
+- check add img
 
 #**TO DO 19/12**
 
-- add select all
-- display nickname
-- prevent future dates
-- controlled checkboxes
+- edit watering / add button

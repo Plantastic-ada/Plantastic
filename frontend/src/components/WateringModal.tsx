@@ -43,6 +43,14 @@ export const WateringModal = ({ onClose }: { onClose: () => void }) => {
     }
   };
 
+  const handleSelectAll = () => {
+    if (selectedPlantIds.length === plants.length) {
+      setSelectedPlantIds([]);
+    } else {
+      setSelectedPlantIds(plants.map((plant) => plant.id));
+    }
+  };
+
   return (
     <div>
       {plants.length > 0 ? (
@@ -50,20 +58,31 @@ export const WateringModal = ({ onClose }: { onClose: () => void }) => {
           <div key={plant.id}>
             <input
               type="checkbox"
+              checked={selectedPlantIds.includes(plant.id)}
               onChange={(e) => handleCheckboxChange(plant.id, e.target.checked)}
             />
-            {plant.commonName} - Last watering: {plant.lastWatering}
+            {plant.nickname}, {plant.commonName} - Last watering:{" "}
+            {plant.lastWatering}
           </div>
         ))
       ) : (
         <p>You have no plant to water!</p>
       )}
-      <div className="flex justify-center">
+      <div className="flex justify-around content-center mt-6">
         <input
           type="date"
           value={wateringDate.toISOString().split("T")[0]}
+          max={new Date().toISOString().split("T")[0]}
           onChange={(e) => setWateringDate(new Date(e.target.value))}
         />
+        <button
+          onClick={handleSelectAll}
+          className="mb-3 px-4 py-2 bg-[#4F674F]"
+        >
+          {selectedPlantIds.length === plants.length
+            ? "Deselect all"
+            : "Select all"}
+        </button>
       </div>
 
       <button
