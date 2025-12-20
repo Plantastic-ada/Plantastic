@@ -19,7 +19,7 @@ export default function AddPlantForm({ onClose }: FormProps) {
 		resolver: zodResolver(addPlantToEncyclopediaSchema),
 	});
 
-	// CALL FOR USER PLANT CREATION
+	// CALL FOR PLANT CREATION
 	const onSubmit: SubmitHandler<AddPlantToEncyclopediaDto> = async (formData: AddPlantToEncyclopediaDto) => {
 		if (!plantPicture) return;
 		try {
