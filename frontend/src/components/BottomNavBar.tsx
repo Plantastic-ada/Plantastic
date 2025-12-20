@@ -11,7 +11,11 @@ import AddEncyclopediaPlantForm from "./AddEncyclopediaPlantForm";
 import { useAuth } from "../context/AuthContext";
 import FloatingAddButton from "./FloatingAddButton";
 
-export default function BottomNavigation() {
+interface BottomNavigationProps {
+	onRefresh?: () => void;
+}
+
+export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
 	const navigate = useNavigate();
 	const location = useLocation();
 	// const [isModalOpen, setIsModalOpen] = useState(false);
@@ -91,7 +95,9 @@ export default function BottomNavigation() {
 			{isActive("/") && <FloatingAddButton FormComponent={AddPlantForm}></FloatingAddButton>}
 			{/* ADD A PLANT TO ENCYCLOPEDIA BUTTON */}
 			{isActive("/encyclopedia") && isAdmin && (
-				<FloatingAddButton FormComponent={AddEncyclopediaPlantForm}></FloatingAddButton>
+				<FloatingAddButton
+					FormComponent={(props) => <AddEncyclopediaPlantForm {...props} onRefresh={onRefresh} />}
+				></FloatingAddButton>
 			)}
 			<div
 				id="middle_navbar"

@@ -7,7 +7,6 @@ import "./index.css";
 import "flowbite";
 import { AuthProvider } from "./context/AuthContext";
 import GardenProvider from "./context/GardenContext";
-import EncyclopediaProvider from "./context/EncyclopediaContext";
 
 const root = document.getElementById("root")!;
 ReactDOM.createRoot(root).render(
@@ -16,9 +15,7 @@ ReactDOM.createRoot(root).render(
 		<BrowserRouter>
 			<AuthProvider>
 				<GardenProvider>
-					<EncyclopediaProvider>
-						<App />
-					</EncyclopediaProvider>
+					<App />
 				</GardenProvider>
 			</AuthProvider>
 		</BrowserRouter>

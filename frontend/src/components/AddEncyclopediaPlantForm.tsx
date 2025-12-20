@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type ReactNode } from "react";
 import type { AddPlantToEncyclopediaDto } from "../dto/AddPlantToEncyclopediaDto";
 
-export default function AddPlantForm({ onClose }: FormProps) {
+export default function AddEncyclopediaPlantForm({ onClose, onRefresh }: FormProps & { onRefresh?: () => void }) {
 	const [plantPictureFile, setPlantPictureFile] = useState<File | null>(null);
 	const [plantPicture, setPlantPicture] = useState<string | null>(null);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -54,6 +54,7 @@ export default function AddPlantForm({ onClose }: FormProps) {
 			if (!response.ok) {
 				setApiMessage(`Error: ${data || "Error saving data"}`);
 			} else {
+				if (onRefresh) onRefresh();
 				onClose();
 			}
 		} catch (error) {
