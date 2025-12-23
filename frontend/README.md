@@ -185,7 +185,9 @@ PLAN FOR WATERING FUNCTION :
 
 - edit watering / add button
 
-#**WIP 23/12**
+#**TO DO 23/12**
 
-- close menu when outside click not functionel => implemts useRef
-- change color when active
+- ~~close menu when outside click not functionel => implemts useRef~~
+- ~~change color when active~~
+- ~~Remove Forum button and page~~
+- Add profile management

@@ -10,6 +10,7 @@ import FloatingAddButton from "./FloatingAddButton";
 import { RiAddLargeLine } from "react-icons/ri";
 import { LuDroplets } from "react-icons/lu";
 import { WateringModal } from "./WateringModal";
+import { PiUserCircleGearFill } from "react-icons/pi";
 
 interface BottomNavigationProps {
   onRefresh?: () => void;
@@ -81,20 +82,15 @@ export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
           <p className={textClass}>Advices</p>
         </button>
         <button
-          id="forum_button"
-          onClick={() => navigate("/forum")}
-          className={getButtonClass("/forum")}
-          title="forum"
+          id="profile_button"
+          className={getButtonClass("/profile")}
+          title="profile"
         >
-          <IoChatbubbleEllipsesOutline className={getIconClass("/forum")} />
-          <p className={textClass}>Forum</p>
+          <PiUserCircleGearFill className={getIconClass("/forum")} />
+          <p className={textClass}>Profile</p>
         </button>
       </div>
 
-      {/* ADD A PLANT BUTTON */}
-      {/* {isActive("/") && (
-        <FloatingAddButton FormComponent={AddPlantForm}></FloatingAddButton>
-      )} */}
       <FloatingAddButton
         menuOptions={[
           {
