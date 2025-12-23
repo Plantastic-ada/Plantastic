@@ -10,14 +10,14 @@ import GardenProvider from "./context/GardenContext";
 
 const root = document.getElementById("root")!;
 ReactDOM.createRoot(root).render(
-  // MUST REMOVE <React.StrictMode> TO DEPLOY
-  <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <GardenProvider>
-          <App />
-        </GardenProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+	// MUST REMOVE <React.StrictMode> TO DEPLOY
+	<React.StrictMode>
+		<BrowserRouter>
+			<AuthProvider>
+				<GardenProvider>
+					<App />
+				</GardenProvider>
+			</AuthProvider>
+		</BrowserRouter>
+	</React.StrictMode>
 );

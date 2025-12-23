@@ -1,8 +1,11 @@
 package com.plantastic.backend.controller;
 
 
+import com.plantastic.backend.dto.auth.AuthUserDto;
 import com.plantastic.backend.dto.auth.RegisterRequest;
+import com.plantastic.backend.models.entity.User;
 import com.plantastic.backend.repository.UserRepository;
+import com.plantastic.backend.security.user.CustomUserDetails;
 import com.plantastic.backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -45,5 +46,12 @@ public class AuthenticationController {
 
         userService.createUser(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully: " + usernameToCheck);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<AuthUserDto> me(@AuthenticationPrincipal CustomUserDetails user) {
+        log.debug("Here is the user : {}", user);
+        AuthUserDto authUserDto = new AuthUserDto(user.getId(), user.getEmail(), user.getRole());
+        return ResponseEntity.ok(authUserDto);
     }
 }

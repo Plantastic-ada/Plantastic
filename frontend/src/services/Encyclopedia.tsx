@@ -1,5 +1,5 @@
 // import React from 'react'
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import BackgroundWrapper from "../components/BackgroundWrapper";
 import BottomNavBar from "../components/BottomNavBar";
 import { Header } from "../components/Header";
@@ -16,24 +16,24 @@ export default function Encyclopedia() {
 	const [selectedPlant, setSelectedPlant] = useState<PlantSummary | null>(null);
 	const [searchQuery, setSearchQuery] = useState("");
 
-	useEffect(() => {
-		const fetchPlants = async () => {
-			try {
-				const response = await fetchAPI("/plants/encyclopedia", { method: "GET" });
-				if (!response.ok) {
-					throw new Error("Failed to fetch plants");
-				}
-				const data: PlantSummary[] = await response.json();
-				setPlants(data);
-			} catch (err) {
-				setError(err instanceof Error ? err.message : "An unknown error occurred");
-			} finally {
-				setIsLoading(false);
+	const fetchPlants = useCallback(async () => {
+		try {
+			const response = await fetchAPI("/plants/encyclopedia", { method: "GET" });
+			if (!response.ok) {
+				throw new Error("Failed to fetch plants");
 			}
-		};
-
-		fetchPlants();
+			const data: PlantSummary[] = await response.json();
+			setPlants(data);
+		} catch (err) {
+			setError(err instanceof Error ? err.message : "An unknown error occurred");
+		} finally {
+			setIsLoading(false);
+		}
 	}, []);
+
+	useEffect(() => {
+		fetchPlants();
+	}, [fetchPlants]);
 
 	const handleCardClick = (plant: PlantSummary) => {
 		setSelectedPlant(plant);
@@ -88,7 +88,7 @@ export default function Encyclopedia() {
 					<EncyclopediaDetailsCard selectedPlant={selectedPlant} />
 				</Modal>
 			)}
-			<BottomNavBar />
+			<BottomNavBar onRefresh={fetchPlants} />
 		</BackgroundWrapper>
 	);
 }
