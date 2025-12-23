@@ -173,12 +173,19 @@ PLAN FOR WATERING FUNCTION :
 #**BUGFIX 19/12**
 
 - plant selection in add plant form
-- PWA
-- Header
 - responsiveness
 - check global styles
 - check add img
 
-#**TO DO 19/12**
+#**TO DO 22/12**
+
+- Header
+- PWA
+- content type to modify in the add plant form [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController
 
 - edit watering / add button
+
+#**WIP 23/12**
+
+- close menu when outside click not functionel => implemts useRef
+- change color when active
