@@ -1,7 +1,6 @@
 import { PiPlantBold } from "react-icons/pi";
 import { BiSolidBookBookmark } from "react-icons/bi";
 import { HiOutlineLightBulb } from "react-icons/hi2";
-import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router";
 import AddPlantForm from "./AddPlantForm";
 import AddEncyclopediaPlantForm from "./AddEncyclopediaPlantForm";
@@ -10,7 +9,7 @@ import FloatingAddButton from "./FloatingAddButton";
 import { RiAddLargeLine } from "react-icons/ri";
 import { LuDroplets } from "react-icons/lu";
 import { WateringModal } from "./WateringModal";
-import { PiUserCircleGearFill } from "react-icons/pi";
+import { ProfileMenu } from "./ProfileMenu";
 
 interface BottomNavigationProps {
   onRefresh?: () => void;
@@ -19,7 +18,6 @@ interface BottomNavigationProps {
 export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  // const [isModalOpen, setIsModalOpen] = useState(false);
   const { isAdmin } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
@@ -81,14 +79,10 @@ export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
           <HiOutlineLightBulb className={getIconClass("/advices")} />
           <p className={textClass}>Advices</p>
         </button>
-        <button
-          id="profile_button"
-          className={getButtonClass("/profile")}
-          title="profile"
-        >
-          <PiUserCircleGearFill className={getIconClass("/forum")} />
-          <p className={textClass}>Profile</p>
-        </button>
+        <ProfileMenu
+          iconClassName={getIconClass("/profile")}
+          textClassName={textClass}
+        />
       </div>
 
       <FloatingAddButton

@@ -181,7 +181,7 @@ PLAN FOR WATERING FUNCTION :
 
 - Header
 - PWA
-- content type to modify in the add plant form [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController
+- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController
 
 - edit watering / add button
 
@@ -190,4 +190,4 @@ PLAN FOR WATERING FUNCTION :
 - ~~close menu when outside click not functionel => implemts useRef~~
 - ~~change color when active~~
 - ~~Remove Forum button and page~~
-- Add profile management
+- ~~Add profile management~~
