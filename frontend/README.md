@@ -176,9 +176,9 @@ PLAN FOR WATERING FUNCTION :
 
 #**TO DO 22/12**
 
-- Header ✔
-- PWA ✔
-- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController ✔
+- ~~Header~~
+- ~~PWA~~
+- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController
 
 - ~~edit watering / add button~~
 
@@ -191,13 +191,4 @@ PLAN FOR WATERING FUNCTION :
 
 #**TO DO 26/12**
 
-- fix logo size ✔
-
-#**LEFT TO DO 26/12**
-
-- begin RNCP report
-- TESTS AUTH
-- Privacy policy page
-- Single plant Card
-- update CI
-- refacto
+- ~~fix logo size~~
