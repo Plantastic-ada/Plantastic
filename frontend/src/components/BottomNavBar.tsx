@@ -79,24 +79,26 @@ export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
           <HiOutlineLightBulb className={getIconClass("/advices")} />
           <p className={textClass}>Advices</p>
         </button>
+
         <ProfileMenu
           iconClassName={getIconClass("/profile")}
           textClassName={textClass}
         />
       </div>
-
-      <FloatingAddButton
-        menuOptions={[
-          {
-            FormComponent: AddPlantForm,
-            icon: RiAddLargeLine,
-          },
-          {
-            FormComponent: WateringModal,
-            icon: LuDroplets,
-          },
-        ]}
-      />
+      {!isActive("/encyclopedia") && (
+        <FloatingAddButton
+          menuOptions={[
+            {
+              FormComponent: AddPlantForm,
+              icon: RiAddLargeLine,
+            },
+            {
+              FormComponent: WateringModal,
+              icon: LuDroplets,
+            },
+          ]}
+        />
+      )}
       {/* ADD A PLANT TO ENCYCLOPEDIA BUTTON */}
       {isActive("/encyclopedia") && isAdmin && (
         <FloatingAddButton
