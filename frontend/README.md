@@ -124,22 +124,22 @@ TODO:
 9/10
 
 - ~~fix response digital garden from 200 to 401 with JSON when not logged in~~
-- fix logout button in header
-- finish mock ups
+- fix logout button in header ✔
+- finish mock ups ✔
 
 #**TO DO 05/12**
 
 - TESTS AUTH
 - USER PERMISSION TO STORE COOKIE ??
   HEADER
-  Watering button
-  logout button=> improve dropdown style
+  Watering button ✔
+  logout button=> improve dropdown style ✔
   to fix : space for the last plant card (bottom nav bar on top of it)
   Remove DOMpurify
   Calculate next watering in plant card ✔
   Update watering in plant Card
   Finish plant add form ✔
-  Bugfix - error handling when empty fields
+  Bugfix - error handling when empty fields ✔
 
 #**IN PROGRESS 14/11**
 
@@ -179,11 +179,10 @@ PLAN FOR WATERING FUNCTION :
 
 #**TO DO 22/12**
 
-- Header
-- PWA
-- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController
-
-- edit watering / add button
+- Header ✔
+- PWA ✔
+- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController ✔
+- edit watering / add button ✔
 
 #**TO DO 23/12**
 
