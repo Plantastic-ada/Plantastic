@@ -199,3 +199,5 @@ PLAN FOR WATERING FUNCTION :
 - TESTS AUTH
 - Privacy policy page
 - Single plant Card
+- update CI
+- refacto

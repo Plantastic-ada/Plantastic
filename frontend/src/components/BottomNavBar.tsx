@@ -41,7 +41,7 @@ export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
   return (
     <div
       id="navbar"
-      className="fixed bottom-4 h-20 sm:h-24 2xl:h-28 left-4 right-4  xl:left-10 xl:right-10 2xl:right-12 2xl:left-12 grid grid-cols-2 gap-[4rem] text-white  mb-6 font-montserrat opacity-90"
+      className="fixed bottom-4 h-20 sm:h-24 2xl:h-28 left-4 right-4  xl:left-10 xl:right-10 2xl:right-12 2xl:left-12 grid grid-cols-2 gap-[4rem] text-white  mb-6 font-montserrat opacity-90 z-20"
     >
       <div
         id="right_navbar"
