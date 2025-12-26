@@ -79,6 +79,7 @@ export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
           <HiOutlineLightBulb className={getIconClass("/advices")} />
           <p className={textClass}>Advices</p>
         </button>
+
         <ProfileMenu
           iconClassName={getIconClass("/profile")}
           textClassName={textClass}

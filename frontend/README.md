@@ -192,3 +192,13 @@ PLAN FOR WATERING FUNCTION :
 #**TO DO 26/12**
 
 - ~~fix logo size~~
+- fix logo size ✔
+
+#**LEFT TO DO 26/12**
+
+- begin RNCP report
+- TESTS AUTH
+- Privacy policy page
+- Single plant Card
+- update CI
+- refacto
