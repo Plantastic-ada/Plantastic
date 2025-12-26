@@ -153,7 +153,7 @@ TODO:
 - update next watering ✔
 
 #**LAST AUDIT FIX**
-27/11: found 0 vulnerabilities
+26/12: found 0 vulnerabilities
 
 #**ON THE 5/12**
 PLAN FOR WATERING FUNCTION :
