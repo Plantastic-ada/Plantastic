@@ -9,10 +9,10 @@ export const Header = () => {
       onClick={() => navigate("/")}
       src={logo}
       className="w-24 h-24 ml-4
-          sm:w-24 sm:h-30 lg:w-48 sm:ml-5
-          md: md:ml-6
-          lg: lg:ml-1
-          2xl:h-48 2xl:ml-6 
+          sm:w-24 sm:h-30 
+          md:w-36 md:ml-1
+          lg:w-40 lg:ml-1
+          2xl:h-44 2xl:ml-6 
           object-contain"
     />
   );

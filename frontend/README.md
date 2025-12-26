@@ -183,7 +183,7 @@ PLAN FOR WATERING FUNCTION :
 - PWA
 - content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController
 
-- edit watering / add button
+- ~~edit watering / add button~~
 
 #**TO DO 23/12**
 
