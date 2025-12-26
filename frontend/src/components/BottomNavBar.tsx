@@ -84,19 +84,20 @@ export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
           textClassName={textClass}
         />
       </div>
-
-      <FloatingAddButton
-        menuOptions={[
-          {
-            FormComponent: AddPlantForm,
-            icon: RiAddLargeLine,
-          },
-          {
-            FormComponent: WateringModal,
-            icon: LuDroplets,
-          },
-        ]}
-      />
+      {isActive("/") && (
+        <FloatingAddButton
+          menuOptions={[
+            {
+              FormComponent: AddPlantForm,
+              icon: RiAddLargeLine,
+            },
+            {
+              FormComponent: WateringModal,
+              icon: LuDroplets,
+            },
+          ]}
+        />
+      )}
       {/* ADD A PLANT TO ENCYCLOPEDIA BUTTON */}
       {isActive("/encyclopedia") && isAdmin && (
         <FloatingAddButton
