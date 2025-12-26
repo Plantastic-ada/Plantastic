@@ -236,13 +236,20 @@ export default function AddPlantForm({ onClose }: FormProps) {
           Last watering date :
         </label>
         <input
-          {...register("lastWatering")}
+          {...(register("lastWatering"),
+          {
+            setValueAs: (value: string | null) => (value === "" ? null : value),
+          })}
           type="date"
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
         />
         {Object.keys(formState.errors).length > 0 && (
           <div className="bg-red-100 p-2 rounded">
-            {JSON.stringify(formState.errors)}
+            {Object.values(formState.errors).map((error, index) => (
+              <p key={index} className="text-red-600 text-sm">
+                {error?.message as string}
+              </p>
+            ))}
           </div>
         )}
       </div>
