@@ -17,10 +17,10 @@ export default function Home() {
   //   );
   // }
 
-    const { plants, isLoading } = useGarden();
-    
-    // const { logout } = useAuth()
-    if (isLoading) {
+  const { plants, isLoading } = useGarden();
+
+  // const { logout } = useAuth()
+  if (isLoading) {
     return (
       <BackgroundWrapper>
         <div className="flex items-center justify-center h-screen">
