@@ -124,8 +124,8 @@ TODO:
 9/10
 
 - ~~fix response digital garden from 200 to 401 with JSON when not logged in~~
-- fix logout button in header
-- finish mock ups
+- fix logout button in header ✔
+- finish mock ups ✔
 
 #**TO DO 05/12**
 
