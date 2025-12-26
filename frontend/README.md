@@ -129,17 +129,15 @@ TODO:
 
 #**TO DO 05/12**
 
-- TESTS AUTH
-- USER PERMISSION TO STORE COOKIE ??
-  HEADER
-  Watering button
-  logout button=> improve dropdown style
-  to fix : space for the last plant card (bottom nav bar on top of it)
-  Remove DOMpurify
-  Calculate next watering in plant card ✔
-  Update watering in plant Card
-  Finish plant add form ✔
-  Bugfix - error handling when empty fields
+HEADER ✔
+Watering button ✔
+logout button=> improve dropdown style ✔
+to fix : space for the last plant card (bottom nav bar on top of it) ✔
+Remove DOMpurify ✔
+Calculate next watering in plant card ✔
+Update watering in plant Card ✔
+Finish plant add form ✔
+Bugfix - error handling when empty fields ✔
 
 #**IN PROGRESS 14/11**
 
@@ -148,7 +146,6 @@ TODO:
 
 #**IN PROGRESS 28/11**
 
-- begin RNCP report
 - refresh garden => create context ✔
 - update next watering ✔
 
@@ -172,16 +169,16 @@ PLAN FOR WATERING FUNCTION :
 
 #**BUGFIX 19/12**
 
-- plant selection in add plant form
+- plant selection in add plant form ✔
 - responsiveness
 - check global styles
-- check add img
+- check add img ✔
 
 #**TO DO 22/12**
 
-- Header
-- PWA
-- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController
+- Header ✔
+- PWA ✔
+- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController ✔
 
 - ~~edit watering / add button~~
 
@@ -194,4 +191,11 @@ PLAN FOR WATERING FUNCTION :
 
 #**TO DO 26/12**
 
-- fix logo size
+- fix logo size ✔
+
+#**LEFT TO DO 26/12**
+
+- begin RNCP report
+- TESTS AUTH
+- Privacy policy page
+- Single plant Card
