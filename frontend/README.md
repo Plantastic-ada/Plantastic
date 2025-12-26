@@ -191,3 +191,7 @@ PLAN FOR WATERING FUNCTION :
 - ~~change color when active~~
 - ~~Remove Forum button and page~~
 - ~~Add profile management~~
+
+#**TO DO 26/12**
+
+- fix logo size
