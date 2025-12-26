@@ -23,9 +23,9 @@ export default function AddPlantForm({ onClose }: FormProps) {
   const [_apiMessage, setApiMessage] = useState<ReactNode>(null);
   const [isPlantSelected, setIsPlantSelected] = useState(false);
   const { refreshGarden } = useGarden();
+  const today = new Date().toISOString().split("T")[0];
   // TODO: Keyboard navigation
   // const [activeIndex, setActiveIndex] = useState(-1);
-  const today = new Date().toISOString().split("T")[0];
 
   const { register, handleSubmit, formState, setValue } =
     useForm<CreateUserPlantDto>({
