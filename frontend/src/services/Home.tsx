@@ -6,21 +6,9 @@ import PlantCard from "../components/PlantCard";
 import { useGarden } from "../context/GardenContext";
 
 export default function Home() {
-  // const { plants, isLoading, logout } = useAuth();
-  //   if (isLoading) {
-  //   return (
-  //     <BackgroundWrapper>
-  //       <div className="flex items-center justify-center h-screen">
-  //         <p className="text-gray-500"> ⏳ Loading...</p>
-  //       </div>
-  //     </BackgroundWrapper>
-  //   );
-  // }
+  const { plants, isLoading } = useGarden();
 
-    const { plants, isLoading } = useGarden();
-    
-    // const { logout } = useAuth()
-    if (isLoading) {
+  if (isLoading) {
     return (
       <BackgroundWrapper>
         <div className="flex items-center justify-center h-screen">
@@ -33,7 +21,7 @@ export default function Home() {
   return (
     <BackgroundWrapper>
       <Header />
-      <main className="flex flex-col items-center w-full px-4 pt-4">
+      <main className="flex flex-col items-center w-full px-4 pt-4  pb-60">
         <div id="all-cards" className="flex flex-wrap gap-3 justify-center">
           {plants.length > 0 ? (
             plants.map((plant) => <PlantCard key={plant.id} plant={plant} />)
@@ -43,13 +31,6 @@ export default function Home() {
             </p>
           )}
         </div>
-
-        {/* <button
-          onClick={logout}
-          className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
-        >
-          Logout
-        </button> */}
       </main>
       <BottomNavBar />
     </BackgroundWrapper>
