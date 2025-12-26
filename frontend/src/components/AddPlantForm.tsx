@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type ReactNode } from "react";
 import { useGarden } from "../context/GardenContext";
 import imageCompression from "browser-image-compression";
+import { getTodayLocal } from "../utils/date";
 
 export default function AddPlantForm({ onClose }: FormProps) {
   const [allPlants, setAllPlants] = useState<PlantSelection[]>([]);
@@ -23,7 +24,8 @@ export default function AddPlantForm({ onClose }: FormProps) {
   const [_apiMessage, setApiMessage] = useState<ReactNode>(null);
   const [isPlantSelected, setIsPlantSelected] = useState(false);
   const { refreshGarden } = useGarden();
-  const today = new Date().toISOString().split("T")[0];
+  const today = getTodayLocal();
+
   // TODO: Keyboard navigation
   // const [activeIndex, setActiveIndex] = useState(-1);
 
