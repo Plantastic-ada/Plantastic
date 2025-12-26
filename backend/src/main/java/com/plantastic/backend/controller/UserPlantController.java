@@ -29,7 +29,7 @@ public class UserPlantController {
     @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createOneUserPlant(
             @RequestPart("data") CreateUserPlantRequest request,
-            @RequestPart("file") MultipartFile file,
+            @RequestPart(value = "file", required = false) MultipartFile file,
             @AuthenticationPrincipal CustomUserDetails currentUser //Automatic injection of the current user by Spring
     ) throws IOException {
         UserPlant userPlant = userPlantService.createOneUserPlant(request, file, currentUser);

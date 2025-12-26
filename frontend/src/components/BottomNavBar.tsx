@@ -85,7 +85,7 @@ export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
           textClassName={textClass}
         />
       </div>
-      {!isActive("/encyclopedia") && (
+      {isActive("/") && (
         <FloatingAddButton
           menuOptions={[
             {
