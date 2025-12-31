@@ -1,0 +1,128 @@
+import { useEffect, useState } from "react";
+import type { UserPlantDetails } from "../types/UserPlantDetails";
+import { useGarden } from "../context/GardenContext";
+import { getTodayLocal } from "../utils/date";
+import { fetchAPI } from "../utils/api";
+import toast from "react-hot-toast";
+
+export default function UserPlantCard({ plantId }: { plantId: number }) {
+  const [plantDetails, setPlantDetails] = useState<UserPlantDetails | null>(
+    null
+  );
+  const { refreshGarden } = useGarden();
+  const today = getTodayLocal();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [wateringDate, setWateringDate] = useState(new Date());
+
+  const handleWatering = async () => {
+    try {
+      const response = await fetchAPI(
+        `/user-plants/water-one/${plantId}?date=${
+          wateringDate.toISOString().split("T")[0]
+        }`,
+        {
+          method: "PATCH",
+          body: JSON.stringify(plantId),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        toast(`Error: ${data || "Error saving data"}`);
+      } else {
+        await refreshGarden();
+        toast(
+          `"Your ${
+            plantDetails?.nickname || plantDetails?.commonName
+          } is no longer thirsty", { icon: "🌿" }`
+        );
+      }
+    } catch (error) {
+      toast(`Error: ${error}`);
+    }
+  };
+
+  const baseButtonClass = "mt-1 px-3 py-3 text-white rounded text-xl";
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetchAPI(`/user-plants/details/${plantId}`, {
+          method: "GET",
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setPlantDetails(data);
+        } else {
+          setError(`Failed to load plant details (${response.status})`);
+        }
+      } catch (error) {
+        setError(
+          error instanceof Error ? error.message : "An unknown error occurred"
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      {isLoading && <p className="text-gray-500"> ⏳ Loading...</p>}
+      {error && <p className="text-red-400 mt-4">Error: {error}</p>}
+      {!isLoading && !error && plantDetails && (
+        <>
+          <div>
+            <h2 className="text-2xl font-bold mb-4">{plantDetails.nickname}</h2>
+            <div className="flex ">
+              <img
+                className="w-50 h-64 object-cover rounded-lg mb-4"
+                src={
+                  plantDetails.userPlantImageUrl || plantDetails.plantImageUrl
+                }
+                alt="Plant picture"
+              />
+              <div className="ml-6 text-xl content-center">
+                <h3>
+                  <strong>Common name:</strong> {plantDetails.commonName}
+                </h3>
+                <p>
+                  <strong>Scientific name:</strong>{" "}
+                  {plantDetails.scientificName}{" "}
+                </p>
+                <p>
+                  <strong>Last Watering:</strong> {plantDetails.lastWatering}{" "}
+                </p>
+                <p>
+                  <strong>Next watering:</strong> {plantDetails.nextWatering}{" "}
+                </p>
+                <p>
+                  <strong>Watering frequency:</strong> every{" "}
+                  {plantDetails.waterFreq} days
+                </p>
+                <p>
+                  <strong>Light exposure:</strong> {plantDetails.lightExposure}{" "}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 content-center gap-4">
+            <button
+              onClick={handleWatering}
+              className={`${baseButtonClass} bg-[#4f674f] hover:bg-[#232c23]`}
+            >
+              Water the plant
+            </button>
+            <button
+              className={`${baseButtonClass} bg-[#db7922] hover:bg-[#aa590d]`}
+            >
+              Delete this plant
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}

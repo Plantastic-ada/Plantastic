@@ -3,7 +3,7 @@ import { useGarden } from "../context/GardenContext";
 import { fetchAPI } from "../utils/api";
 import toast from "react-hot-toast";
 
-export const WateringModal = ({ onClose }: { onClose: () => void }) => {
+export const WateringMultipleModal = ({ onClose }: { onClose: () => void }) => {
   const { plants, refreshGarden } = useGarden();
   const [selectedPlantIds, setSelectedPlantIds] = useState<number[]>([]);
   // const [_apiMessage, setApiMessage] = useState<ReactNode>(null);

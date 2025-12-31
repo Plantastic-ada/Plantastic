@@ -158,7 +158,7 @@ PLAN FOR WATERING FUNCTION :
 - ~~onClick={ wateringButton} => open Modal~~
   - ~~with list of plants in digital garden with checkboxes~~
   - ~~button for validation~~
-  - MOVE THE LOGIC IN WATERINGMODAL
+  - MOVE THE LOGIC IN WateringMultipleModal
     - ~~onClick={ wateringValidationButton} => PATCH to /water-multiples + refreshGarden()~~
       ~~Message validation "Your plants are no longer thirsty 💧" with OK button to close~~
       ~~To do : set Watering date~~
