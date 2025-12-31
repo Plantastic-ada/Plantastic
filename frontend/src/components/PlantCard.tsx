@@ -9,7 +9,11 @@ export default function PlantCard({ plant }: { plant: UserPlant }) {
       <div
         id="plant-img"
         className="w-28 h-28 flex-shrink-0 rounded-lg bg-cover bg-center"
-        style={{ backgroundImage: `url(${plant.imageUrl})` }}
+        style={{
+          backgroundImage: `url(${
+            plant.userPlantImageUrl || plant.plantImageUrl
+          })`,
+        }}
       />
 
       <div

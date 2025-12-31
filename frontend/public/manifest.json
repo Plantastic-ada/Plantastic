@@ -1,0 +1,15 @@
+{
+  "short_name": "Plantastic",
+  "name": "Plantastic, the app that pampers your plants!",
+  "icons": [
+    {
+      "src": "plantastic_icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#2D3D2D",
+  "background_color": "#2D3D2D"
+}
