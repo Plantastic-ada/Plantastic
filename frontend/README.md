@@ -129,17 +129,15 @@ TODO:
 
 #**TO DO 05/12**
 
-- TESTS AUTH
-- USER PERMISSION TO STORE COOKIE ??
-  HEADER
-  Watering button
-  logout button=> improve dropdown style
-  to fix : space for the last plant card (bottom nav bar on top of it)
-  Remove DOMpurify
-  Calculate next watering in plant card ✔
-  Update watering in plant Card
-  Finish plant add form ✔
-  Bugfix - error handling when empty fields
+HEADER ✔
+Watering button ✔
+logout button=> improve dropdown style ✔
+to fix : space for the last plant card (bottom nav bar on top of it) ✔
+Remove DOMpurify ✔
+Calculate next watering in plant card ✔
+Update watering in plant Card ✔
+Finish plant add form ✔
+Bugfix - error handling when empty fields ✔
 
 #**IN PROGRESS 14/11**
 
@@ -148,12 +146,11 @@ TODO:
 
 #**IN PROGRESS 28/11**
 
-- begin RNCP report
 - refresh garden => create context ✔
 - update next watering ✔
 
 #**LAST AUDIT FIX**
-27/11: found 0 vulnerabilities
+26/12: found 0 vulnerabilities
 
 #**ON THE 5/12**
 PLAN FOR WATERING FUNCTION :
@@ -172,13 +169,35 @@ PLAN FOR WATERING FUNCTION :
 
 #**BUGFIX 19/12**
 
-- plant selection in add plant form
-- PWA
-- Header
+- plant selection in add plant form ✔
 - responsiveness
 - check global styles
-- check add img
+- check add img ✔
 
-#**TO DO 19/12**
+#**TO DO 22/12**
 
-- edit watering / add button
+- Header ✔
+- PWA ✔
+- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController ✔
+
+- ~~edit watering / add button~~
+
+#**TO DO 23/12**
+
+- ~~close menu when outside click not functionel => implemts useRef~~
+- ~~change color when active~~
+- ~~Remove Forum button and page~~
+- ~~Add profile management~~
+
+#**TO DO 26/12**
+
+- fix logo size ✔
+
+#**LEFT TO DO 26/12**
+
+- Single plant form
+- Privacy policy page
+- refacto
+- TESTS AUTH
+- update CI
+- begin RNCP report
