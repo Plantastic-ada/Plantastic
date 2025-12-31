@@ -194,11 +194,18 @@ PLAN FOR WATERING FUNCTION :
 - ~~fix logo size~~
 - fix logo size ✔
 
-#**LEFT TO DO 26/12**
+#**LEFT TO DO**
 
-- Single plant form
+- ~~Single plant form~~
 - Privacy policy page
 - refacto
 - TESTS AUTH
 - update CI
 - begin RNCP report
+
+#**LEFT TO DO 31/12**
+
+- Single plant form
+  - Modal displaying plant infos ✔
+  - Modal for watering one
+  - modal for delete one

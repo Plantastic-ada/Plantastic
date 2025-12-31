@@ -1,48 +1,13 @@
 import { useEffect, useState } from "react";
 import type { UserPlantDetails } from "../types/UserPlantDetails";
-import { useGarden } from "../context/GardenContext";
-import { getTodayLocal } from "../utils/date";
 import { fetchAPI } from "../utils/api";
-import toast from "react-hot-toast";
 
 export default function UserPlantCard({ plantId }: { plantId: number }) {
   const [plantDetails, setPlantDetails] = useState<UserPlantDetails | null>(
     null
   );
-  const { refreshGarden } = useGarden();
-  const today = getTodayLocal();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [wateringDate, setWateringDate] = useState(new Date());
-
-  const handleWatering = async () => {
-    try {
-      const response = await fetchAPI(
-        `/user-plants/water-one/${plantId}?date=${
-          wateringDate.toISOString().split("T")[0]
-        }`,
-        {
-          method: "PATCH",
-          body: JSON.stringify(plantId),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        toast(`Error: ${data || "Error saving data"}`);
-      } else {
-        await refreshGarden();
-        toast(
-          `"Your ${
-            plantDetails?.nickname || plantDetails?.commonName
-          } is no longer thirsty", { icon: "🌿" }`
-        );
-      }
-    } catch (error) {
-      toast(`Error: ${error}`);
-    }
-  };
 
   const baseButtonClass = "mt-1 px-3 py-3 text-white rounded text-xl";
   useEffect(() => {
@@ -110,7 +75,6 @@ export default function UserPlantCard({ plantId }: { plantId: number }) {
           </div>
           <div className="grid grid-cols-2 content-center gap-4">
             <button
-              onClick={handleWatering}
               className={`${baseButtonClass} bg-[#4f674f] hover:bg-[#232c23]`}
             >
               Water the plant
