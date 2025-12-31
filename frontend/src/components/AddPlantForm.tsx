@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type ReactNode } from "react";
 import { useGarden } from "../context/GardenContext";
 import imageCompression from "browser-image-compression";
+import { getTodayLocal } from "../utils/date";
 
 export default function AddPlantForm({ onClose }: FormProps) {
   const [allPlants, setAllPlants] = useState<PlantSelection[]>([]);
@@ -23,6 +24,8 @@ export default function AddPlantForm({ onClose }: FormProps) {
   const [_apiMessage, setApiMessage] = useState<ReactNode>(null);
   const [isPlantSelected, setIsPlantSelected] = useState(false);
   const { refreshGarden } = useGarden();
+  const today = getTodayLocal();
+
   // TODO: Keyboard navigation
   // const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -228,6 +231,7 @@ export default function AddPlantForm({ onClose }: FormProps) {
         <input
           {...register("acquisitionDate")}
           type="date"
+          max={today}
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5 "
         />
 
@@ -236,13 +240,20 @@ export default function AddPlantForm({ onClose }: FormProps) {
           Last watering date :
         </label>
         <input
-          {...register("lastWatering")}
+          {...register("lastWatering", {
+            setValueAs: (value: string | null) => (value === "" ? null : value),
+          })}
           type="date"
+          max={today}
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
         />
         {Object.keys(formState.errors).length > 0 && (
           <div className="bg-red-100 p-2 rounded">
-            {JSON.stringify(formState.errors)}
+            {Object.values(formState.errors).map((error, index) => (
+              <p key={index} className="text-red-600 text-sm">
+                {error?.message as string}
+              </p>
+            ))}
           </div>
         )}
       </div>
