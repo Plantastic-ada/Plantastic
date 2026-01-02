@@ -12,6 +12,7 @@ import com.plantastic.backend.repository.UserPlantRepository;
 import com.plantastic.backend.repository.UserRepository;
 import com.plantastic.backend.security.user.CustomUserDetails;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -89,5 +90,12 @@ public class UserPlantService {
             summaries.add(summary);
         }
         return summaries;
+    }
+
+    @Transactional
+    public void deleteUserPlantById(Long userPlantId) {
+      UserPlant userPlant = userPlantRepository.findById(userPlantId)
+        .orElseThrow(() -> new EntityNotFoundException("UserPlant " + userPlantId + " not found"));
+      userPlantRepository.delete(userPlant);
     }
 }

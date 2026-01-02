@@ -16,7 +16,7 @@ const DeletePlantModal = ({ onClose, plantId }: DeletePlantModalProps) => {
       const data = await response.json();
 
       if (!response.ok) {
-        toast(`Error: ${data || "Error deleting data"}`);
+        toast.error(`Error: ${data || "Error deleting data"}`);
       } else {
         await refreshGarden();
         onClose();
