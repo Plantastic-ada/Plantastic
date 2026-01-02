@@ -1,7 +1,7 @@
 import { useState, type useRef } from "react";
 import type { UserPlant } from "../types/UserPlant";
 import Modal from "./Modal";
-import UserPlantCard from "./UserPlantCard";
+import PlantDetailsModal from "./PlantDetailsModal";
 
 export default function PlantCard({ plant }: { plant: UserPlant }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,7 +50,7 @@ export default function PlantCard({ plant }: { plant: UserPlant }) {
           onClose={() => setIsModalOpen(false)}
           size="lg"
         >
-          <UserPlantCard plantId={plant.id}></UserPlantCard>
+          <PlantDetailsModal plantId={plant.id}></PlantDetailsModal>
         </Modal>
       </div>
     </div>

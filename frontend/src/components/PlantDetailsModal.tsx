@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import type { UserPlantDetails } from "../types/UserPlantDetails";
 import { fetchAPI } from "../utils/api";
+import WaterOnePlantModal from "./WaterOnePlantModal";
+import Modal from "./Modal";
 
-export default function UserPlantCard({ plantId }: { plantId: number }) {
+export default function PlantDetailsModal({ plantId }: { plantId: number }) {
   const [plantDetails, setPlantDetails] = useState<UserPlantDetails | null>(
     null
   );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isWaterModalOpen, setIsWaterModalOpen] = useState(false);
 
   const baseButtonClass = "mt-1 px-3 py-3 text-white rounded text-xl";
   useEffect(() => {
@@ -75,6 +78,7 @@ export default function UserPlantCard({ plantId }: { plantId: number }) {
           </div>
           <div className="grid grid-cols-2 content-center gap-4">
             <button
+              onClick={() => setIsWaterModalOpen(true)}
               className={`${baseButtonClass} bg-[#4f674f] hover:bg-[#232c23]`}
             >
               Water the plant
@@ -85,6 +89,18 @@ export default function UserPlantCard({ plantId }: { plantId: number }) {
               Delete this plant
             </button>
           </div>
+          <Modal
+            isOpen={isWaterModalOpen}
+            onClose={() => setIsWaterModalOpen(false)}
+            size="lg"
+          >
+            <WaterOnePlantModal
+              onClose={() => setIsWaterModalOpen(false)}
+              plantId={plantId}
+              plantNickname={plantDetails.nickname}
+              plantCommonName={plantDetails.commonName}
+            ></WaterOnePlantModal>
+          </Modal>
         </>
       )}
     </div>
