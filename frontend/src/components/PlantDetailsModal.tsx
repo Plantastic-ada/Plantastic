@@ -36,7 +36,7 @@ export default function PlantDetailsModal({ plantId }: { plantId: number }) {
       }
     };
     fetchData();
-  }, []);
+  }, [plantId]);
 
   return (
     <div>

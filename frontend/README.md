@@ -150,7 +150,7 @@ Bugfix - error handling when empty fields ✔
 - update next watering ✔
 
 #**LAST AUDIT FIX**
-26/12: found 0 vulnerabilities
+02/01: found 0 vulnerabilities
 
 #**ON THE 5/12**
 PLAN FOR WATERING FUNCTION :

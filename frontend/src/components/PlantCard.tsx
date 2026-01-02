@@ -1,4 +1,4 @@
-import { useState, type useRef } from "react";
+import { useState } from "react";
 import type { UserPlant } from "../types/UserPlant";
 import Modal from "./Modal";
 import PlantDetailsModal from "./PlantDetailsModal";
