@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import FloatingAddButton from "./FloatingAddButton";
 import { RiAddLargeLine } from "react-icons/ri";
 import { LuDroplets } from "react-icons/lu";
-import { WateringModal } from "./WateringModal";
+import { WaterMultiplePlantsModal } from "./WaterMultiplePlantsModal";
 import { ProfileMenu } from "./ProfileMenu";
 
 interface BottomNavigationProps {
@@ -93,7 +93,7 @@ export default function BottomNavigation({ onRefresh }: BottomNavigationProps) {
               icon: RiAddLargeLine,
             },
             {
-              FormComponent: WateringModal,
+              FormComponent: WaterMultiplePlantsModal,
               icon: LuDroplets,
             },
           ]}

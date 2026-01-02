@@ -150,7 +150,7 @@ Bugfix - error handling when empty fields ✔
 - update next watering ✔
 
 #**LAST AUDIT FIX**
-26/12: found 0 vulnerabilities
+02/01: found 0 vulnerabilities
 
 #**ON THE 5/12**
 PLAN FOR WATERING FUNCTION :
@@ -158,7 +158,7 @@ PLAN FOR WATERING FUNCTION :
 - ~~onClick={ wateringButton} => open Modal~~
   - ~~with list of plants in digital garden with checkboxes~~
   - ~~button for validation~~
-  - MOVE THE LOGIC IN WATERINGMODAL
+  - MOVE THE LOGIC IN WaterMultiplePlantsModal
     - ~~onClick={ wateringValidationButton} => PATCH to /water-multiples + refreshGarden()~~
       ~~Message validation "Your plants are no longer thirsty 💧" with OK button to close~~
       ~~To do : set Watering date~~
@@ -176,9 +176,9 @@ PLAN FOR WATERING FUNCTION :
 
 #**TO DO 22/12**
 
-- ~~Header~~
-- ~~PWA~~
-- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController
+- Header ✔
+- PWA ✔
+- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController ✔
 
 - ~~edit watering / add button~~
 
@@ -194,11 +194,18 @@ PLAN FOR WATERING FUNCTION :
 - ~~fix logo size~~
 - fix logo size ✔
 
-#**LEFT TO DO 26/12**
+#**LEFT TO DO**
 
-- begin RNCP report
-- TESTS AUTH
+- ~~Single plant form~~
 - Privacy policy page
-- Single plant Card
-- update CI
 - refacto
+- TESTS AUTH
+- update CI
+- begin RNCP report
+
+#**LEFT TO DO 31/12**
+
+- Single plant form
+  - Modal displaying plant infos ✔
+  - Modal for watering one ✔
+  - modal for deleting one ✔

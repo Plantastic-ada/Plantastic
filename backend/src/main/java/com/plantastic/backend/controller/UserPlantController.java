@@ -6,6 +6,7 @@ import com.plantastic.backend.dto.plants.UserPlantSummaryDto;
 import com.plantastic.backend.models.entity.UserPlant;
 import com.plantastic.backend.security.user.CustomUserDetails;
 import com.plantastic.backend.service.UserPlantService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -14,11 +15,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/user-plants")
 @RequiredArgsConstructor
@@ -58,4 +63,27 @@ public class UserPlantController {
         return ResponseEntity.ok(summaries);
     }
 
+
+  @DeleteMapping("/delete-one/{id}")
+  public ResponseEntity<Map<String, String>> deleteOneUserPlant(@PathVariable("id") Long userPlantId) {
+    log.debug("Deleting plant with id: {}", userPlantId);
+
+    try {
+      userPlantService.deleteUserPlantById(userPlantId);
+      log.info("User plant (id: {}) has been successfully deleted", userPlantId);
+
+      return ResponseEntity.ok(Map.of(
+        "message", "Plant deleted successfully",
+        "success", "true"
+      ));
+    } catch (EntityNotFoundException e) {
+      log.warn("Plant with id {} deletion failed: {}", userPlantId, e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(Map.of("message", e.getMessage(), "success", "false"));
+    } catch (Exception e) {
+      log.error("Unexpected error deleting plant with id {}: ", userPlantId, e);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(Map.of("message", "An unexpected error occurred", "success", "false"));
+    }
+  }
 }

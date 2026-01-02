@@ -1,6 +1,10 @@
+import { useState } from "react";
 import type { UserPlant } from "../types/UserPlant";
+import Modal from "./Modal";
+import PlantDetailsModal from "./PlantDetailsModal";
 
 export default function PlantCard({ plant }: { plant: UserPlant }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div
       id="plant-card"
@@ -35,9 +39,19 @@ export default function PlantCard({ plant }: { plant: UserPlant }) {
             Next watering: {plant.nextWatering}
           </p>
         </div>
-        <button className="mt-1 px-3 py-1 text-xs bg-[#4f674f] text-white rounded hover:bg-[#232c23] w-full">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="mt-1 px-3 py-1 text-xs bg-[#4f674f] text-white rounded hover:bg-[#232c23] w-full"
+        >
           Consult
         </button>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          size="lg"
+        >
+          <PlantDetailsModal plantId={plant.id}></PlantDetailsModal>
+        </Modal>
       </div>
     </div>
   );
