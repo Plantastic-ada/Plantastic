@@ -207,5 +207,5 @@ PLAN FOR WATERING FUNCTION :
 
 - Single plant form
   - Modal displaying plant infos ✔
-  - Modal for watering one
-  - modal for deleting one
+  - Modal for watering one ✔
+  - modal for deleting one ✔

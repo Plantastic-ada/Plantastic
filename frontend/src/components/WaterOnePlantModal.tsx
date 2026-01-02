@@ -41,7 +41,7 @@ const WateringOneModal = ({
         });
       }
     } catch (error) {
-      toast(`Error: ${error}`);
+      toast.error(`Error: ${error}`);
     }
   };
 

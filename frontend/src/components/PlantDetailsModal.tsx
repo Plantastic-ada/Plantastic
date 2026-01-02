@@ -3,6 +3,7 @@ import type { UserPlantDetails } from "../types/UserPlantDetails";
 import { fetchAPI } from "../utils/api";
 import WaterOnePlantModal from "./WaterOnePlantModal";
 import Modal from "./Modal";
+import DeletePlantModal from "./DeletePlantModal";
 
 export default function PlantDetailsModal({ plantId }: { plantId: number }) {
   const [plantDetails, setPlantDetails] = useState<UserPlantDetails | null>(
@@ -11,6 +12,7 @@ export default function PlantDetailsModal({ plantId }: { plantId: number }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isWaterModalOpen, setIsWaterModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const baseButtonClass = "mt-1 px-3 py-3 text-white rounded text-xl";
   useEffect(() => {
@@ -84,11 +86,13 @@ export default function PlantDetailsModal({ plantId }: { plantId: number }) {
               Water the plant
             </button>
             <button
+              onClick={() => setIsDeleteModalOpen(true)}
               className={`${baseButtonClass} bg-[#db7922] hover:bg-[#aa590d]`}
             >
               Delete this plant
             </button>
           </div>
+
           <Modal
             isOpen={isWaterModalOpen}
             onClose={() => setIsWaterModalOpen(false)}
@@ -100,6 +104,17 @@ export default function PlantDetailsModal({ plantId }: { plantId: number }) {
               plantNickname={plantDetails.nickname}
               plantCommonName={plantDetails.commonName}
             ></WaterOnePlantModal>
+          </Modal>
+
+          <Modal
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+            size="lg"
+          >
+            <DeletePlantModal
+              onClose={() => setIsDeleteModalOpen(false)}
+              plantId={plantId}
+            ></DeletePlantModal>
           </Modal>
         </>
       )}
