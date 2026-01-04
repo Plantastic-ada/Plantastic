@@ -1,15 +1,18 @@
-import { defineConfig, configDefaults } from 'vitest/config'
+import { defineConfig, configDefaults } from "vitest/config";
 
 export default defineConfig({
   test: {
     globals: true,
-    environment: 'jsdom',
+    environment: "jsdom",
     css: true,
-    setupFiles: './src/tests/setupTests.ts',
+    setupFiles: "./src/tests/setup/setupTests.ts",
     //exclude: , // Example: Exclude e2e tests
     coverage: {
-      provider: 'v8', // Use Vite's default coverage provider
-      reporter: ['text', 'json', 'html']
-    }
-  }
-})
+      provider: "v8", // Use Vite's default coverage provider
+      reporter: ["text", "json", "html"],
+    },
+    alias: {
+      "@/assets": "/src/assets",
+    },
+  },
+});

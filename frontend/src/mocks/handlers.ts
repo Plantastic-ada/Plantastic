@@ -3,6 +3,7 @@ import {
   logoutHandlers,
   signupHandlers,
   authStatusHandlers,
+  gardenHandlers,
 } from "./handlers/authHandlers";
 
 export const handlers = [
@@ -10,4 +11,5 @@ export const handlers = [
   ...logoutHandlers,
   ...signupHandlers,
   ...authStatusHandlers,
+  ...gardenHandlers,
 ];
