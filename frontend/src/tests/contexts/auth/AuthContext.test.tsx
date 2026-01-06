@@ -33,14 +33,16 @@ describe("AuthContext", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/isLoading: true/i)).toBeInTheDocument();
+    expect(await screen.findByText(/isLoading: true/i)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
     });
 
-    expect(screen.getByText(/isAuthenticated: false/i)).toBeInTheDocument();
-    expect(screen.getByText(/email: null/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/isAuthenticated: false/i)
+    ).toBeInTheDocument();
+    expect(await screen.findByText(/email: null/i)).toBeInTheDocument();
   });
 });
 
@@ -71,8 +73,10 @@ it("should update the context after successful login", async () => {
   await waitFor(() => {
     expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
   });
-  expect(screen.getByText(/isAuthenticated: false/i)).toBeInTheDocument();
-  expect(screen.getByText(/email: null/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/isAuthenticated: false/i)
+  ).toBeInTheDocument();
+  expect(await screen.findByText(/email: null/i)).toBeInTheDocument();
   // 4. MOCK FOR CONNECTED USER
   server.use(
     http.get(`${API_BASE_URL}/api/me/my-digital-garden`, () => {
@@ -106,8 +110,10 @@ it("should update the context after successful login", async () => {
   await waitFor(() => {
     expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
   });
-  expect(screen.getByText(/isAuthenticated: true/i)).toBeInTheDocument();
-  expect(screen.getByText(/email: test@example.com/i)).toBeInTheDocument();
+  expect(await screen.findByText(/isAuthenticated: true/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/email: test@example.com/i)
+  ).toBeInTheDocument();
 });
 
 // LOGOUT TEST
@@ -163,15 +169,19 @@ it("should update the context after successful logout", async () => {
   await waitFor(() => {
     expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
   });
-  expect(screen.getByText(/isAuthenticated: true/i)).toBeInTheDocument();
-  expect(screen.getByText(/email: test@example.com/i)).toBeInTheDocument();
+  expect(await screen.findByText(/isAuthenticated: true/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/email: test@example.com/i)
+  ).toBeInTheDocument();
   // 5. LOGOUT CLIC SIMULATION
-  const logoutButton = screen.getByText("Logout");
+  const logoutButton = await screen.findByText("Logout");
   logoutButton.click();
   // 6. LOADING + VERIFICATION
   await waitFor(() => {
     expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
   });
-  expect(screen.getByText(/isAuthenticated: false/i)).toBeInTheDocument();
-  expect(screen.getByText(/email: null/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/isAuthenticated: false/i)
+  ).toBeInTheDocument();
+  expect(await screen.findByText(/email: null/i)).toBeInTheDocument();
 });
