@@ -7,7 +7,7 @@ import { signUpSchema } from "../../schemas/signUpSchema";
 import type { User } from "../../types/User";
 import { sanitizeUser } from "../../utils/sanitize";
 import { z } from "zod";
-import { TEST_CONFIG } from "../config";
+import { TEST_CONFIG } from "../config.ts";
 
 const generateToken = () => {
   return (
@@ -17,7 +17,7 @@ const generateToken = () => {
 };
 
 // Shared storage to allow MSW to work with a generated token
-const tokenStorage = {
+export const tokenStorage = {
   token: null as string | null,
   setToken(token: string | null) {
     this.token = token;
@@ -40,7 +40,14 @@ const tokenStorage = {
     }
     return null;
   },
+  reset() {
+    this.token = null;
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  },
 };
+
+console.log("TEST_CONFIG:", TEST_CONFIG); // ← Ajoute ça
+console.log("API_BASE_URL:", TEST_CONFIG.API_BASE_URL);
 
 export const loginHandlers = [
   http.post(
@@ -82,7 +89,7 @@ export const loginHandlers = [
       }
 
       return HttpResponse.json(
-        { message: "Invalid pseudo or password" },
+        { message: "Invalid username or password" },
         { status: 401 }
       );
     }

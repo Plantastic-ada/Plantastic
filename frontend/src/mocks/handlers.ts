@@ -5,6 +5,7 @@ import {
   authStatusHandlers,
   gardenHandlers,
 } from "./handlers/authHandlers";
+import { plantSummariesHandlers } from "./handlers/plantHandlers";
 
 export const handlers = [
   ...loginHandlers,
@@ -12,4 +13,5 @@ export const handlers = [
   ...signupHandlers,
   ...authStatusHandlers,
   ...gardenHandlers,
+  ...plantSummariesHandlers,
 ];

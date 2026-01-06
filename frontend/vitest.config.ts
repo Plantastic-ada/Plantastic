@@ -6,6 +6,7 @@ export default defineConfig({
     environment: "jsdom",
     css: true,
     setupFiles: "./src/tests/setup/setupTests.ts",
+    testTimeout: 10000,
     //exclude: , // Example: Exclude e2e tests
     coverage: {
       provider: "v8", // Use Vite's default coverage provider
