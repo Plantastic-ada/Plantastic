@@ -4,7 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import { AuthProvider, useAuth } from "../../../context/AuthContext";
 import { http, HttpResponse } from "msw";
 import { server } from "../../../mocks/server";
-import { API_BASE_URL } from "../../../mocks/config/constants";
+// import { API_BASE_URL } from "../../../mocks/config/constants";
+const API_BASE_URL = "http://localhost:8080";
 
 function TestComponent() {
   const { isAuthenticated, isLoading, user } = useAuth();

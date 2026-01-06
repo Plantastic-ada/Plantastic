@@ -6,7 +6,8 @@ import { AuthProvider } from "../../context/AuthContext";
 import userEvent from "@testing-library/user-event";
 import { server } from "../../mocks/server";
 import { http, HttpResponse } from "msw";
-import { API_BASE_URL } from "../../mocks/config/constants";
+// import { API_BASE_URL } from "../../mocks/config/constants";
+const API_BASE_URL = "http://localhost:8080";
 
 // SETUP
 const renderLogin = () => {

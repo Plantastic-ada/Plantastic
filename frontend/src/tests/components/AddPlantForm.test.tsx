@@ -9,8 +9,9 @@ import AddPlantForm from "../../components/AddPlantForm";
 import { AuthProvider } from "../../context/AuthContext";
 import GardenProvider from "../../context/GardenContext";
 import { mockPlants } from "../../mocks/mockPlantData";
-import { API_BASE_URL } from "../../mocks/config/constants";
+// import { API_BASE_URL } from "../../mocks/config/constants";
 // import { mockUserPlants } from "../../mocks/mockUserPlantsData";
+const API_BASE_URL = "http://localhost:8080";
 
 // SETUP
 const renderAddPlantForm = () => {
