@@ -5,8 +5,8 @@ import SignUp from "../../services/SignUp";
 import { AuthProvider } from "../../context/AuthContext";
 import userEvent from "@testing-library/user-event";
 import { server } from "../../mocks/server";
-import { TEST_CONFIG } from "../../mocks/config";
 import { http, HttpResponse } from "msw";
+import { API_BASE_URL } from "../../mocks/config/constants";
 
 // SETUP
 const renderSignUp = () => {
@@ -71,19 +71,16 @@ it("should signup successfully", async () => {
   const user = userEvent.setup();
 
   server.use(
-    http.post(
-      `${TEST_CONFIG.API_BASE_URL}/api/auth/register`,
-      async ({ request }) => {
-        const body = (await request.json()) as {
-          username: string;
-          email: string;
-          password: string;
-        };
-        return HttpResponse.text(`User created: ${body.username}`, {
-          status: 200,
-        });
-      }
-    )
+    http.post(`${API_BASE_URL}/api/auth/register`, async ({ request }) => {
+      const body = (await request.json()) as {
+        username: string;
+        email: string;
+        password: string;
+      };
+      return HttpResponse.text(`User created: ${body.username}`, {
+        status: 200,
+      });
+    })
   );
 
   renderSignUp();
@@ -111,7 +108,7 @@ it("should not signup successfully if password do not match", async () => {
   let apiCalled = false;
 
   server.use(
-    http.post(`${TEST_CONFIG.API_BASE_URL}/api/auth/register`, () => {
+    http.post(`${API_BASE_URL}/api/auth/register`, () => {
       apiCalled = true;
       return HttpResponse.json({ success: true }, { status: 200 });
     })
@@ -142,7 +139,7 @@ it("should show error for weak password", async () => {
   let apiCalled = false;
 
   server.use(
-    http.post(`${TEST_CONFIG.API_BASE_URL}/api/auth/register`, () => {
+    http.post(`${API_BASE_URL}/api/auth/register`, () => {
       apiCalled = true;
       return HttpResponse.json({ success: true }, { status: 200 });
     })
@@ -172,7 +169,7 @@ it("should show error for invalid email", async () => {
   let apiCalled = false;
 
   server.use(
-    http.post(`${TEST_CONFIG.API_BASE_URL}/api/auth/register`, () => {
+    http.post(`${API_BASE_URL}/api/auth/register`, () => {
       apiCalled = true;
       return HttpResponse.json({ success: true }, { status: 200 });
     })
@@ -201,7 +198,7 @@ it("should show error when email already exists", async () => {
   const user = userEvent.setup();
 
   server.use(
-    http.post(`${TEST_CONFIG.API_BASE_URL}/api/auth/register`, () => {
+    http.post(`${API_BASE_URL}/api/auth/register`, () => {
       return HttpResponse.json("Email already exists", { status: 400 });
     })
   );

@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { AuthProvider, useAuth } from "../../../context/AuthContext";
 import { http, HttpResponse } from "msw";
 import { server } from "../../../mocks/server";
-import { TEST_CONFIG } from "../../../mocks/config";
+import { API_BASE_URL } from "../../../mocks/config/constants";
 
 function TestComponent() {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -74,7 +74,7 @@ it("should update the context after successful login", async () => {
   expect(screen.getByText(/email: null/i)).toBeInTheDocument();
   // 4. MOCK FOR CONNECTED USER
   server.use(
-    http.get(`${TEST_CONFIG.API_BASE_URL}/api/me/my-digital-garden`, () => {
+    http.get(`${API_BASE_URL}/api/me/my-digital-garden`, () => {
       return HttpResponse.json(
         {
           user: {
@@ -113,7 +113,7 @@ it("should update the context after successful login", async () => {
 it("should update the context after successful logout", async () => {
   // 1. MOCK FOR CONNECTED USER
   server.use(
-    http.get(`${TEST_CONFIG.API_BASE_URL}/api/me/my-digital-garden`, () => {
+    http.get(`${API_BASE_URL}/api/me/my-digital-garden`, () => {
       return HttpResponse.json(
         {
           user: {

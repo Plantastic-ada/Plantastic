@@ -5,8 +5,8 @@ import Login from "../../services/Login";
 import { AuthProvider } from "../../context/AuthContext";
 import userEvent from "@testing-library/user-event";
 import { server } from "../../mocks/server";
-import { TEST_CONFIG } from "../../mocks/config";
 import { http, HttpResponse } from "msw";
+import { API_BASE_URL } from "../../mocks/config/constants";
 
 // SETUP
 const renderLogin = () => {
@@ -80,10 +80,10 @@ describe.each([
     const user = userEvent.setup();
     // 1. MOCK API LOGIN SUCCESS AND NAVIGATION
     server.use(
-      http.post(`${TEST_CONFIG.API_BASE_URL}/api/auth/login`, () => {
+      http.post(`${API_BASE_URL}/api/auth/login`, () => {
         return HttpResponse.json({ success: true }, { status: 200 });
       }),
-      http.get(`${TEST_CONFIG.API_BASE_URL}/api/me/my-digital-garden`, () => {
+      http.get(`${API_BASE_URL}/api/me/my-digital-garden`, () => {
         return HttpResponse.json(
           {
             user: mockUser,
@@ -117,7 +117,7 @@ it("should show validation errors and not call API for empty fields", async () =
   let apiCalled = false;
 
   server.use(
-    http.post(`${TEST_CONFIG.API_BASE_URL}/api/auth/login`, () => {
+    http.post(`${API_BASE_URL}/api/auth/login`, () => {
       apiCalled = true;
       return HttpResponse.json({ success: true }, { status: 200 });
     })
@@ -137,7 +137,7 @@ it("should show validation errors and not call API for empty fields", async () =
 it("should not login with wrong credentials", async () => {
   const user = userEvent.setup();
   server.use(
-    http.post(`${TEST_CONFIG.API_BASE_URL}/api/auth/login`, () => {
+    http.post(`${API_BASE_URL}/api/auth/login`, () => {
       return HttpResponse.json(
         { message: "Invalid credentials" },
         { status: 401 }

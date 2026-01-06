@@ -9,7 +9,7 @@ export default defineConfig({
     testTimeout: process.env.CI ? 15000 : 10000,
     retry: process.env.CI ? 2 : 0,
     reporters: process.env.CI
-      ? ["basic"] // minimal mode in CI
+      ? ["default"] // minimal mode in CI
       : ["verbose"],
     //exclude: , // Example: Exclude e2e tests
     environmentOptions: {
