@@ -6,6 +6,8 @@ import type { User } from "../../types/User";
 import { sanitizeUser } from "../../utils/sanitize";
 import { z } from "zod";
 
+const BASE_URL = "http://localhost:8080";
+
 const generateToken = () => {
   return (
     Math.random().toString(36).substring(2, 15) +
@@ -40,9 +42,9 @@ export const tokenStorage = {
   },
 };
 
-export const createAuthHandlers = (baseUrl: string) => [
+export const createAuthHandlers = () => [
   // Login
-  http.post(`${baseUrl}/api/auth/login`, async ({ request }) => {
+  http.post(`${BASE_URL}/api/auth/login`, async ({ request }) => {
     const body = await request.json();
     const result = loginSchema.safeParse(body);
 
@@ -85,7 +87,7 @@ export const createAuthHandlers = (baseUrl: string) => [
   }),
 
   // Signup
-  http.post(`${baseUrl}/api/auth/signup`, async ({ request }) => {
+  http.post(`${BASE_URL}/api/auth/register`, async ({ request }) => {
     const requestBody = await request.json();
     const result = signUpSchema.safeParse(requestBody);
 
@@ -106,7 +108,7 @@ export const createAuthHandlers = (baseUrl: string) => [
   }),
 
   // Logout
-  http.post(`${baseUrl}/api/auth/logout`, () => {
+  http.post(`${BASE_URL}/api/auth/logout`, () => {
     tokenStorage.setToken(null);
 
     return HttpResponse.json(
@@ -121,7 +123,7 @@ export const createAuthHandlers = (baseUrl: string) => [
   }),
 
   // Auth status
-  http.get(`${baseUrl}/api/auth/me`, () => {
+  http.get(`${BASE_URL}/api/auth/me`, () => {
     const currentToken = tokenStorage.getToken();
 
     if (!currentToken) {
@@ -143,7 +145,7 @@ export const createAuthHandlers = (baseUrl: string) => [
   }),
 
   // Garden
-  http.get(`${baseUrl}/api/me/my-digital-garden`, () => {
+  http.get(`${BASE_URL}/api/me/my-digital-garden`, () => {
     return HttpResponse.json(
       {
         email: null,

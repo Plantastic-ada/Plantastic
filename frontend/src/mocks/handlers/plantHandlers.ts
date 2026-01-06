@@ -1,7 +1,9 @@
 import { http, HttpResponse } from "msw";
 
-export const createPlantHandlers = (baseUrl: string) => [
-  http.get(`${baseUrl}/api/plants/summaries`, () => {
+const BASE_URL = "http://localhost:8080";
+
+export const createPlantHandlers = () => [
+  http.get(`${BASE_URL}/api/plants/summaries`, () => {
     return HttpResponse.json([], { status: 200 });
   }),
 ];
