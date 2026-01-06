@@ -1,13 +1,15 @@
 package com.plantastic.backend;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.profiles.active=test")
 class PlantasticBackendApplicationTests {
 
 	@Test
 	void contextLoads() {
+		Assertions.assertTrue(true); // Not really useful, just confirms the context loads
 	}
 
 }

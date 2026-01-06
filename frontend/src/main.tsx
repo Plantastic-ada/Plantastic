@@ -1,12 +1,36 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+// import { worker } from './mocks/browser';
+import { BrowserRouter } from "react-router-dom";
+import "./index.css";
+import "flowbite";
+import { AuthProvider } from "./context/AuthContext";
+import GardenProvider from "./context/GardenContext";
 
+const root = document.getElementById("root")!;
+ReactDOM.createRoot(root).render(
+  // MUST REMOVE <React.StrictMode> TO DEPLOY
+  <React.StrictMode>
+    <BrowserRouter>
+      <AuthProvider>
+        <GardenProvider>
+          <App />
+        </GardenProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then((registration) => {
+        console.debug("SW registered:", registration);
+      })
+      .catch((error) => {
+        console.debug("SW registration failed:", error);
+      });
+  });
+}

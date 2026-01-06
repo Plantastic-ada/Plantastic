@@ -1,4 +1,5 @@
 name: Backend Plantastic
+
 on:
     push:
         branches:
@@ -12,14 +13,44 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+
+        env:
+            JWT_SECRET: ${{secrets.JWT_SECRET_BACK}}
+            CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+            CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+            CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+
+        services:
+            mysql:
+                image: mysql:latest
+                ports:
+                    - 3306:3306
+                env:
+                    MYSQL_DATABASE: plantastic
+                    MYSQL_PASSWORD: plantastic
+                    MYSQL_ROOT_PASSWORD: plantastic
+                    MYSQL_USER: plantastic
+                options: >-
+                    --health-cmd="mysqladmin ping --silent"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
+
         steps:
             - name: Checkout
               uses: actions/checkout@v2
+
             - name: Setup Java
               uses: actions/setup-java@v4
               with:
                   distribution: "temurin"
                   java-version: "21"
+            - name: Setup application.properties
+              run: cp backend/src/main/resources/application.properties.exemple backend/src/main/resources/application.properties
+            - name: Wait for MySQL to be ready
+              run: |
+                  echo "Waiting for MySQL to be ready..."
+                  sleep 20
 
             - name: Build with Maven
               run: |

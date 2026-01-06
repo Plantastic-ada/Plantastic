@@ -1,0 +1,137 @@
+package com.plantastic.backend.initdb.service;
+
+import com.plantastic.backend.initdb.dto.json.PlantDtoFromJson;
+import com.plantastic.backend.initdb.dto.api.CareGuideApiResponse;
+import com.plantastic.backend.initdb.dto.api.PlantApiSummary;
+import com.plantastic.backend.initdb.dto.api.PlantDetailApiResponse;
+import com.plantastic.backend.initdb.dto.api.PlantListApiResponse;
+import com.plantastic.backend.models.entity.Plant;
+import com.plantastic.backend.repository.PlantRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@Slf4j
+public class PlantImportService {
+
+    private final RestTemplate restTemplate;
+    private final PlantRepository plantRepository;
+    private final String apiKey;
+
+    public PlantImportService(RestTemplateBuilder builder, PlantRepository plantRepository,@Value("${api.key}") String apiKey) {
+        this.restTemplate = builder.build();
+        this.plantRepository = plantRepository;
+        this.apiKey = apiKey;
+    }
+
+    //One page has 30 plants
+    public void importThirtyPlantsFromApi(int page) {
+        String listUrl = "https://perenual.com/api/v2/species-list?key=" + apiKey + "&indoor=1&page=" + page;
+        PlantListApiResponse response = restTemplate.getForObject(listUrl, PlantListApiResponse.class);
+
+        log.info(apiKey);
+
+        if (response == null || response.getData() == null || response.getData().isEmpty()) {
+            log.warn("❌ There is no more plant to get");
+            return;
+        }
+
+        List<PlantApiSummary> plantSummaries = new ArrayList<>(response.getData());
+        log.debug("🌿 Plant List : {}", plantSummaries);
+
+        for (PlantApiSummary summary : plantSummaries) {
+
+            try {
+                Thread.sleep(5000);
+                importOnePlantFromApi(summary.getApiId());
+            } catch (Exception e) {
+                Thread.currentThread().interrupt();
+                log.error("Pause interrupted. Error : {}",e.getMessage(), e);
+                break;
+            }
+        }
+        log.info("✅ Import done for{} plants.", plantSummaries.size());
+    }
+
+    public void importOnePlantFromApi(Long apiId) {
+        Optional<Plant> plantOpt = createPlantByIdFromApi(apiId);
+        if (plantOpt.isPresent()) {
+            Plant plant = plantOpt.get();
+            plantRepository.save(plant);
+            log.info("✅ Plant imported : {}, apiId : {}", plant.getCommonName(), plant.getApiId());
+        } else {
+            log.error("❌ Import failed : no plant found forapiId {}", apiId);
+        }
+    }
+
+    private Optional<Plant> createPlantByIdFromApi(Long apiId) {
+        try {
+            //Plant details
+            PlantDetailApiResponse detail = restTemplate.getForObject(
+                    "https://perenual.com/api/v2/species/details/" + apiId + "?key=" + apiKey,
+                    PlantDetailApiResponse.class
+            );
+
+            if (detail == null) {
+                log.warn("⚠️No details found for apiId {}", apiId);
+                return Optional.empty();
+            }
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                log.error("Pause interrupted", e);
+            }
+
+            // Care guide for a specific plant
+            CareGuideApiResponse careGuide = restTemplate.getForObject(
+                    "https://perenual.com/api/species-care-guide-list?species_id=" + apiId + "&key=" + apiKey,
+                    CareGuideApiResponse.class
+            );
+
+            if (careGuide == null || careGuide.getData() == null) {
+                log.warn("⚠️No careGuide found for apiId {}", apiId);
+            }
+
+            //Verify if a plant existe in db with this apiID
+            //If a plant exists, we update this one, otherwise we create a new one
+            Optional<Plant> existingPlant = plantRepository.findByApiId(apiId);
+            Plant plant = existingPlant.orElseGet(() -> {
+                assert careGuide != null;
+                return new Plant(detail, careGuide, apiId);
+            });
+
+            return Optional.of(plant);
+        } catch (Exception e) {
+            log.error("❌ Error importing plant with apiId {} : {}", apiId, e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public void importAllPlantsFromJson(List<PlantDtoFromJson> plantsList) {
+        for (PlantDtoFromJson jsonPLant : plantsList) {
+
+            Long jsonPlantApiId = jsonPLant.getApiId();
+
+            Optional<Plant> existingPlant = plantRepository.findByApiId(jsonPlantApiId);
+
+            Plant plant = existingPlant.orElseGet(() -> new Plant(jsonPLant));
+
+            if(existingPlant.isPresent()) {
+                plant.updatePlantFromDto(jsonPLant);
+            }
+
+            plantRepository.save(plant);
+            log.info("✅ Plant imported: {}, apiId : {}", plant.getCommonName(), plant.getApiId());
+        }
+        log.info("✅ Import done for {} plants.", plantsList.size());
+    }
+}

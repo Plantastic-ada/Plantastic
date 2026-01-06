@@ -24,31 +24,188 @@ export default tseslint.config({
   languageOptions: {
     // other options...
     parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
       tsconfigRootDir: import.meta.dirname,
     },
   },
-})
+});
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from "eslint-plugin-react-x";
+import reactDom from "eslint-plugin-react-dom";
 
 export default tseslint.config({
   plugins: {
     // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
+    "react-x": reactX,
+    "react-dom": reactDom,
   },
   rules: {
     // other rules...
     // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
+    ...reactX.configs["recommended-typescript"].rules,
     ...reactDom.configs.recommended.rules,
   },
-})
+});
 ```
+
+#**ESLINT ON CI/CD**
+Will be applied before the build by the dependency defined in package.json. by "eslint:github-action"
+
+#**RUN CI PRE PUSH**
+Check can be done before pushing by running _npm run check:ci_
+
+#**INSTALL REACT ROUTER**
+npm install --save-dev @types/react-router-dom
+/!\ install v6 = npm install react-router-dom@6
+
+#**MOCK SERVICE WORKER**
+Mock Service Worker is an API mocking library that allows you to write client-agnostic mocks
+to install: npm i -D msw
+when the package is installed, need to save the SW script in the public folder : npx msw init public/
+This SW is available at runtime. Can be checked in http://localhost:5174/mockServiceWorker.js
+It's set up for the browser, it can be set up for a server environment to mock API calls for unit tests
+
+#**ZOD LIBRARY**
+Zod is a TypeScript-first validation library. Define a schema and parse some data with it. You'll get back a strongly typed, validated result.
+npm install zod
+
+#**DOM PURIFY**
+DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG.
+
+#**REACT ICONS**
+Include popular icons in your React projects easily with react-icons, which utilizes ES6 imports that allows you to include only the icons that your project is using.
+(https://react-icons.github.io/react-icons/)
+
+#**RESSOURCES**
+React Router, Vite and JWT Authentication : https://medium.com/@asbedb/react-router-vite-and-jwt-authentication-9abf049c3f32
+
+Starting with logger in React: https://www.meticulous.ai/blog/getting-started-with-react-logging
+
+#**TBD**
+~~8/07: Implement style components (defined but not used)~~
+
+~~29/08 :
+Implements floating action button for add a plant in the home page.~~
+
+12/09 :
+In middle in the header styling. Directions to implements
+Left to do : -~~Weird div on the left~~
+
+- Header
+- Profile
+- Watering button
+- ~~plant card & mocks?~~
+- see how to implements shapes
+- explore the accessibility button
+- ~~highlight icon if on page~~
+
+TODO:
+
+- HOME PAGE
+- ~~IMPROVE RESPONSIVENESS ON NAV BAR~~
+- ~~REDIRECTION WHEN REGISTER TO LOGIN PAGE~~
+- ~~IMPLEMENT PWA~~
+- SWITCH MOCKS UP TO ENGLISH
+- ~~PAGES ARCHITECTURE~~
+  26/09
+  ~~Reimplement PWA (already pushed)~~
+
+2/10
+
+- login ✔
+- register ✔
+- to fix LOGOUT ✖
+
+9/10
+
+- ~~fix response digital garden from 200 to 401 with JSON when not logged in~~
+- fix logout button in header ✔
+- finish mock ups ✔
+
+#**TO DO 05/12**
+
+HEADER ✔
+Watering button ✔
+logout button=> improve dropdown style ✔
+to fix : space for the last plant card (bottom nav bar on top of it) ✔
+Remove DOMpurify ✔
+Calculate next watering in plant card ✔
+Update watering in plant Card ✔
+Finish plant add form ✔
+Bugfix - error handling when empty fields ✔
+
+#**IN PROGRESS 14/11**
+
+- ~~schema for dto done~~
+- ~~form submit for /create-one-plant on the form.~~
+
+#**IN PROGRESS 28/11**
+
+- refresh garden => create context ✔
+- update next watering ✔
+
+#**LAST AUDIT FIX**
+02/01: found 0 vulnerabilities
+
+#**ON THE 5/12**
+PLAN FOR WATERING FUNCTION :
+
+- ~~onClick={ wateringButton} => open Modal~~
+  - ~~with list of plants in digital garden with checkboxes~~
+  - ~~button for validation~~
+  - MOVE THE LOGIC IN WaterMultiplePlantsModal
+    - ~~onClick={ wateringValidationButton} => PATCH to /water-multiples + refreshGarden()~~
+      ~~Message validation "Your plants are no longer thirsty 💧" with OK button to close~~
+      ~~To do : set Watering date~~
+  - ~~add select all~~
+  - ~~display nickname~~
+  - ~~prevent future dates~~
+  - ~~controlled checkboxes~~
+
+#**BUGFIX 19/12**
+
+- plant selection in add plant form ✔
+- responsiveness
+- check global styles
+- check add img ✔
+
+#**TO DO 22/12**
+
+- Header ✔
+- PWA ✔
+- content type to modify in the add plant form and handle img display [backend = @PostMapping(value = "/create-one", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)] in UserPlantController ✔
+
+- ~~edit watering / add button~~
+
+#**TO DO 23/12**
+
+- ~~close menu when outside click not functionel => implemts useRef~~
+- ~~change color when active~~
+- ~~Remove Forum button and page~~
+- ~~Add profile management~~
+
+#**TO DO 26/12**
+
+- ~~fix logo size~~
+- fix logo size ✔
+
+#**LEFT TO DO**
+
+- ~~Single plant form~~
+- Privacy policy page
+- refacto
+- TESTS AUTH
+- update CI
+- begin RNCP report
+
+#**LEFT TO DO 31/12**
+
+- Single plant form
+  - Modal displaying plant infos ✔
+  - Modal for watering one ✔
+  - modal for deleting one ✔
