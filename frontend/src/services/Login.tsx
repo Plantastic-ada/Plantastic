@@ -31,8 +31,8 @@ export default function Login() {
   const { refreshAuth } = useAuth();
   const onSubmit = async (data: LoginFormData) => {
     // prevents double submit
-    if (loading || isSubmitting.current) return; 
-    
+    if (loading || isSubmitting.current) return;
+
     isSubmitting.current = true;
     setLoading(true);
     setError("");
@@ -42,13 +42,13 @@ export default function Login() {
         method: "POST",
         headers: {
           // overrides the default set in api.ts
-          "Content-Type": "application/x-www-form-urlencoded", 
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams(data).toString(),
       });
 
       if (response.ok) {
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         await refreshAuth();
         nav("/", { replace: true });
       } else {
@@ -99,8 +99,8 @@ export default function Login() {
           <AuthCard title="Login">
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <InputField
-                label="Pseudo or email"
-                placeholder="Enter pseudo or email"
+                label="Username or email"
+                placeholder="Enter username or email"
                 register={register("username")}
                 error={errors.username}
               />
@@ -135,4 +135,3 @@ export default function Login() {
     </BackgroundWrapper>
   );
 }
-
