@@ -42,7 +42,7 @@ const loginForm = async (
 ) => {
   const credential = data.email || data.username || "";
   await user.type(
-    screen.getByPlaceholderText(/Enter pseudo or email/i),
+    screen.getByPlaceholderText(/Enter username or email/i),
     credential
   );
   await user.type(
@@ -57,7 +57,7 @@ describe("Login Page", () => {
     renderLogin();
     expect(screen.getByRole("heading", { name: /Login/i })).toBeInTheDocument();
     expect(
-      screen.getByPlaceholderText(/Enter pseudo or email/i)
+      screen.getByPlaceholderText(/Enter username or email/i)
     ).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/Enter password/i)).toBeInTheDocument();
   });
