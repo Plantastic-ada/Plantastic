@@ -1,5 +1,3 @@
-// authHandlers.ts - Solution avec stockage partagé
-
 import { http, HttpResponse } from "msw";
 import { mockUser } from "../mockUser";
 import { loginSchema } from "../../schemas/loginSchema";
@@ -7,7 +5,6 @@ import { signUpSchema } from "../../schemas/signUpSchema";
 import type { User } from "../../types/User";
 import { sanitizeUser } from "../../utils/sanitize";
 import { z } from "zod";
-import { TEST_CONFIG } from "../config.ts";
 
 const generateToken = () => {
   return (
@@ -16,12 +13,10 @@ const generateToken = () => {
   );
 };
 
-// Shared storage to allow MSW to work with a generated token
 export const tokenStorage = {
   token: null as string | null,
   setToken(token: string | null) {
     this.token = token;
-    // Sync with browser cookie
     if (token) {
       document.cookie = `token=${token}; path=/; SameSite=Strict`;
     } else {
@@ -32,7 +27,6 @@ export const tokenStorage = {
     if (this.token) {
       return this.token;
     }
-    // Fallback : gets cookie from browser
     const match = document.cookie.match(/token=([^;]+)/);
     if (match) {
       this.token = match[1];
@@ -46,81 +40,73 @@ export const tokenStorage = {
   },
 };
 
-export const loginHandlers = [
-  http.post(
-    `${TEST_CONFIG.API_BASE_URL}/api/auth/login`,
-    async ({ request }) => {
-      const body = await request.json();
-      const result = loginSchema.safeParse(body);
+export const createAuthHandlers = (baseUrl: string) => [
+  // Login
+  http.post(`${baseUrl}/api/auth/login`, async ({ request }) => {
+    const body = await request.json();
+    const result = loginSchema.safeParse(body);
 
-      if (!result.success) {
-        return HttpResponse.json({ message: "Invalid input" }, { status: 400 });
-      }
-
-      const { username, password } = result.data;
-      const isEmail = z.email().safeParse(username).success;
-
-      const isValidLogin =
-        password === mockUser.password &&
-        ((!isEmail && username === mockUser.username) ||
-          (isEmail && username === mockUser.email));
-
-      if (isValidLogin) {
-        const newToken = generateToken();
-        tokenStorage.setToken(newToken);
-
-        return HttpResponse.json(
-          sanitizeUser({
-            id: 1,
-            username: mockUser.username,
-            email: mockUser.email,
-            password: mockUser.password,
-          }),
-          {
-            status: 200,
-            headers: {
-              "Set-Cookie": `token=${newToken}; path=/; SameSite=Strict`,
-            },
-          }
-        );
-      }
-
-      return HttpResponse.json(
-        { message: "Invalid username or password" },
-        { status: 401 }
-      );
+    if (!result.success) {
+      return HttpResponse.json({ message: "Invalid input" }, { status: 400 });
     }
-  ),
-];
 
-export const signupHandlers = [
-  http.post(
-    `${TEST_CONFIG.API_BASE_URL}/api/auth/signup`,
-    async ({ request }) => {
-      const requestBody = await request.json();
-      const result = signUpSchema.safeParse(requestBody);
-      console.debug("body: ", result);
+    const { username, password } = result.data;
+    const isEmail = z.email().safeParse(username).success;
 
-      if (!result.success) {
-        return HttpResponse.json({ error: "Invalid input" }, { status: 400 });
-      }
+    const isValidLogin =
+      password === mockUser.password &&
+      ((!isEmail && username === mockUser.username) ||
+        (isEmail && username === mockUser.email));
 
-      const parsed = result.data;
-      const newUser: User = {
-        id: 2,
-        ...parsed,
-      };
-
+    if (isValidLogin) {
       const newToken = generateToken();
       tokenStorage.setToken(newToken);
 
-      return HttpResponse.json([newUser], { status: 201 });
+      return HttpResponse.json(
+        sanitizeUser({
+          id: 1,
+          username: mockUser.username,
+          email: mockUser.email,
+          password: mockUser.password,
+        }),
+        {
+          status: 200,
+          headers: {
+            "Set-Cookie": `token=${newToken}; path=/; SameSite=Strict`,
+          },
+        }
+      );
     }
-  ),
-];
 
-export const logoutHandlers = [
-  http.post(`${TEST_CONFIG.API_BASE_URL}/api/auth/logout`, () => {
+    return HttpResponse.json(
+      { message: "Invalid pseudo or password" },
+      { status: 401 }
+    );
+  }),
+
+  // Signup
+  http.post(`${baseUrl}/api/auth/signup`, async ({ request }) => {
+    const requestBody = await request.json();
+    const result = signUpSchema.safeParse(requestBody);
+
+    if (!result.success) {
+      return HttpResponse.json({ error: "Invalid input" }, { status: 400 });
+    }
+
+    const parsed = result.data;
+    const newUser: User = {
+      id: 2,
+      ...parsed,
+    };
+
+    const newToken = generateToken();
+    tokenStorage.setToken(newToken);
+
+    return HttpResponse.json([newUser], { status: 201 });
+  }),
+
+  // Logout
+  http.post(`${baseUrl}/api/auth/logout`, () => {
     tokenStorage.setToken(null);
 
     return HttpResponse.json(
@@ -133,10 +119,9 @@ export const logoutHandlers = [
       }
     );
   }),
-];
 
-export const authStatusHandlers = [
-  http.get(`${TEST_CONFIG.API_BASE_URL}/api/auth/me`, () => {
+  // Auth status
+  http.get(`${baseUrl}/api/auth/me`, () => {
     const currentToken = tokenStorage.getToken();
 
     if (!currentToken) {
@@ -156,10 +141,9 @@ export const authStatusHandlers = [
       { status: 200 }
     );
   }),
-];
 
-export const gardenHandlers = [
-  http.get(`${TEST_CONFIG.API_BASE_URL}/api/me/my-digital-garden`, () => {
+  // Garden
+  http.get(`${baseUrl}/api/me/my-digital-garden`, () => {
     return HttpResponse.json(
       {
         email: null,

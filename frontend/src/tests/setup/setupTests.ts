@@ -2,6 +2,7 @@ import { afterAll, afterEach, beforeAll } from "vitest";
 import { server } from "../../mocks/server";
 import "@testing-library/jest-dom";
 import { tokenStorage } from "../../mocks/handlers/authHandlers";
+import { configure } from "@testing-library/react";
 
 const originalWarn = console.warn;
 

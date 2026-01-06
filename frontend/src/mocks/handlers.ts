@@ -1,17 +1,8 @@
-import {
-  loginHandlers,
-  logoutHandlers,
-  signupHandlers,
-  authStatusHandlers,
-  gardenHandlers,
-} from "./handlers/authHandlers";
-import { plantSummariesHandlers } from "./handlers/plantHandlers";
+import { createAuthHandlers } from "./handlers/authHandlers";
+import { createPlantHandlers } from "./handlers/plantHandlers";
+import { API_BASE_URL } from "./config/constants";
 
 export const handlers = [
-  ...loginHandlers,
-  ...logoutHandlers,
-  ...signupHandlers,
-  ...authStatusHandlers,
-  ...gardenHandlers,
-  ...plantSummariesHandlers,
+  ...createAuthHandlers(API_BASE_URL),
+  ...createPlantHandlers(API_BASE_URL),
 ];
