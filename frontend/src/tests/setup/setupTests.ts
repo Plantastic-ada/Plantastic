@@ -4,8 +4,9 @@ import "@testing-library/jest-dom";
 import { tokenStorage } from "../../mocks/handlers/authHandlers";
 
 const originalWarn = console.warn;
+
 beforeAll(() => {
-  console.warn = (...args: any[]) => {
+  console.warn = (...args: Parameters<typeof console.warn>) => {
     if (
       typeof args[0] === "string" &&
       args[0].includes("React Router Future Flag Warning")

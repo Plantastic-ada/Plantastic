@@ -46,9 +46,6 @@ export const tokenStorage = {
   },
 };
 
-console.log("TEST_CONFIG:", TEST_CONFIG); // ← Ajoute ça
-console.log("API_BASE_URL:", TEST_CONFIG.API_BASE_URL);
-
 export const loginHandlers = [
   http.post(
     `${TEST_CONFIG.API_BASE_URL}/api/auth/login`,
