@@ -29,11 +29,11 @@ jobs:
           cd frontend
           npm run eslint:github-action
 
-          - name: Clear test cache  # ← AJOUTE ÇA
-  run: |
-    cd frontend
-    rm -rf node_modules/.vite
-    rm -rf node_modules/.vitest
+      - name: Clear test cache
+        run: |
+          cd frontend
+          rm -rf node_modules/.vite
+          rm -rf node_modules/.vitest
       - name: Run tests
         run: |
           cd frontend
