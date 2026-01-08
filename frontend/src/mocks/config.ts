@@ -1,3 +1,1 @@
-export const TEST_CONFIG = {
-  API_BASE_URL: "http://localhost:8080",
-} as const;
+export const TEST_API_BASE_URL = "http://localhost:8080";

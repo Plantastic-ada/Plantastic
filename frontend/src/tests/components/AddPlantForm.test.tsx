@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { server } from "../../mocks/server";
-import { TEST_CONFIG } from "../../mocks/config";
+import { TEST_API_BASE_URL } from "../../mocks/config";
 import { waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
@@ -47,7 +47,7 @@ it("should show plant suggestions when typing", async () => {
   const user = userEvent.setup();
 
   server.use(
-    http.get(`${TEST_CONFIG.API_BASE_URL}/api/plants/summaries`, () => {
+    http.get(`${TEST_API_BASE_URL}/api/plants/summaries`, () => {
       return HttpResponse.json(mockPlants, { status: 200 });
     })
   );

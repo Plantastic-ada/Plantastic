@@ -4,7 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import { AuthProvider, useAuth } from "../../../context/AuthContext";
 import { http, HttpResponse } from "msw";
 import { server } from "../../../mocks/server";
-import { TEST_CONFIG } from "../../../mocks/config";
+import { TEST_API_BASE_URL } from "../../../mocks/config";
+import { mockUserPlants } from "../../../mocks/mockUserPlantsData";
 
 function TestComponent() {
   const { isAuthenticated, isLoading, user } = useAuth();
@@ -32,14 +33,16 @@ describe("AuthContext", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByText(/isLoading: true/i)).toBeInTheDocument();
+    expect(await screen.findByText(/isLoading: true/i)).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
     });
 
-    expect(screen.getByText(/isAuthenticated: false/i)).toBeInTheDocument();
-    expect(screen.getByText(/email: null/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/isAuthenticated: false/i)
+    ).toBeInTheDocument();
+    expect(await screen.findByText(/email: null/i)).toBeInTheDocument();
   });
 });
 
@@ -70,11 +73,13 @@ it("should update the context after successful login", async () => {
   await waitFor(() => {
     expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
   });
-  expect(screen.getByText(/isAuthenticated: false/i)).toBeInTheDocument();
-  expect(screen.getByText(/email: null/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/isAuthenticated: false/i)
+  ).toBeInTheDocument();
+  expect(await screen.findByText(/email: null/i)).toBeInTheDocument();
   // 4. MOCK FOR CONNECTED USER
   server.use(
-    http.get(`${TEST_CONFIG.API_BASE_URL}/api/me/my-digital-garden`, () => {
+    http.get(`${TEST_API_BASE_URL}/api/me/my-digital-garden`, () => {
       return HttpResponse.json(
         {
           user: {
@@ -82,17 +87,7 @@ it("should update the context after successful login", async () => {
             email: "test@example.com",
             role: "ROLE_USER",
           },
-          digitalGarden: [
-            {
-              id: 1,
-              nickname: "Ma plante test",
-              commonName: "Pothos",
-              lastWatering: "2026-01-01",
-              nextWatering: "2026-01-11",
-              plantImageUrl: "http://test.jpg",
-              userPlantImageUrl: "http://test.jpg",
-            },
-          ],
+          digitalGarden: mockUserPlants,
         },
         { status: 200 }
       );
@@ -105,15 +100,17 @@ it("should update the context after successful login", async () => {
   await waitFor(() => {
     expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
   });
-  expect(screen.getByText(/isAuthenticated: true/i)).toBeInTheDocument();
-  expect(screen.getByText(/email: test@example.com/i)).toBeInTheDocument();
+  expect(await screen.findByText(/isAuthenticated: true/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/email: test@example.com/i)
+  ).toBeInTheDocument();
 });
 
 // LOGOUT TEST
 it("should update the context after successful logout", async () => {
   // 1. MOCK FOR CONNECTED USER
   server.use(
-    http.get(`${TEST_CONFIG.API_BASE_URL}/api/me/my-digital-garden`, () => {
+    http.get(`${TEST_API_BASE_URL}/api/me/my-digital-garden`, () => {
       return HttpResponse.json(
         {
           user: {
@@ -162,8 +159,10 @@ it("should update the context after successful logout", async () => {
   await waitFor(() => {
     expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
   });
-  expect(screen.getByText(/isAuthenticated: true/i)).toBeInTheDocument();
-  expect(screen.getByText(/email: test@example.com/i)).toBeInTheDocument();
+  expect(await screen.findByText(/isAuthenticated: true/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/email: test@example.com/i)
+  ).toBeInTheDocument();
   // 5. LOGOUT CLIC SIMULATION
   const logoutButton = screen.getByText("Logout");
   logoutButton.click();
@@ -171,6 +170,8 @@ it("should update the context after successful logout", async () => {
   await waitFor(() => {
     expect(screen.getByText(/isLoading: false/i)).toBeInTheDocument();
   });
-  expect(screen.getByText(/isAuthenticated: false/i)).toBeInTheDocument();
-  expect(screen.getByText(/email: null/i)).toBeInTheDocument();
+  expect(
+    await screen.findByText(/isAuthenticated: false/i)
+  ).toBeInTheDocument();
+  expect(await screen.findByText(/email: null/i)).toBeInTheDocument();
 });
