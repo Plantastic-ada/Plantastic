@@ -1,9 +1,9 @@
 import { http, HttpResponse } from "msw";
-import { TEST_CONFIG } from "../config";
+import { TEST_API_BASE_URL } from "../config";
 import { mockPlants } from "../mockPlantData";
 
 export const plantSummariesHandlers = [
-  http.get(`${TEST_CONFIG.API_BASE_URL}/api/plants/summaries`, () => {
+  http.get(`${TEST_API_BASE_URL}/api/plants/summaries`, () => {
     return HttpResponse.json(mockPlants, { status: 200 });
   }),
 ];
