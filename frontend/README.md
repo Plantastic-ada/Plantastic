@@ -198,9 +198,9 @@ PLAN FOR WATERING FUNCTION :
 
 - ~~Single plant form~~
 - Privacy policy page
-- refacto
 - TESTS AUTH
 - update CI
+- refacto
 - begin RNCP report
 
 #**LEFT TO DO 31/12**
