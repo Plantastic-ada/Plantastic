@@ -32,7 +32,6 @@ export default function InputField({
     : type;
 
   const inputId = register.name;
-  console.log("🔍 inputId:", inputId, "label:", label);
 
   return (
     <div className="mb-4">
