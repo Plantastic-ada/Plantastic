@@ -31,13 +31,20 @@ export default function InputField({
       : "password"
     : type;
 
+  const inputId = register.name;
+  console.log("🔍 inputId:", inputId, "label:", label);
+
   return (
     <div className="mb-4">
-      <label className="block text-sm font-bold text-text-secondary font-bellota mb-1">
+      <label
+        className="block text-sm font-bold text-text-secondary font-bellota mb-1"
+        htmlFor={inputId}
+      >
         {label}
       </label>
       <div className="relative">
         <input
+          id={inputId}
           type={inputType}
           placeholder={placeholder}
           {...register}

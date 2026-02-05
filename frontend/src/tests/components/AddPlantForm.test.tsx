@@ -23,7 +23,7 @@ const renderAddPlantForm = () => {
           <AddPlantForm onClose={mockOnClose} />
         </GardenProvider>
       </AuthProvider>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 };
 
@@ -31,11 +31,12 @@ const renderAddPlantForm = () => {
 describe("AddPlantForm", () => {
   it("should render the form", () => {
     renderAddPlantForm();
+    screen.debug();
 
     expect(screen.getByText(/Add a plant/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Search a plant:/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Picture/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Nickname/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Acquisition date/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Last watering date/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Send/i })).toBeInTheDocument();
@@ -49,7 +50,7 @@ it("should show plant suggestions when typing", async () => {
   server.use(
     http.get(`${TEST_API_BASE_URL}/api/plants/summaries`, () => {
       return HttpResponse.json(mockPlants, { status: 200 });
-    })
+    }),
   );
 
   renderAddPlantForm();
@@ -70,7 +71,7 @@ it("should debounce search and only call API after 300ms with 3+ chars", async (
   server.use(
     http.get(`${TEST_API_BASE_URL}/api/plants/summaries`, () => {
       return HttpResponse.json(mockPlants, { status: 200 });
-    })
+    }),
   );
 
   renderAddPlantForm();
