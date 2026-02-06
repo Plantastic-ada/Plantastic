@@ -120,10 +120,14 @@ export default function AddPlantForm({ onClose }: FormProps) {
       <h1 className="text-2-xl text-black font-bold mb-4">Add a plant</h1>
       <div>
         {/* PLANT SEARCH */}
-        <label className="block text-sm text-black font-medium mb-1">
+        <label
+          htmlFor="plant-search"
+          className="block text-sm text-black font-medium mb-1"
+        >
           Search a plant:
         </label>
         <input
+          id="plant-search"
           value={searchValue}
           onChange={(e) => {
             setSearchValue(e.target.value);
@@ -180,13 +184,17 @@ export default function AddPlantForm({ onClose }: FormProps) {
         </>
 
         {/* PICTURE  */}
-        <label className="block text-sm text-black font-medium  mt-5 mb-1">
+        <label
+          htmlFor="plant-picture"
+          className="block text-sm text-black font-medium  mt-5 mb-1"
+        >
           Picture: <span className="text-gray-500 text-xs">(Max 10MB)</span>
         </label>
         <div className="h-36 w-36">
           {imageToDisplay && <img src={imageToDisplay} alt="Plant" />}
         </div>
         <input
+          id="plant-picture"
           type="file"
           accept="image/*"
           onChange={async (e) => {
@@ -215,20 +223,28 @@ export default function AddPlantForm({ onClose }: FormProps) {
         />
 
         {/* NICKNAME  */}
-        <label className="block text-sm text-black font-medium  mt-5 mb-1">
+        <label
+          htmlFor="plant-nickname"
+          className="block text-sm text-black font-medium  mt-5 mb-1"
+        >
           Name:
         </label>
         <input
+          id="plant-nickname"
           {...register("nickname")}
           type="text"
           className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
         />
 
         {/* ACQUISITION DATE  */}
-        <label className="block text-sm text-black font-medium mb-1">
+        <label
+          htmlFor="acquisition-date"
+          className="block text-sm text-black font-medium mb-1"
+        >
           Acquisition date:
         </label>
         <input
+          id="acquisition-date"
           {...register("acquisitionDate")}
           type="date"
           max={today}
@@ -236,10 +252,14 @@ export default function AddPlantForm({ onClose }: FormProps) {
         />
 
         {/* LAST WATERING DATE  */}
-        <label className="block text-sm text-black font-medium mb-1">
+        <label
+          htmlFor="last-watering-date"
+          className="block text-sm text-black font-medium mb-1"
+        >
           Last watering date :
         </label>
         <input
+          id="last-watering-date"
           {...register("lastWatering", {
             setValueAs: (value: string | null) => (value === "" ? null : value),
           })}
@@ -261,7 +281,7 @@ export default function AddPlantForm({ onClose }: FormProps) {
       {/* SUBMIT FORM  */}
       <button
         type="submit"
-        id="form"
+        id="submit-button"
         className="w-full bg-red bg-[#4f674f] text-white py-2 rounded-lg hover:bg-[#374737]"
       >
         Send
