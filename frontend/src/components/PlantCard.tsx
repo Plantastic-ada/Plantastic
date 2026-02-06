@@ -5,6 +5,12 @@ import PlantDetailsModal from "./PlantDetailsModal";
 
 export default function PlantCard({ plant }: { plant: UserPlant }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const [year, month, day] = plant.nextWatering.split("-").map(Number);
+  const nextWateringDate = new Date(year, month - 1, day);
+  const isThirsty = nextWateringDate < today;
   return (
     <div
       id="plant-card"
@@ -38,6 +44,11 @@ export default function PlantCard({ plant }: { plant: UserPlant }) {
           <p className="text-xs text-text-secondary truncate">
             Next watering: {plant.nextWatering}
           </p>
+          {isThirsty && (
+            <p className="text-s font-bold text-red-500 truncate">
+              I feel thirsty !
+            </p>
+          )}
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
