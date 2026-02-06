@@ -41,7 +41,7 @@ export default function PlantCard({ plant }: { plant: UserPlant }) {
             Next watering: {plant.nextWatering}
           </p>
           {isThirsty && (
-            <p className="text-s font-bold text-red-500 truncate" role="alert">
+            <p className="text-text-error font-bold" role="alert">
               I feel thirsty !
             </p>
           )}
