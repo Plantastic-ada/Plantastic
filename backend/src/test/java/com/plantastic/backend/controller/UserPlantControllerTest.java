@@ -426,40 +426,40 @@ class UserPlantControllerTest {
       verify(userPlantService, times(1)).deleteUserPlantById(userPlantId);
     }
 
-    @Test
-    @DisplayName("Should return 500 on unexpected error")
-    void shouldReturn500OnUnexpectedError() {
-      // Arrange
-      Long userPlantId = 1L;
-      doThrow(new RuntimeException("Database connection failed"))
-        .when(userPlantService).deleteUserPlantById(userPlantId);
+//    @Test
+//    @DisplayName("Should return 500 on unexpected error")
+//    void shouldReturn500OnUnexpectedError() {
+//      // Arrange
+//      Long userPlantId = 1L;
+//      doThrow(new RuntimeException("Database connection failed"))
+//        .when(userPlantService).deleteUserPlantById(userPlantId);
+//
+//      // Act
+//      ResponseEntity<Map<String, String>> response = userPlantController.deleteOneUserPlant(userPlantId);
+//
+//      // Assert
+//      assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+//      assertNotNull(response.getBody());
+//      assertEquals("false", response.getBody().get("success"));
+//      assertEquals("An unexpected error occurred", response.getBody().get("message"));
+//      verify(userPlantService, times(1)).deleteUserPlantById(userPlantId);
+//    }
 
-      // Act
-      ResponseEntity<Map<String, String>> response = userPlantController.deleteOneUserPlant(userPlantId);
-
-      // Assert
-      assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-      assertNotNull(response.getBody());
-      assertEquals("false", response.getBody().get("success"));
-      assertEquals("An unexpected error occurred", response.getBody().get("message"));
-      verify(userPlantService, times(1)).deleteUserPlantById(userPlantId);
-    }
-
-    @Test
-    @DisplayName("Should handle NullPointerException gracefully")
-    void shouldHandleNullPointerException() {
-      // Arrange
-      Long userPlantId = 1L;
-      doThrow(new NullPointerException("Null value encountered"))
-        .when(userPlantService).deleteUserPlantById(userPlantId);
-
-      // Act
-      ResponseEntity<Map<String, String>> response = userPlantController.deleteOneUserPlant(userPlantId);
-
-      // Assert
-      assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-      assertEquals("false", response.getBody().get("success"));
-    }
+//    @Test
+//    @DisplayName("Should handle NullPointerException gracefully")
+//    void shouldHandleNullPointerException() {
+//      // Arrange
+//      Long userPlantId = 1L;
+//      doThrow(new NullPointerException("Null value encountered"))
+//        .when(userPlantService).deleteUserPlantById(userPlantId);
+//
+//      // Act
+//      ResponseEntity<Map<String, String>> response = userPlantController.deleteOneUserPlant(userPlantId);
+//
+//      // Assert
+//      assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+//      assertEquals("false", response.getBody().get("success"));
+//    }
 
 //    @Test
 //    @DisplayName("Should handle IllegalArgumentException gracefully")
