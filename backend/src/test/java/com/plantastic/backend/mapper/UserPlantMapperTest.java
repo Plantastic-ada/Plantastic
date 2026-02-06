@@ -7,7 +7,9 @@ import java.time.LocalDate;
 import com.plantastic.backend.dto.plants.UserPlantDetailsDto;
 import com.plantastic.backend.dto.plants.UserPlantSummaryDto;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("test")
 class UserPlantMapperTest {
 
   private final UserPlantMapper mapper = new UserPlantMapper();

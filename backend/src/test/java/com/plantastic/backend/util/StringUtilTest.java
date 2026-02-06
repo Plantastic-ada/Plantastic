@@ -2,10 +2,12 @@ package com.plantastic.backend.util;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+@ActiveProfiles("test")
 class StringUtilTest {
 
     @Test
