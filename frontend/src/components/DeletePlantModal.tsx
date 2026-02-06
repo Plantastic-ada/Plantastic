@@ -38,13 +38,13 @@ const DeletePlantModal = ({ onClose, plantId }: DeletePlantModalProps) => {
       <div className="grid grid-cols-2 content-center gap-4">
         <button
           onClick={onClose}
-          className={`${baseButtonClass} bg-[#4f674f] hover:bg-[#232c23]`}
+          className={`${baseButtonClass} bg-sage hover:bg-sage-dark`}
         >
           Cancel
         </button>
         <button
           onClick={handleDelete}
-          className={`${baseButtonClass} bg-[#db7922] hover:bg-[#aa590d]`}
+          className={`${baseButtonClass} bg-clay hover:bg-clay-dark`}
         >
           Confirm
         </button>

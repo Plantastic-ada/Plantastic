@@ -7,7 +7,7 @@ import DeletePlantModal from "./DeletePlantModal";
 
 export default function PlantDetailsModal({ plantId }: { plantId: number }) {
   const [plantDetails, setPlantDetails] = useState<UserPlantDetails | null>(
-    null
+    null,
   );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +29,7 @@ export default function PlantDetailsModal({ plantId }: { plantId: number }) {
         }
       } catch (error) {
         setError(
-          error instanceof Error ? error.message : "An unknown error occurred"
+          error instanceof Error ? error.message : "An unknown error occurred",
         );
       } finally {
         setIsLoading(false);
@@ -40,8 +40,8 @@ export default function PlantDetailsModal({ plantId }: { plantId: number }) {
 
   return (
     <div>
-      {isLoading && <p className="text-gray-500"> ⏳ Loading...</p>}
-      {error && <p className="text-red-400 mt-4">Error: {error}</p>}
+      {isLoading && <p className="text-text-placeholder"> ⏳ Loading...</p>}
+      {error && <p className="text-text-error mt-4">Error: {error}</p>}
       {!isLoading && !error && plantDetails && (
         <>
           <div>
@@ -63,17 +63,20 @@ export default function PlantDetailsModal({ plantId }: { plantId: number }) {
                   {plantDetails.scientificName}{" "}
                 </p>
                 <p>
-                  <strong>Last Watering:</strong> {plantDetails.lastWatering}{" "}
+                  <strong>Last Watering:</strong>{" "}
+                  {plantDetails.lastWatering}{" "}
                 </p>
                 <p>
-                  <strong>Next watering:</strong> {plantDetails.nextWatering}{" "}
+                  <strong>Next watering:</strong>{" "}
+                  {plantDetails.nextWatering}{" "}
                 </p>
                 <p>
                   <strong>Watering frequency:</strong> every{" "}
                   {plantDetails.waterFreq} days
                 </p>
                 <p>
-                  <strong>Light exposure:</strong> {plantDetails.lightExposure}{" "}
+                  <strong>Light exposure:</strong>{" "}
+                  {plantDetails.lightExposure}{" "}
                 </p>
               </div>
             </div>
@@ -81,13 +84,13 @@ export default function PlantDetailsModal({ plantId }: { plantId: number }) {
           <div className="grid grid-cols-2 content-center gap-4">
             <button
               onClick={() => setIsWaterModalOpen(true)}
-              className={`${baseButtonClass} bg-[#4f674f] hover:bg-[#232c23]`}
+              className={`${baseButtonClass} bg-sage hover:bg-sage-dark`}
             >
               Water the plant
             </button>
             <button
               onClick={() => setIsDeleteModalOpen(true)}
-              className={`${baseButtonClass} bg-[#db7922] hover:bg-[#aa590d]`}
+              className={`${baseButtonClass} bg-clay hover:bg-clay-dark`}
             >
               Delete this plant
             </button>

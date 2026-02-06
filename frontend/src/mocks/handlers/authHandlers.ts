@@ -7,6 +7,7 @@ import { signUpSchema } from "../../schemas/signUpSchema";
 import type { User } from "../../types/User";
 import { sanitizeUser } from "../../utils/sanitize";
 import { z } from "zod";
+import { TEST_API_BASE_URL } from "../config";
 
 const generateToken = () => {
   return (
@@ -16,7 +17,7 @@ const generateToken = () => {
 };
 
 // Shared storage to allow MSW to work with a generated token
-const tokenStorage = {
+export const tokenStorage = {
   token: null as string | null,
   setToken(token: string | null) {
     this.token = token;
@@ -39,10 +40,14 @@ const tokenStorage = {
     }
     return null;
   },
+  reset() {
+    this.token = null;
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  },
 };
 
 export const loginHandlers = [
-  http.post("/api/auth/login", async ({ request }) => {
+  http.post(`${TEST_API_BASE_URL}/api/auth/login`, async ({ request }) => {
     const body = await request.json();
     const result = loginSchema.safeParse(body);
 
@@ -79,14 +84,14 @@ export const loginHandlers = [
     }
 
     return HttpResponse.json(
-      { message: "Invalid pseudo or password" },
+      { message: "Invalid username or password" },
       { status: 401 }
     );
   }),
 ];
 
 export const signupHandlers = [
-  http.post("/api/auth/signup", async ({ request }) => {
+  http.post(`${TEST_API_BASE_URL}/api/auth/signup`, async ({ request }) => {
     const requestBody = await request.json();
     const result = signUpSchema.safeParse(requestBody);
     console.debug("body: ", result);
@@ -105,11 +110,11 @@ export const signupHandlers = [
     tokenStorage.setToken(newToken);
 
     return HttpResponse.json([newUser], { status: 201 });
-  })
+  }),
 ];
 
 export const logoutHandlers = [
-  http.post("/api/auth/logout", () => {
+  http.post(`${TEST_API_BASE_URL}/api/auth/logout`, () => {
     tokenStorage.setToken(null);
 
     return HttpResponse.json(
@@ -125,7 +130,7 @@ export const logoutHandlers = [
 ];
 
 export const authStatusHandlers = [
-  http.get("/api/auth/me", () => {
+  http.get(`${TEST_API_BASE_URL}/api/auth/me`, () => {
     const currentToken = tokenStorage.getToken();
 
     if (!currentToken) {
@@ -143,6 +148,18 @@ export const authStatusHandlers = [
         password: mockUser.password,
       }),
       { status: 200 }
+    );
+  }),
+];
+
+export const gardenHandlers = [
+  http.get(`${TEST_API_BASE_URL}/api/me/my-digital-garden`, () => {
+    return HttpResponse.json(
+      {
+        email: null,
+        digitalGarden: [],
+      },
+      { status: 401 }
     );
   }),
 ];

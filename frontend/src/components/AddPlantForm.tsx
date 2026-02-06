@@ -10,33 +10,35 @@ import { type ReactNode } from "react";
 import { useGarden } from "../context/GardenContext";
 import imageCompression from "browser-image-compression";
 import { getTodayLocal } from "../utils/date";
+import InputField from "./InputField";
 
 export default function AddPlantForm({ onClose }: FormProps) {
   const [allPlants, setAllPlants] = useState<PlantSelection[]>([]);
   const [suggestions, setSuggestions] = useState<PlantSelection[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [selectedPlant, setSelectedPlant] = useState<PlantSelection | null>(
-    null
+    null,
   );
   const [userPictureFile, setUserPictureFile] = useState<File | null>(null);
   const [userPicturePreview, setUserPicturePreview] = useState<string>("");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_apiMessage, setApiMessage] = useState<ReactNode>(null);
+  const [apiMessage, setApiMessage] = useState<ReactNode>(null);
   const [isPlantSelected, setIsPlantSelected] = useState(false);
   const { refreshGarden } = useGarden();
   const today = getTodayLocal();
+  const [activeIndex, setActiveIndex] = useState(-1);
 
-  // TODO: Keyboard navigation
-  // const [activeIndex, setActiveIndex] = useState(-1);
-
-  const { register, handleSubmit, formState, setValue } =
-    useForm<CreateUserPlantDto>({
-      resolver: zodResolver(createUserPlantSchema),
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<CreateUserPlantDto>({
+    resolver: zodResolver(createUserPlantSchema),
+  });
 
   // CALL FOR USER PLANT CREATION
   const onSubmit: SubmitHandler<CreateUserPlantDto> = async (
-    formData: CreateUserPlantDto
+    formData: CreateUserPlantDto,
   ) => {
     if (!selectedPlant) {
       setApiMessage("Please select a plant first");
@@ -48,13 +50,12 @@ export default function AddPlantForm({ onClose }: FormProps) {
         nickname: formData.nickname,
         acquisitionDate: formData.acquisitionDate,
         lastWatering: formData.lastWatering,
-        // picture: userPictureFile || selectedPlant?.imageUrl,
       };
 
       const formDataToSend = new FormData();
       formDataToSend.append(
         "data",
-        new Blob([JSON.stringify(dataToSend)], { type: "application/json" })
+        new Blob([JSON.stringify(dataToSend)], { type: "application/json" }),
       );
       if (userPictureFile) {
         formDataToSend.append("file", userPictureFile);
@@ -103,7 +104,7 @@ export default function AddPlantForm({ onClose }: FormProps) {
     const timeOutId = setTimeout(() => {
       const lowerSearch = searchValue.toLowerCase();
       const filtered = allPlants.filter((plant) =>
-        plant.commonName.toLowerCase().includes(lowerSearch)
+        plant.commonName.toLowerCase().includes(lowerSearch),
       );
       setSuggestions(filtered);
     }, 300);
@@ -117,35 +118,101 @@ export default function AddPlantForm({ onClose }: FormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
-      <h1 className="text-2-xl text-black font-bold mb-4">Add a plant</h1>
+      <h1 className="text-2-xl text-black font-bold mb-4 font font-montserrat">
+        Add a plant
+      </h1>
       <div>
         {/* PLANT SEARCH */}
-        <label className="block text-sm text-black font-medium mb-1">
+        <label
+          htmlFor="plant-search"
+          className="block text-sm font-bold text-text-secondary font-bellota mb-1"
+        >
           Search a plant:
         </label>
         <input
+          id="plant-search"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded={suggestions.length > 0}
+          aria-controls="suggestions-list"
+          aria-activedescendant={
+            activeIndex >= 0
+              ? `suggestion-${suggestions[activeIndex]?.id}`
+              : undefined
+          }
           value={searchValue}
           onChange={(e) => {
             setSearchValue(e.target.value);
             setIsPlantSelected(false);
+            setActiveIndex(-1);
+          }}
+          onKeyDown={(e) => {
+            if (suggestions.length === 0) return;
+
+            switch (e.key) {
+              case "ArrowDown":
+                e.preventDefault();
+                setActiveIndex((prev) =>
+                  prev < suggestions.length - 1 ? prev + 1 : 0,
+                );
+                break;
+
+              case "ArrowUp":
+                e.preventDefault();
+                setActiveIndex((prev) =>
+                  prev > 0 ? prev - 1 : suggestions.length - 1,
+                );
+                break;
+
+              case "Enter":
+                e.preventDefault();
+                if (activeIndex >= 0 && activeIndex < suggestions.length) {
+                  const selectedPlant = suggestions[activeIndex];
+                  setSearchValue(selectedPlant.commonName);
+                  setSelectedPlant(selectedPlant);
+                  setValue("plantId", selectedPlant.id);
+                  setValue("picture", selectedPlant.imageUrl);
+                  setSuggestions([]);
+                  setIsPlantSelected(true);
+                  setActiveIndex(-1);
+                }
+                break;
+
+              case "Escape":
+                setSuggestions([]);
+                setActiveIndex(-1);
+                break;
+            }
           }}
           onBlur={() => {
             setTimeout(() => {
               if (!isPlantSelected) {
                 setSuggestions([]);
+                setActiveIndex(-1);
               }
             }, 200);
           }}
           type="search"
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 placeholder:italic placeholder:text-gray-500"
+          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 placeholder:italic placeholder:text-text-placeholder"
         />
         <>
           {suggestions.length > 0 && (
-            <div className="border rounded-lg mt-2 max-h-60 overflow-y-auto bg-white">
-              {suggestions.map((plant) => (
+            <div
+              id="suggestions-list"
+              role="listbox"
+              className="border rounded-lg mt-2 max-h-60 overflow-y-auto bg-white"
+            >
+              {suggestions.map((plant, index) => (
                 <div
                   key={plant.id}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  id={`suggestion-${plant.id}`}
+                  role="option"
+                  aria-selected={index === activeIndex}
+                  className={`p-2 cursor-pointer ${
+                    index === activeIndex
+                      ? "bg-blue-100 border-l-4 border-focus"
+                      : "hover:bg-gray-100"
+                  }`}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -155,9 +222,10 @@ export default function AddPlantForm({ onClose }: FormProps) {
                     setValue("picture", plant.imageUrl);
                     setSuggestions([]);
                     setIsPlantSelected(true);
+                    setActiveIndex(-1);
                   }}
                 >
-                  <span className="text-gray-800 text-sm flex">
+                  <span className="text-text-secondary text-sm flex">
                     {plant.commonName} - {plant.scientificName}{" "}
                     <img
                       className="h-16 w-16"
@@ -173,20 +241,25 @@ export default function AddPlantForm({ onClose }: FormProps) {
           {suggestions.length === 0 &&
             searchValue.length >= 3 &&
             !isPlantSelected && (
-              <p className="text-gray-500 text-sm p-4 text-center">
+              <p className="text-text-placeholder text-sm p-4 text-center">
                 No results found!
               </p>
             )}
         </>
 
         {/* PICTURE  */}
-        <label className="block text-sm text-black font-medium  mt-5 mb-1">
-          Picture: <span className="text-gray-500 text-xs">(Max 10MB)</span>
+        <label
+          htmlFor="plant-picture"
+          className="block text-sm font-bold text-text-secondary font-bellota mb-1"
+        >
+          Picture:{" "}
+          <span className="text-text-placeholder text-xs">(Max 10MB)</span>
         </label>
         <div className="h-36 w-36">
           {imageToDisplay && <img src={imageToDisplay} alt="Plant" />}
         </div>
         <input
+          id="plant-picture"
           type="file"
           accept="image/*"
           onChange={async (e) => {
@@ -215,54 +288,50 @@ export default function AddPlantForm({ onClose }: FormProps) {
         />
 
         {/* NICKNAME  */}
-        <label className="block text-sm text-black font-medium  mt-5 mb-1">
-          Name:
-        </label>
-        <input
-          {...register("nickname")}
+        <InputField
+          label="Nickname"
           type="text"
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
+          placeholder="Enter plant nickname"
+          register={register("nickname")}
+          error={errors.nickname}
         />
 
         {/* ACQUISITION DATE  */}
-        <label className="block text-sm text-black font-medium mb-1">
-          Acquisition date:
-        </label>
-        <input
-          {...register("acquisitionDate")}
+        <InputField
+          label="Acquisition date"
           type="date"
           max={today}
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5 "
+          register={register("acquisitionDate")}
+          error={errors.acquisitionDate}
         />
 
         {/* LAST WATERING DATE  */}
-        <label className="block text-sm text-black font-medium mb-1">
-          Last watering date :
-        </label>
-        <input
-          {...register("lastWatering", {
-            setValueAs: (value: string | null) => (value === "" ? null : value),
-          })}
+        <InputField
+          label="Last watering date"
           type="date"
           max={today}
-          className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 mb-5"
+          register={register("lastWatering", {
+            setValueAs: (value: string | null) => (value === "" ? null : value),
+          })}
+          error={errors.lastWatering}
         />
-        {Object.keys(formState.errors).length > 0 && (
-          <div className="bg-red-100 p-2 rounded">
-            {Object.values(formState.errors).map((error, index) => (
-              <p key={index} className="text-red-600 text-sm">
-                {error?.message as string}
-              </p>
-            ))}
-          </div>
-        )}
       </div>
+
+      {apiMessage && (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="bg-red-100 text-text-error p-3 rounded text-sm"
+        >
+          {apiMessage}
+        </div>
+      )}
 
       {/* SUBMIT FORM  */}
       <button
         type="submit"
-        id="form"
-        className="w-full bg-red bg-[#4f674f] text-white py-2 rounded-lg hover:bg-[#374737]"
+        id="submit-button"
+        className="w-full bg-red bg-sage text-white py-2 rounded-lg hover:bg-sage-dark font font-montserrat"
       >
         Send
       </button>
